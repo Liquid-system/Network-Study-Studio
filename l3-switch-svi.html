@@ -61,13 +61,13 @@
           <p>この単元では Multilayer Switch 1台と PC 2台だけで VLAN 間通信を成立させます。SVI が各 VLAN のゲートウェイになり、<code>MLS1(config)# ip routing</code> で L3 機能を有効にするのが要点です。</p>
         </div>
         <div class="wide-diagram">
-          <div class="diagram-node">PC-A<small>End Device<br>VLAN 10<br>192.168.10.10 /24</small></div>
+          <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>VLAN 10<br>192.168.10.10 /24</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">MLS1<small>Catalyst 3560<br>SVI VLAN 10: 192.168.10.1<br>SVI VLAN 20: 192.168.20.1</small></div>
+          <div class="diagram-node">MLS1<small><span class="device-name">Catalyst 3560</span>SVI VLAN 10: 192.168.10.1<br>SVI VLAN 20: 192.168.20.1</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">VLAN間ルーティング<small>MLS1(config)# ip routing</small></div>
+          <div class="diagram-node">VLAN間ルーティング<small><span class="device-name">MLS1(config)# ip routing</span></small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">PC-B<small>End Device<br>VLAN 20<br>192.168.20.10 /24</small></div>
+          <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>VLAN 20<br>192.168.20.10 /24</small></div>
         </div>
         <div class="grid-2">
           <article class="card">
@@ -96,11 +96,11 @@
         </div>
 
         <div class="topic-diagram">
-          <div class="diagram-node">PC-A<small>VLAN 10<br>192.168.10.10 /24<br>GW 192.168.10.1</small></div>
+          <div class="diagram-node">PC-A<small><span class="device-name">VLAN 10</span>192.168.10.10 /24<br>GW 192.168.10.1</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">MLS1<small>SVI VLAN 10: 192.168.10.1<br>SVI VLAN 20: 192.168.20.1</small></div>
+          <div class="diagram-node">MLS1<small><span class="device-name">SVI VLAN 10: 192.168.10.1</span>SVI VLAN 20: 192.168.20.1</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">PC-B<small>VLAN 20<br>192.168.20.10 /24<br>GW 192.168.20.1</small></div>
+          <div class="diagram-node">PC-B<small><span class="device-name">VLAN 20</span>192.168.20.10 /24<br>GW 192.168.20.1</small></div>
         </div>
 
         <div class="grid-2">

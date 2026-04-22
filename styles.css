@@ -606,13 +606,15 @@ code {
 }
 
 .topic-diagram {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
 }
 
 .wide-diagram {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(160px, 1fr));
   align-items: center;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 
 .diagram-node,
@@ -625,18 +627,59 @@ code {
 }
 
 .diagram-node {
-  padding: 18px 14px;
+  padding: 18px 12px;
   border: 1px solid var(--line);
   background: var(--panel);
   box-shadow: var(--shadow);
   font-weight: 700;
+  min-width: 160px;
 }
 
 .diagram-node small {
   display: block;
-  margin-top: 6px;
+  margin-top: 8px;
   color: var(--muted);
   font-weight: 500;
+  font-size: 0.88em;
+  line-height: 1.4;
+  width: 100%;
+}
+
+.device-name {
+  display: block;
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 0.95em;
+  margin-bottom: 4px;
+}
+
+.highlight-concept {
+  display: inline-block;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--accent-soft);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+}
+
+.router-interfaces {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.88em;
+}
+
+.router-interfaces span {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--panel-muted);
+  border: 1px solid var(--line-strong);
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .diagram-link::before {
