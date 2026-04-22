@@ -1,256 +1,293 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>概念理解 | Packet Tracerで学ぶネットワーク入門</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
-</head>
-<body data-page="concepts">
-  <div class="site-shell">
-    <aside class="sidebar fade-in">
-      <a class="brand" href="index.html">
-        <div class="brand-mark">NET</div>
-        <div class="brand-copy">
-          <strong>Network Study Studio</strong>
-          <span>Packet Tracer Learning Track</span>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>概念理解 | Packet Tracerで学ぶネットワーク入門</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+
+  <body data-page="concepts">
+    <div class="site-shell">
+      <aside class="sidebar fade-in">
+        <a class="brand" href="index.html">
+          <div class="brand-mark">NET</div>
+          <div class="brand-copy">
+            <strong>Network Study Studio</strong>
+            <span>Packet Tracer Learning Track</span>
+          </div>
+        </a>
+        <div class="sidebar-note">
+          <strong>このページの役割</strong>
+          <p>Packet Tracerで機器を触る前に、通信がなぜ成立するのかを頭の中で整理します。</p>
         </div>
-      </a>
-      <div class="sidebar-note">
-        <strong>このページの役割</strong>
-        <p>Packet Tracerで機器を触る前に、通信がなぜ成立するのかを頭の中で整理します。</p>
-      </div>
-      <div>
-        <p class="sidebar-title">Learning Path</p>
-        <nav class="sidebar-nav">
-          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
-          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
-          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
-          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
-          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
-          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
-          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
-          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
-        </nav>
-      </div>
-      <div class="theme-toggle" aria-label="表示テーマ切替">
-        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
-        <label class="theme-switch" for="themeToggle">
-          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
-          <span class="theme-toggle-track">
-            <span class="theme-toggle-thumb"></span>
-          </span>
-        </label>
-        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
-      </div>
-      <p class="sidebar-help">難しく感じたら、このページに戻って「同一ネットワークか、別ネットワークか」を起点に考えるのがコツです。</p>
-    </aside>
-
-    <main class="content">
-      <header class="page-header fade-in delay-1">
-        <div class="eyebrow">Concepts First / Beginner Friendly</div>
-        <h1>ネットワーク通信を、図と順番で理解する。</h1>
-        <p>コマンド暗記より先に、「PCがどこへ送るのか」「SwitchやRouterは何を見て転送するのか」を理解すると、Packet Tracerの演習が一気にやりやすくなります。</p>
-      </header>
-
-      <section class="section fade-in delay-2">
-        <div class="section-head">
-          <div class="small-pill">Unit Topology</div>
-          <h2>この単元でイメージする構成</h2>
-          <p>このページでは、PC-A から PC-B へ通信する2つのパターンを意識します。<span class="highlight-concept">同じネットワーク内ならSwitch中心</span>、<span class="highlight-concept">別ネットワークならRouter経由</span> という流れを、具体的なIPと機器種別つきで頭に置いてから解説へ入ります。</p>
+        <div>
+          <p class="sidebar-title">Learning Path</p>
+          <nav class="sidebar-nav">
+            <a href="index.html" data-page-link="index">
+              <div class="nav-number">01</div>
+              <div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div>
+            </a>
+            <a href="concepts.html" data-page-link="concepts">
+              <div class="nav-number">02</div>
+              <div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div>
+            </a>
+            <a href="packet-tracer.html" data-page-link="packet-tracer">
+              <div class="nav-number">03</div>
+              <div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div>
+            </a>
+            <a href="cisco-cli.html" data-page-link="cisco-cli">
+              <div class="nav-number">04</div>
+              <div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div>
+            </a>
+            <a href="lab.html" data-page-link="lab">
+              <div class="nav-number">05</div>
+              <div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div>
+            </a>
+            <a href="intermediate-labs.html" data-page-link="intermediate-labs">
+              <div class="nav-number">06</div>
+              <div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div>
+            </a>
+            <a href="l3-switch-svi.html" data-page-link="l3-switch-svi">
+              <div class="nav-number">07</div>
+              <div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div>
+            </a>
+            <a href="troubleshooting.html" data-page-link="troubleshooting">
+              <div class="nav-number">08</div>
+              <div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div>
+            </a>
+          </nav>
         </div>
-
-        <div class="wide-diagram">
-          <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.10.10 /24</small></div>
-          <div class="diagram-link"></div>
-          <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>L2 Switch</small></div>
-          <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">ISR Router</span><div class="router-interfaces"><span>G0/0: 192.168.10.1</span><span>G0/1: 192.168.20.1</span></div></small></div>
-          <div class="diagram-link"></div>
-          <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.20.10 /24</small></div>
+        <div class="theme-toggle" aria-label="表示テーマ切替">
+          <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+          <label class="theme-switch" for="themeToggle">
+            <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+            <span class="theme-toggle-track">
+              <span class="theme-toggle-thumb"></span>
+            </span>
+          </label>
+          <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
         </div>
+        <p class="sidebar-help">難しく感じたら、このページに戻って「同一ネットワークか、別ネットワークか」を起点に考えるのがコツです。</p>
+      </aside>
 
-        <div class="grid-2">
-          <article class="card">
-            <h3>同じネットワーク内の通信</h3>
-            <p>たとえば PC-A が <code>192.168.10.20</code> に送るなら、送信先も <code>192.168.10.x</code> なので、Switchが中心になって転送されます。</p>
-          </article>
-          <article class="card">
-            <h3>別ネットワークへの通信</h3>
-            <p>PC-A が <code>192.168.20.10</code> に送りたいときは、まずデフォルトゲートウェイの <code>192.168.10.1</code> へ渡し、Routerが別ネットワークへ転送します。</p>
-          </article>
-        </div>
-      </section>
+      <main class="content">
+        <header class="page-header fade-in delay-1">
+          <div class="eyebrow">Concepts First / Beginner Friendly</div>
+          <h1>ネットワーク通信を、図と順番で理解する。</h1>
+          <p>コマンド暗記より先に、「PCがどこへ送るのか」「SwitchやRouterは何を見て転送するのか」を理解すると、Packet Tracerの演習が一気にやりやすくなります。</p>
+        </header>
 
-      <section class="section fade-in delay-2">
-        <div class="section-head">
-          <div class="small-pill">Step by Step</div>
-          <h2>通信が起きるときの考え方</h2>
-        </div>
+        <section class="section fade-in delay-2">
+          <div class="section-head">
+            <div class="small-pill">Unit Topology</div>
+            <h2>この単元でイメージする構成</h2>
+            <p>このページでは、PC-A から PC-B へ通信する2つのパターンを意識します。<span class="highlight-concept">同じネットワーク内ならSwitch中心</span>、<span
+                class="highlight-concept">別ネットワークならRouter経由</span> という流れを、具体的なIPと機器種別つきで頭に置いてから解説へ入ります。</p>
+          </div>
 
-        <div class="step-list">
-          <article class="step-card">
-            <div class="step-number">STEP 1</div>
-            <div>
-              <h3>送信先は同じネットワークかを考える</h3>
-              <p>PCは、相手IPが自分と同じセグメントにいるかをサブネットマスクで判断します。ここが最初の分岐です。</p>
+          <div class="wide-diagram">
+            <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.10.10 /24</small>
             </div>
-          </article>
-          <article class="step-card">
-            <div class="step-number">STEP 2</div>
-            <div>
-              <h3>同じならSwitch中心、違うならGatewayへ送る</h3>
-              <p>同一ネットワークなら宛先端末へ向かい、別ネットワークならデフォルトゲートウェイとして設定されたRouterへ渡します。</p>
+            <div class="diagram-link"></div>
+            <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>L2 Switch</small></div>
+            <div class="diagram-link"></div>
+            <div class="diagram-node">R1<small><span class="device-name">ISR Router</span>
+                <div class="router-interfaces"><span>G0/0: 192.168.10.1</span><span>G0/1: 192.168.20.1</span></div>
+              </small></div>
+            <div class="diagram-link"></div>
+            <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.20.10 /24</small>
             </div>
-          </article>
-          <article class="step-card">
-            <div class="step-number">STEP 3</div>
-            <div>
-              <h3>SwitchはMAC、RouterはIPを見る</h3>
-              <p>SwitchはL2機器なのでMACアドレス中心、RouterはL3機器なのでIPアドレス中心に判断して転送します。</p>
-            </div>
-          </article>
-          <article class="step-card">
-            <div class="step-number">STEP 4</div>
-            <div>
-              <h3>戻りの通信が成立して初めて成功になる</h3>
-              <p>片道だけでは不十分です。Pingが通るには、戻りの経路や相手側の設定も整っている必要があります。</p>
-            </div>
-          </article>
-        </div>
-      </section>
+          </div>
 
-      <section class="section fade-in delay-3">
-        <div class="section-head">
-          <div class="small-pill">Important Concepts</div>
-          <h2>初心者が最初に押さえたい4つの概念</h2>
-        </div>
-
-        <div class="grid-2">
-          <article class="card">
-            <h3>OSI参照モデル</h3>
-            <p>厳密に暗記するより、障害の切り分けで「どの層の話か」を整理できれば十分役立ちます。</p>
-            <ul class="bullet-list">
-              <li>L1-L2: ケーブル、リンク、MAC、Switch</li>
-              <li>L3: IP、ルーティング、デフォルトゲートウェイ</li>
-              <li>L4以上: ポート番号、セッション、アプリ応答</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>IPアドレスとサブネット</h3>
-            <p><code>192.168.10.10/24</code> の <code>/24</code> は、どこまでが同一ネットワークかを判定するための情報です。</p>
-            <ul class="bullet-list">
-              <li>同じネットワークなら直接届く可能性がある</li>
-              <li>違うネットワークならRouterが必要</li>
-              <li>IP重複は典型的な障害原因</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Switching と Routing</h3>
-            <p>SwitchはLAN内の通信整理、Routerは異なるネットワーク間の仲介です。この違いを理解すると構成図が読みやすくなります。</p>
-          </article>
-          <article class="card">
-            <h3>VLAN と Default Gateway</h3>
-            <p>VLANは1台のSwitch内でネットワークを分ける仕組みです。別VLANへ行くにはL3機器が必要になり、その入口がデフォルトゲートウェイです。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section fade-in delay-3">
-        <div class="section-head">
-          <div class="small-pill">Quick Comparison</div>
-          <h2>SwitchとRouterの役割の違い</h2>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>観点</th>
-                <th>Switch</th>
-                <th>Router</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>主なレイヤー</td>
-                <td>L2</td>
-                <td>L3</td>
-              </tr>
-              <tr>
-                <td>主に見る情報</td>
-                <td>MACアドレス</td>
-                <td>IPアドレス</td>
-              </tr>
-              <tr>
-                <td>役割</td>
-                <td>同一LAN内の転送</td>
-                <td>異なるネットワーク間の転送</td>
-              </tr>
-              <tr>
-                <td>初学者がまず確認すること</td>
-                <td>VLAN、接続ポート、リンク状態</td>
-                <td>IP、ルート、デフォルトゲートウェイ</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="callout success fade-in delay-3">
-        <h3>Packet Tracerで確認すると理解しやすいポイント</h3>
-        <p>このあとPacket Tracerページに進んだら、RealtimeモードとSimulationモードを切り替えて、パケットがどこへ進むのかを目で追ってみてください。概念が操作に結びつきます。</p>
-      </section>
-
-      <section class="section fade-in delay-3">
-        <div class="section-head">
-          <div class="small-pill">Check</div>
-          <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">概念だけを短く確認します。構成図を見返しながら答えるのがおすすめです。</p>
-        </div>
-
-        <form data-quiz-form>
-          <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="別ネットワークに送るときは、まず自分のデフォルトゲートウェイへ渡す必要があります。">
-              <fieldset>
-                <legend>Q1. PC-A が <code>192.168.20.10</code> に通信したいとき、最初に渡す相手として最も適切なのはどれですか？</legend>
-                <label class="option-label"><input type="radio" name="concepts-q1"> PC-B のIPアドレス</label>
-                <label class="option-label"><input type="radio" name="concepts-q1" data-correct="true"> R1 の <code>192.168.10.1</code></label>
-                <label class="option-label"><input type="radio" name="concepts-q1"> SW1 のMACアドレスだけ</label>
-              </fieldset>
+          <div class="grid-2">
+            <article class="card">
+              <h3>同じネットワーク内の通信</h3>
+              <p>たとえば PC-A が <code>192.168.10.20</code> に送るなら、送信先も <code>192.168.10.x</code> なので、Switchが中心になって転送されます。
+              </p>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="Switch は主に L2 でMACを見て転送し、Router は L3 でIPを見て別ネットワークへ転送します。">
-              <fieldset>
-                <legend>Q2. 別ネットワーク間通信で、主に IP アドレスを見て転送判断する機器はどれですか？</legend>
-                <label class="option-label"><input type="radio" name="concepts-q2"> L2 Switch</label>
-                <label class="option-label"><input type="radio" name="concepts-q2" data-correct="true"> Router</label>
-                <label class="option-label"><input type="radio" name="concepts-q2"> Patch Panel</label>
-              </fieldset>
+            <article class="card">
+              <h3>別ネットワークへの通信</h3>
+              <p>PC-A が <code>192.168.20.10</code> に送りたいときは、まずデフォルトゲートウェイの <code>192.168.10.1</code>
+                へ渡し、Routerが別ネットワークへ転送します。</p>
             </article>
           </div>
-          <div class="button-row" style="margin-top: 20px;">
-            <button class="quiz-submit" type="submit">理解度を確認する</button>
-          </div>
-          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
-            <strong>準備OK</strong>
-            <div class="muted">2問すべて回答してから採点してください。</div>
-          </div>
-        </form>
-      </section>
+        </section>
 
-      <section class="lesson-footer fade-in delay-3">
-        <a class="lesson-link" href="index.html">
-          <span>前のページ</span>
-          <strong>はじめにへ戻る</strong>
-          <p>全体の進め方と到達点を見直したいときはこちらです。</p>
-        </a>
-        <a class="lesson-link" href="packet-tracer.html">
-          <span>次のレッスン</span>
-          <strong>Packet Tracerの操作へ進む</strong>
-          <p>次は画面の見方と、最初に触るべき操作だけを絞って学びます。</p>
-        </a>
-      </section>
-    </main>
-  </div>
-</body>
+        <section class="section fade-in delay-2">
+          <div class="section-head">
+            <div class="small-pill">Step by Step</div>
+            <h2>通信が起きるときの考え方</h2>
+          </div>
+
+          <div class="step-list">
+            <article class="step-card">
+              <div class="step-number">STEP 1</div>
+              <div>
+                <h3>送信先は同じネットワークかを考える</h3>
+                <p>PCは、相手IPが自分と同じセグメントにいるかをサブネットマスクで判断します。ここが最初の分岐です。</p>
+              </div>
+            </article>
+            <article class="step-card">
+              <div class="step-number">STEP 2</div>
+              <div>
+                <h3>同じならSwitch中心、違うならGatewayへ送る</h3>
+                <p>同一ネットワークなら宛先端末へ向かい、別ネットワークならデフォルトゲートウェイとして設定されたRouterへ渡します。</p>
+              </div>
+            </article>
+            <article class="step-card">
+              <div class="step-number">STEP 3</div>
+              <div>
+                <h3>SwitchはMAC、RouterはIPを見る</h3>
+                <p>SwitchはL2機器なのでMACアドレス中心、RouterはL3機器なのでIPアドレス中心に判断して転送します。</p>
+              </div>
+            </article>
+            <article class="step-card">
+              <div class="step-number">STEP 4</div>
+              <div>
+                <h3>戻りの通信が成立して初めて成功になる</h3>
+                <p>片道だけでは不十分です。Pingが通るには、戻りの経路や相手側の設定も整っている必要があります。</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section fade-in delay-3">
+          <div class="section-head">
+            <div class="small-pill">Important Concepts</div>
+            <h2>初心者が最初に押さえたい4つの概念</h2>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <h3>OSI参照モデル</h3>
+              <p>厳密に暗記するより、障害の切り分けで「どの層の話か」を整理できれば十分役立ちます。</p>
+              <ul class="bullet-list">
+                <li>L1-L2: ケーブル、リンク、MAC、Switch</li>
+                <li>L3: IP、ルーティング、デフォルトゲートウェイ</li>
+                <li>L4以上: ポート番号、セッション、アプリ応答</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>IPアドレスとサブネット</h3>
+              <p><code>192.168.10.10/24</code> の <code>/24</code> は、どこまでが同一ネットワークかを判定するための情報です。</p>
+              <ul class="bullet-list">
+                <li>同じネットワークなら直接届く可能性がある</li>
+                <li>違うネットワークならRouterが必要</li>
+                <li>IP重複は典型的な障害原因</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Switching と Routing</h3>
+              <p>SwitchはLAN内の通信整理、Routerは異なるネットワーク間の仲介です。この違いを理解すると構成図が読みやすくなります。</p>
+            </article>
+            <article class="card">
+              <h3>VLAN と Default Gateway</h3>
+              <p>VLANは1台のSwitch内でネットワークを分ける仕組みです。別VLANへ行くにはL3機器が必要になり、その入口がデフォルトゲートウェイです。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section fade-in delay-3">
+          <div class="section-head">
+            <div class="small-pill">Quick Comparison</div>
+            <h2>SwitchとRouterの役割の違い</h2>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>観点</th>
+                  <th>Switch</th>
+                  <th>Router</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>主なレイヤー</td>
+                  <td>L2</td>
+                  <td>L3</td>
+                </tr>
+                <tr>
+                  <td>主に見る情報</td>
+                  <td>MACアドレス</td>
+                  <td>IPアドレス</td>
+                </tr>
+                <tr>
+                  <td>役割</td>
+                  <td>同一LAN内の転送</td>
+                  <td>異なるネットワーク間の転送</td>
+                </tr>
+                <tr>
+                  <td>初学者がまず確認すること</td>
+                  <td>VLAN、接続ポート、リンク状態</td>
+                  <td>IP、ルート、デフォルトゲートウェイ</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="callout success fade-in delay-3">
+          <h3>Packet Tracerで確認すると理解しやすいポイント</h3>
+          <p>このあとPacket Tracerページに進んだら、RealtimeモードとSimulationモードを切り替えて、パケットがどこへ進むのかを目で追ってみてください。概念が操作に結びつきます。</p>
+        </section>
+
+        <section class="section fade-in delay-3">
+          <div class="section-head">
+            <div class="small-pill">Check</div>
+            <h2>この単元の理解度チェック</h2>
+            <p class="quiz-help">概念だけを短く確認します。構成図を見返しながら答えるのがおすすめです。</p>
+          </div>
+
+          <form data-quiz-form>
+            <div class="quiz-grid">
+              <article class="quiz-card quiz-question" data-question="q1"
+                data-explanation="別ネットワークに送るときは、まず自分のデフォルトゲートウェイへ渡す必要があります。">
+                <fieldset>
+                  <legend>Q1. PC-A が <code>192.168.20.10</code> に通信したいとき、最初に渡す相手として最も適切なのはどれですか？</legend>
+                  <label class="option-label"><input type="radio" name="concepts-q1"> PC-B のIPアドレス</label>
+                  <label class="option-label"><input type="radio" name="concepts-q1" data-correct="true"> R1 の
+                    <code>192.168.10.1</code></label>
+                  <label class="option-label"><input type="radio" name="concepts-q1"> SW1 のMACアドレスだけ</label>
+                </fieldset>
+              </article>
+              <article class="quiz-card quiz-question" data-question="q2"
+                data-explanation="Switch は主に L2 でMACを見て転送し、Router は L3 でIPを見て別ネットワークへ転送します。">
+                <fieldset>
+                  <legend>Q2. 別ネットワーク間通信で、主に IP アドレスを見て転送判断する機器はどれですか？</legend>
+                  <label class="option-label"><input type="radio" name="concepts-q2"> L2 Switch</label>
+                  <label class="option-label"><input type="radio" name="concepts-q2" data-correct="true"> Router</label>
+                  <label class="option-label"><input type="radio" name="concepts-q2"> Patch Panel</label>
+                </fieldset>
+              </article>
+            </div>
+            <div class="button-row" style="margin-top: 20px;">
+              <button class="quiz-submit" type="submit">理解度を確認する</button>
+            </div>
+            <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+              <strong>準備OK</strong>
+              <div class="muted">2問すべて回答してから採点してください。</div>
+            </div>
+          </form>
+        </section>
+
+        <section class="lesson-footer fade-in delay-3">
+          <a class="lesson-link" href="index.html">
+            <span>前のページ</span>
+            <strong>はじめにへ戻る</strong>
+            <p>全体の進め方と到達点を見直したいときはこちらです。</p>
+          </a>
+          <a class="lesson-link" href="packet-tracer.html">
+            <span>次のレッスン</span>
+            <strong>Packet Tracerの操作へ進む</strong>
+            <p>次は画面の見方と、最初に触るべき操作だけを絞って学びます。</p>
+          </a>
+        </section>
+      </main>
+    </div>
+  </body>
+
 </html>
