@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="index">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+
+      <div class="sidebar-note">
+        <strong>学習前提</strong>
+        <p>この教材は Cisco Packet Tracer を使って、概念理解から中級ラボ、L3 Switch / SVI、トラブルシュートまで段階的に学び、各単元の最後で理解度チェックまで行う構成です。</p>
+      </div>
+
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index">
+            <div class="nav-number">01</div>
+            <div class="nav-copy">
+              <strong>はじめに</strong>
+              <small>進め方と到達点</small>
+            </div>
+          </a>
+          <a href="concepts.html" data-page-link="concepts">
+            <div class="nav-number">02</div>
+            <div class="nav-copy">
+              <strong>概念理解</strong>
+              <small>通信の仕組みを掴む</small>
+            </div>
+          </a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer">
+            <div class="nav-number">03</div>
+            <div class="nav-copy">
+              <strong>Packet Tracer</strong>
+              <small>画面と操作に慣れる</small>
+            </div>
+          </a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli">
+            <div class="nav-number">04</div>
+            <div class="nav-copy">
+              <strong>Cisco CLI</strong>
+              <small>基本コマンドを学ぶ</small>
+            </div>
+          </a>
+          <a href="lab.html" data-page-link="lab">
+            <div class="nav-number">05</div>
+            <div class="nav-copy">
+              <strong>基礎ラボ</strong>
+              <small>最小構成を組む</small>
+            </div>
+          </a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs">
+            <div class="nav-number">06</div>
+            <div class="nav-copy">
+              <strong>中級ラボ</strong>
+              <small>VLANと静的ルート</small>
+            </div>
+          </a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi">
+            <div class="nav-number">07</div>
+            <div class="nav-copy">
+              <strong>L3 Switch / SVI</strong>
+              <small>SVIでVLAN間通信</small>
+            </div>
+          </a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting">
+            <div class="nav-number">08</div>
+            <div class="nav-copy">
+              <strong>トラブルシュート</strong>
+              <small>切り分け力を伸ばす</small>
+            </div>
+          </a>
+        </nav>
+      </div>
+
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">おすすめは、サイドバーを上から順に進めることです。各単元の最後に理解度チェックがあるので、その場で確認しながら進められます。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">Packet Tracer / Beginner Friendly / Cisco IOS</div>
+        <h1>初心者でも迷わない、段階式ネットワーク学習サイト。</h1>
+        <p>1ページに詰め込まず、概念理解、Packet Tracer操作、Ciscoコマンド、基礎ラボ、中級ラボ、L3 Switch / SVI、トラブルシュートを分けて整理しました。最初の一歩から、構成変更と障害切り分けの入口まで step by step で進められ、各ページの最後で理解度も確認できます。</p>
+      </header>
+
+      <section class="hero-grid fade-in delay-2">
+        <article class="page-header" style="padding: 28px;">
+          <div class="section-head">
+            <h2 style="color: white;">このサイトの使い方</h2>
+            <p style="color: rgba(255,255,255,0.84);">知識だけ先に詰め込むのではなく、理解してからPacket Tracerで手を動かし、そのあとCLIを触る流れにしています。</p>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <a class="button-link" href="concepts.html">学習を始める</a>
+            <a class="button-link secondary" href="l3-switch-svi.html">L3 Switch / SVI を見る</a>
+          </div>
+        </article>
+        <article class="hero-panel fade-in delay-3">
+          <div class="metric-grid">
+            <div class="hero-stat">
+              <strong>8</strong>
+              <span>学習ページ</span>
+            </div>
+            <div class="hero-stat">
+              <strong>4</strong>
+              <span>演習フェーズ</span>
+            </div>
+            <div class="hero-stat">
+              <strong>25+</strong>
+              <span>CLIコマンド</span>
+            </div>
+            <div class="hero-stat">
+              <strong>7</strong>
+              <span>単元別チェック</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Step by Step Roadmap</div>
+          <h2>上から順に進めれば、そのまま学習計画になる構成です</h2>
+          <p>初学者が途中で迷いやすいポイントを先回りしてつぶすために、「概念」と「操作」を分離しつつ、最後に演習でつなげる形にしています。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>1. 概念を先に掴む</h3>
+            <p>同一ネットワーク通信、異なるネットワーク通信、デフォルトゲートウェイ、VLAN、ルーティングの役割を図解で整理します。</p>
+          </article>
+          <article class="card">
+            <h3>2. Packet Tracerに慣れる</h3>
+            <p>機器の置き方、接続、RealtimeとSimulation、PCのIP設定、CLIの開き方を丁寧に確認します。</p>
+          </article>
+          <article class="card">
+            <h3>3. 基礎ラボで成功体験を作る</h3>
+            <p>RouterとSwitchの基本コマンドを学んだあと、PC-SW-Routerの最小構成を作って疎通確認します。</p>
+          </article>
+          <article class="card">
+            <h3>4. 中級ラボとL3 Switchを学ぶ</h3>
+            <p>VLAN間通信、静的ルーティング、SVI による VLAN 間ルーティングを順番に学び、構成の選び方を広げます。</p>
+          </article>
+          <article class="card">
+            <h3>5. 単元末尾で理解度確認</h3>
+            <p>各ページの最後にその単元専用の理解度チェックを置いているので、読んだ内容をその場で確認しながら進められます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Learning Topics</div>
+          <h2>トピックごとに分けた学習ページ</h2>
+          <p>サイドバーからいつでもジャンプできます。必要なときに概念ページへ戻れるように分割しています。</p>
+        </div>
+
+        <div class="lesson-grid">
+          <a class="lesson-link" href="concepts.html">
+            <span>02. 概念理解</span>
+            <strong>ネットワーク通信はどう成立するのか</strong>
+            <p>PCから送ったデータがSwitchやRouterをどう通るのかを、初学者向けの言葉で説明します。</p>
+          </a>
+          <a class="lesson-link" href="packet-tracer.html">
+            <span>03. Packet Tracer</span>
+            <strong>画面の見方と最初の操作</strong>
+            <p>Packet Tracer上で何をどこから触ればいいか、最初に覚えるべき操作だけに絞って案内します。</p>
+          </a>
+          <a class="lesson-link" href="cisco-cli.html">
+            <span>04. Cisco CLI</span>
+            <strong>show系と設定系の基本コマンド</strong>
+            <p>現場で最初に覚えるCLIを、モード遷移から保存まで順番に学べます。</p>
+          </a>
+          <a class="lesson-link" href="lab.html">
+            <span>05. 基礎ラボ</span>
+            <strong>小さなラボを組んで疎通まで確認</strong>
+            <p>PC、Switch、Routerの最小構成をPacket Tracerで作り、Ping成功まで導きます。</p>
+          </a>
+          <a class="lesson-link" href="intermediate-labs.html">
+            <span>06. 中級ラボ</span>
+            <strong>VLAN間通信と静的ルーティング</strong>
+            <p>Router-on-a-Stick と静的ルートを使って、基礎の次の一歩を練習します。</p>
+          </a>
+          <a class="lesson-link" href="l3-switch-svi.html">
+            <span>07. L3 Switch / SVI</span>
+            <strong>SVIでVLAN間通信を学ぶ</strong>
+            <p>Multilayer Switch だけで VLAN 間ルーティングを行い、Router-on-a-Stick との違いも整理します。</p>
+          </a>
+          <a class="lesson-link" href="troubleshooting.html">
+            <span>08. トラブルシュート</span>
+            <strong>通信できない時の確認順を固める</strong>
+            <p>Packet Tracerで起きやすい失敗例をもとに、切り分けの順番を整理します。</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Goal</div>
+          <h2>この教材で目指す状態</h2>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>できるようになること</h3>
+            <ul class="check-list">
+              <li>同一セグメント通信と異なるセグメント通信の違いを説明できる</li>
+              <li>Packet Tracerで基本トポロジを自分で組める</li>
+              <li><code>Router# show ip interface brief</code> や <code>Router# show ip route</code> の役割がわかる</li>
+              <li>RouterとSwitchの最低限の設定を順番通りに入れられる</li>
+              <li>VLAN間通信と静的ルーティングの入口を自力で再現できる</li>
+              <li>L3 Switch の SVI で VLAN 間ルーティングの最小構成を作れる</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>学習のコツ</h3>
+            <ul class="bullet-list">
+              <li>まず概念ページを読む</li>
+              <li>次にPacket Tracerで見た目と操作に慣れる</li>
+              <li>CLIページでコマンドの意味を掴む</li>
+              <li>基礎ラボで手順を固める</li>
+              <li>中級ラボと L3 Switch / SVI で構成パターンを広げる</li>
+              <li>トラブルシュートで確認順を固める</li>
+              <li>各単元の最後で理解度チェックを行う</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="concepts.html">
+          <span>次のレッスン</span>
+          <strong>概念理解へ進む</strong>
+          <p>まずは通信の仕組みをつかんで、Packet Tracerで何を見ればいいかを整理します。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
