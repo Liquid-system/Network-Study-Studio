@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>L3 Switch と SVI を、Packet Tracer の最小構成から学びます。Router-on-a-Stick と何が違うのかも整理します。</p>
+        <p>L3 Switch と SVI を、Packet Tracer の最小構成で学びます。Router-on-a-Stick と何が違うのかも整理します。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,21 +44,21 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">Packet Tracer では、L3 Switch として 3560 系を使うと SVI 学習が進めやすいです。</p>
+      <p class="sidebar-help">Packet Tracer で L3 Switch を使うときは、3560 系を選ぶと SVI の学習を進めやすいです。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">L3 Switch / SVI / Inter-VLAN Routing</div>
         <h1>SVI と L3 Switch を、最小構成から理解する。</h1>
-        <p>この単元では、Router を使わずに Multilayer Switch だけで VLAN 間通信を成立させます。SVI の意味、`ip routing` の役割、L2 Switch との違いを step by step で整理します。</p>
+        <p>この単元では、Router を使わずに Multilayer Switch(L3 Switch)だけで VLAN 間通信を成立させます。SVI とは何か、<code>ip routing</code> は何のために必要か、L2 Switch と何が違うのかを、順を追って整理します。</p>
       </header>
 
       <section class="section fade-in delay-2">
         <div class="section-head">
           <div class="small-pill">Unit Topology</div>
           <h2>この単元で構築する構成</h2>
-          <p>この単元では Multilayer Switch 1台と PC 2台だけで VLAN 間通信を成立させます。SVI が各 VLAN のゲートウェイになり、<code>MLS1(config)# ip routing</code> で L3 機能を有効にするのが要点です。</p>
+          <p>Multilayer Switch 1台と PC 2台だけで、VLAN 間通信を成立させます。SVI が各 VLAN のゲートウェイになること、そして <code>MLS1(config)# ip routing</code> で L3 機能を有効にすることが要点です。</p>
         </div>
         <div class="wide-diagram">
           <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>VLAN 10<br>192.168.10.10 /24</small></div>
@@ -73,8 +73,8 @@
           <article class="card">
             <h3>L2 Switch との違い</h3>
             <ul class="check-list">
-              <li>L2 Switch は VLAN を分けられても、通常は VLAN 間をルーティングしません</li>
-              <li>L3 Switch は SVI に IP を持たせ、VLAN 間を内部でルーティングできます</li>
+              <li>L2 Switch は VLAN を分けられますが、VLAN 間のルーティングはできません</li>
+              <li>L3 Switch は SVI に IP を持たせ、VLAN 間を自分の中でルーティングできます</li>
               <li>Router-on-a-Stick より、構成がシンプルになる場面があります</li>
             </ul>
           </article>
@@ -135,7 +135,7 @@
             <div class="step-number">STEP 1</div>
             <div>
               <h3>PC 2台と Multilayer Switch 1台を置く</h3>
-              <p>Packet Tracer では 3560 系スイッチを使うと、SVI と <code>ip routing</code> を学びやすいです。PC-A を Fa0/1、PC-B を Fa0/2 に接続します。</p>
+              <p>Packet Tracer では 3560 系の Switch を使うと、SVI と <code>ip routing</code> を学びやすいです。PC-A を Fa0/1 に、PC-B を Fa0/2 に接続します。</p>
             </div>
           </article>
           <article class="step-card">
@@ -157,7 +157,7 @@ Default Gateway: 192.168.20.1</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>VLAN と access ポートを作る</h3>
-              <p>まずは PC-A を VLAN 10、PC-B を VLAN 20 に所属させます。</p>
+              <p>まず VLAN 10 と VLAN 20 を作成し、PC-A を VLAN 10 に、PC-B を VLAN 20 に所属させます。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# hostname MLS1
@@ -183,7 +183,7 @@ MLS1(config-if)# exit</div>
             <div class="step-number">STEP 4</div>
             <div>
               <h3>SVI に IP アドレスを設定する</h3>
-              <p>VLAN 10 と VLAN 20 の論理インターフェースに IP を付けることで、各 VLAN の Gateway を作ります。</p>
+              <p>VLAN 10 と VLAN 20 の論理インターフェース(SVI)に IP を付けて、各 VLAN の Gateway を作ります。</p>
               <div class="code-block">MLS1(config)# interface vlan 10
 MLS1(config-if)# ip address 192.168.10.1 255.255.255.0
 MLS1(config-if)# no shutdown
@@ -198,7 +198,7 @@ MLS1(config-if)# exit</div>
             <div class="step-number">STEP 5</div>
             <div>
               <h3>L3 Switch としてルーティングを有効にする</h3>
-              <p>SVI を作っただけでは、VLAN 間をルーティングしない機種や設定があります。<code>MLS1(config)# ip routing</code> で L3 機能を有効にします。</p>
+              <p>SVI を作っただけでは、VLAN 間のルーティングが動かない機種や設定があります。<code>MLS1(config)# ip routing</code> で L3 機能を有効にします。</p>
               <div class="code-block">MLS1(config)# ip routing
 MLS1(config)# end
 MLS1# copy running-config startup-config</div>
@@ -208,7 +208,7 @@ MLS1# copy running-config startup-config</div>
             <div class="step-number">STEP 6</div>
             <div>
               <h3>確認する</h3>
-              <p>PC-A から PC-B へ Ping を試し、MLS1 側でも SVI とルーティング状態を確認します。</p>
+              <p>PC-A から PC-B へ Ping を打ち、MLS1 側でも SVI とルーティングの状態を確認します。</p>
               <div class="code-block">MLS1# show ip interface brief
 MLS1# show vlan brief
 MLS1# show ip route</div>
@@ -226,11 +226,11 @@ MLS1# show ip route</div>
         <div class="grid-2">
           <article class="card">
             <h3>Router-on-a-Stick</h3>
-            <p>Router のサブインターフェースを使い、Switch との trunk リンクを通して VLAN 間通信を実現します。外部 Router を使うので構成要素が増えます。</p>
+            <p>Router のサブインターフェースを使い、Switch との trunk リンク経由で VLAN 間通信を実現します。外部に Router を置くぶん、構成要素が増えます。</p>
           </article>
           <article class="card">
             <h3>L3 Switch / SVI</h3>
-            <p>Switch 自身が各 VLAN の Gateway を持ち、そのまま内部でルーティングします。最小構成では Router が不要なので、SVI の考え方に集中しやすいです。</p>
+            <p>Switch 自身が各 VLAN の Gateway を持ち、内部でそのままルーティングします。最小構成なら Router が不要なので、SVI の考え方に集中して学べます。</p>
           </article>
         </div>
       </section>
@@ -244,15 +244,15 @@ MLS1# show ip route</div>
         <div class="grid-3">
           <article class="card">
             <h3>VLAN番号</h3>
-            <p>PC-A のポートが VLAN 10、PC-B のポートが VLAN 20 に本当に入っているかを <code>MLS1# show vlan brief</code> で見ます。</p>
+            <p>PC-A のポートが VLAN 10 に、PC-B のポートが VLAN 20 に本当に入っているかを <code>MLS1# show vlan brief</code> で確認します。</p>
           </article>
           <article class="card">
             <h3>SVIの状態</h3>
-            <p><code>MLS1# show ip interface brief</code> で VLAN 10 / VLAN 20 の SVI が up になっているか確認します。</p>
+            <p><code>MLS1# show ip interface brief</code> で、VLAN 10 と VLAN 20 の SVI が up になっているかを確認します。</p>
           </article>
           <article class="card">
             <h3>ip routing</h3>
-            <p><code>MLS1# show running-config</code> で <code>ip routing</code> が入っているか確認します。SVI があっても、これが抜けると VLAN 間通信ができないことがあります。</p>
+            <p><code>MLS1# show running-config</code> で <code>ip routing</code> が入っているかを確認します。SVI があっても、この1行が抜けていると VLAN 間通信ができないことがあります。</p>
           </article>
         </div>
       </section>
@@ -302,7 +302,7 @@ MLS1# show ip route</div>
         <a class="lesson-link" href="troubleshooting.html">
           <span>次のレッスン</span>
           <strong>トラブルシュートへ進む</strong>
-          <p>次は、ここまでの構成が崩れたときにどこから確認するかを整理します。</p>
+          <p>次は、ここまでの構成が崩れたときに、どこから確認すればよいかを整理します。</p>
         </a>
       </section>
     </main>

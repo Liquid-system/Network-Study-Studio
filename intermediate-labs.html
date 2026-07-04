@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>基礎ラボの次の段階として、VLAN間通信と静的ルーティングをPacket Tracerで実装できるようにします。</p>
+        <p>基礎ラボの次の段階として、VLAN 間通信と静的ルーティングを Packet Tracer で組めるようにします。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,21 +44,21 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">ここからは、設定を入れる理由も一緒に考えながら進めると理解が深くなります。</p>
+      <p class="sidebar-help">ここからは「なぜこの設定を入れるのか」も一緒に考えながら進めると、理解がぐっと深まります。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Intermediate Labs / Packet Tracer</div>
         <h1>基礎の次に取り組みたい、中級Packet Tracerラボ。</h1>
-        <p>このページでは、現場でも頻出の「VLAN間通信」と「静的ルーティング」を練習します。どちらも、単にコマンドを並べるのではなく、通信の流れを頭の中で追えるようになることが目的です。</p>
+        <p>このページでは、現場でも頻出の「VLAN 間通信」と「静的ルーティング」を練習します。どちらも、コマンドをなぞるだけで終わらせず、通信の流れを頭の中で追えるようになることが目的です。</p>
       </header>
 
       <section class="section fade-in delay-2">
         <div class="section-head">
           <div class="small-pill">Unit Topologies</div>
           <h2>この単元で構築する2つの構成</h2>
-          <p>このページでは 2 つの構成を扱います。1つ目は Router-on-a-Stick、2つ目は 2台のRouterによる静的ルーティングです。まず全体像を見てから各手順に入ると理解しやすくなります。</p>
+          <p>このページでは2つの構成を扱います。1つ目は Router-on-a-Stick、2つ目は Router 2台による静的ルーティングです。先に全体像を眺めてから各手順に入ると、理解しやすくなります。</p>
         </div>
 
         <article class="card">
@@ -96,15 +96,15 @@
         <div class="grid-3">
           <article class="card">
             <h3>基礎ラボが再現できる</h3>
-            <p>PC、Switch、Routerの最小構成を自力で置き、IP設定とPing確認までできる状態が理想です。</p>
+            <p>PC・Switch・Router の最小構成を自力で配置し、IP 設定から Ping の確認までできる状態が理想です。</p>
           </article>
           <article class="card">
             <h3>CLIの流れが頭にある</h3>
-            <p><code>Router&gt; enable</code>、<code>Router# configure terminal</code>、<code>Router(config)# interface</code>、<code>Router# show</code>、保存の順番を把握していると進めやすいです。</p>
+            <p><code>Router&gt; enable</code>、<code>Router# configure terminal</code>、<code>Router(config)# interface</code>、<code>Router# show</code>、そして保存という流れを覚えていると、スムーズに進められます。</p>
           </article>
           <article class="card">
             <h3>分からなくなったら戻る</h3>
-            <p>VLANやGatewayの意味が曖昧になったら、概念理解ページや基礎ラボページに戻って整理すると迷いにくくなります。</p>
+            <p>VLAN や Gateway の意味があいまいになったら、概念理解のページや基礎ラボに戻って整理し直すと、迷わずに済みます。</p>
           </article>
         </div>
       </section>
@@ -113,16 +113,16 @@
         <div class="section-head">
           <div class="small-pill">Lab 1</div>
           <h2>VLAN間通信: Router-on-a-Stick を組む</h2>
-          <p>1台のSwitchの中で VLAN 10 と VLAN 20 を分け、Routerのサブインターフェースで相互通信させる構成です。</p>
+          <p>1台の Switch の中で VLAN 10 と VLAN 20 を分け、Router のサブインターフェースを経由して相互に通信させる構成です。</p>
         </div>
 
         <div class="grid-2">
           <article class="card">
             <h3>このラボで理解したいこと</h3>
             <ul class="check-list">
-              <li>VLANを分けると、同じSwitch上でもそのままでは通信できない</li>
-              <li>複数VLANをRouterへ渡すには trunk が必要</li>
-              <li>Router側では VLAN ごとにサブインターフェースを作る</li>
+              <li>VLAN を分けると、同じ Switch 上でもそのままでは通信できない</li>
+              <li>複数の VLAN を Router へ渡すには trunk が必要</li>
+              <li>Router 側では VLAN ごとにサブインターフェースを作る</li>
             </ul>
           </article>
           <article class="card">
@@ -141,14 +141,14 @@
             <div class="step-number">STEP 1</div>
             <div>
               <h3>PC-A、PC-B、SW1、R1 を配置する</h3>
-              <p>PC-A は VLAN 10 用、PC-B は VLAN 20 用として使います。両方とも同じSwitchに接続し、SwitchからRouterへ1本のリンクを張ります。</p>
+              <p>PC-A を VLAN 10 用、PC-B を VLAN 20 用として使います。2台とも同じ Switch に接続し、Switch から Router へはリンクを1本だけ張ります。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 2</div>
             <div>
               <h3>Switchに VLAN と access ポートを作る</h3>
-              <p>PC-A のポートを VLAN 10、PC-B のポートを VLAN 20 に割り当てます。これでL2レベルでは別ネットワークとして分かれます。</p>
+              <p>PC-A のポートを VLAN 10 に、PC-B のポートを VLAN 20 に割り当てます。これで L2 のレベルでは、2つの別ネットワークに分かれた状態になります。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# vlan 10
@@ -172,7 +172,7 @@ Switch(config-if)# description PC-B</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>Router接続ポートを trunk にする</h3>
-              <p>複数のVLAN情報を1本のリンクで運ぶために trunk を使います。ここが access のままだと片方のVLANしか運べません。</p>
+              <p>複数の VLAN の通信を1本のリンクで運ぶために trunk を使います。ここが access のままだと、片方の VLAN しか Router に届きません。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# interface fastEthernet0/24
@@ -186,7 +186,7 @@ Switch# copy running-config startup-config</div>
             <div class="step-number">STEP 4</div>
             <div>
               <h3>Routerにサブインターフェースを作る</h3>
-              <p>1本の物理ポートの上に、VLAN 10 用と VLAN 20 用の論理インターフェースを作ります。<code>encapsulation dot1Q</code> が VLAN タグを扱う要点です。</p>
+              <p>1本の物理ポートの上に、VLAN 10 用と VLAN 20 用の論理インターフェースを作ります。VLAN タグを扱うための <code>encapsulation dot1Q</code> が、この構成の要点です。</p>
               <div class="code-block">Router> enable
 Router# configure terminal
 Router(config)# interface gigabitEthernet0/0
@@ -207,14 +207,14 @@ Router# copy running-config startup-config</div>
             <div class="step-number">STEP 5</div>
             <div>
               <h3>PCのIPを設定して疎通確認する</h3>
-              <p>PC-A から PC-B に Ping が通れば成功です。通らない場合は、Gateway、trunk、サブインターフェース番号を優先して確認します。</p>
+              <p>PC-A から PC-B へ Ping が通れば成功です。通らない場合は、Gateway の値、trunk 設定、サブインターフェースの番号の順に確認してください。</p>
             </div>
           </article>
         </div>
 
         <section class="callout success">
           <h3>なぜこれで通信できるのか</h3>
-          <p>VLANで分かれた端末同士は、そのままではL2の境界を越えられません。Routerが VLAN ごとのGatewayとなり、片方のVLANで受けたIPパケットを、もう片方のVLANへL3転送することで初めて相互通信できます。</p>
+          <p>VLAN で分かれた端末同士は、そのままでは L2 の境界を越えられません。Router が VLAN ごとの Gateway となり、片方の VLAN から受け取ったパケットをもう片方の VLAN へ L3 で転送することで、初めて相互に通信できるようになります。</p>
         </section>
       </section>
 
@@ -222,7 +222,7 @@ Router# copy running-config startup-config</div>
         <div class="section-head">
           <div class="small-pill">Lab 2</div>
           <h2>静的ルーティング: 2台のRouterで別LAN同士をつなぐ</h2>
-          <p>拠点Aと拠点Bを2台のRouterで接続し、互いのLANへ到達するための経路を静的ルートで教える構成です。</p>
+          <p>拠点Aと拠点Bを Router 2台で接続し、お互いの LAN へ到達するための経路を静的ルートで教える構成です。</p>
         </div>
 
         <div class="grid-2">
@@ -240,9 +240,9 @@ Router# copy running-config startup-config</div>
           <article class="card">
             <h3>このラボで理解したいこと</h3>
             <ul class="check-list">
-              <li>Routerは、知らないネットワークへは勝手には送れない</li>
-              <li>静的ルートは「どこへ送れば届くか」を明示する設定</li>
-              <li>片方向だけでなく、戻り経路も必要</li>
+              <li>Router は、知らないネットワークへは転送できない</li>
+              <li>静的ルートは「どこへ送れば届くか」を明示的に教える設定</li>
+              <li>行きの経路だけでなく、戻りの経路も必要</li>
             </ul>
           </article>
         </div>
@@ -252,14 +252,14 @@ Router# copy running-config startup-config</div>
             <div class="step-number">STEP 1</div>
             <div>
               <h3>PC-A - R1 - R2 - PC-B の構成を置く</h3>
-              <p>Switchを挟んでも良いですが、ルーティングの学習が主目的なので、ここでは Router 間接続の意味を意識することを優先します。</p>
+              <p>実際の現場では Switch を挟むことが多いですが、今回はルーティングの学習が目的なので、Router 同士を直接つないだシンプルな構成にします。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 2</div>
             <div>
               <h3>R1 と R2 のインターフェースにIPを設定する</h3>
-              <p>各RouterにLAN側とRouter間リンク側のIPを入れ、すべて <code>R1(config-if)# no shutdown</code> / <code>R2(config-if)# no shutdown</code> で有効化します。</p>
+              <p>各 Router の LAN 側と Router 間リンク側に IP アドレスを設定し、すべてのインターフェースを <code>no shutdown</code> で有効化します。</p>
               <div class="code-block">R1> enable
 R1# configure terminal
 R1(config)# interface gigabitEthernet0/0
@@ -285,14 +285,14 @@ R2(config-if)# no shutdown</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>PC-A と PC-B のIPを設定する</h3>
-              <p>それぞれ自分のLAN側RouterをGatewayに設定します。ここが違うと、PCは別セグメントへ出ていけません。</p>
+              <p>それぞれ、自分の LAN 側にいる Router を Gateway に設定します。ここを間違えると、PC は別のネットワークへ出ていけません。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 4</div>
             <div>
               <h3>静的ルートを入れる</h3>
-              <p>R1 には 192.168.20.0/24 への行き先を、R2 には 192.168.10.0/24 への行き先を教えます。</p>
+              <p>R1 には「192.168.20.0/24 へは 10.0.0.2 に送る」、R2 には「192.168.10.0/24 へは 10.0.0.1 に送る」と、お互いの LAN への行き先を教えます。</p>
               <div class="code-block">R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2
 R1(config)# end
 R1# copy running-config startup-config
@@ -306,14 +306,14 @@ R2# copy running-config startup-config</div>
             <div class="step-number">STEP 5</div>
             <div>
               <h3>確認する</h3>
-              <p><code>R1# show ip route</code> で静的ルートが入っているか確認し、PC-A から PC-B へPingします。可能なら <code>tracert</code> でRouterを経由していることも観察します。</p>
+              <p><code>R1# show ip route</code> で静的ルートが登録されているかを確認し、PC-A から PC-B へ Ping を打ちます。余裕があれば <code>tracert</code> で、パケットが Router を経由している様子も観察してみてください。</p>
             </div>
           </article>
         </div>
 
         <section class="callout warning">
           <h3>失敗しやすいポイント</h3>
-          <p>片方のRouterだけに静的ルートを入れて満足してしまうケースが多いです。片道で届いても戻り経路がなければ通信は成立しません。また、/30 のマスク入力ミスも非常に起きやすいです。</p>
+          <p>片方の Router にだけ静的ルートを入れて満足してしまうケースがよくあります。行きのパケットが届いても、戻りの経路がなければ通信は成立しません。また、/30 のサブネットマスク(255.255.255.252)の入力ミスも非常に起きやすいので注意してください。</p>
         </section>
       </section>
 
@@ -325,15 +325,15 @@ R2# copy running-config startup-config</div>
         <div class="grid-3">
           <article class="card">
             <h3>VLAN 30 を追加する</h3>
-            <p>3つ目の VLAN を足して、Router-on-a-Stick の仕組みが本当に理解できているか確認します。</p>
+            <p>3つ目の VLAN を追加してみると、Router-on-a-Stick の仕組みを本当に理解できているかを確かめられます。</p>
           </article>
           <article class="card">
             <h3>静的ルートを一度消してみる</h3>
-            <p>通信が止まることを確認してから戻すと、経路設定の意味がより鮮明になります。</p>
+            <p>ルートを消すと通信が止まることを確認してから設定し直すと、経路設定の意味がより鮮明になります。</p>
           </article>
           <article class="card">
             <h3>Simulationで追跡する</h3>
-            <p>Packet TracerのSimulationモードで、VLAN間やRouter間をパケットがどう通るかを可視化してみてください。</p>
+            <p>Simulation モードで、VLAN 間や Router 間をパケットがどう通るのかを可視化してみてください。</p>
           </article>
         </div>
       </section>
@@ -342,12 +342,12 @@ R2# copy running-config startup-config</div>
         <div class="section-head">
           <div class="small-pill">Check</div>
           <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">Router-on-a-Stick と静的ルーティングの違いを短く確認します。</p>
+          <p class="quiz-help">Router-on-a-Stick と静的ルーティングの要点を短く確認します。</p>
         </div>
 
         <form data-quiz-form>
           <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="複数VLANを1本のリンクでRouterへ運ぶときは、Switch側の接続ポートを trunk にする必要があります。">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="複数の VLAN を1本のリンクで Router へ運ぶには、Switch 側の接続ポートを trunk にする必要があります。">
               <fieldset>
                 <legend>Q1. Router-on-a-Stick で、SW1 と R1 の間のポートに必要な代表設定はどれですか？</legend>
                 <label class="option-label"><input type="radio" name="inter-q1"> Switch(config-if)# switchport mode access</label>
@@ -355,7 +355,7 @@ R2# copy running-config startup-config</div>
                 <label class="option-label"><input type="radio" name="inter-q1"> Switch(config-if)# shutdown</label>
               </fieldset>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="遠隔LANへの行き先をRouterに教えるため、R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2 のような静的ルートを入れます。">
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="遠隔の LAN への行き先を Router に教えるには、R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2 のような静的ルートを設定します。">
               <fieldset>
                 <legend>Q2. R1 から <code>192.168.20.0/24</code> へ到達させる設定として正しいのはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="inter-q2" data-correct="true"> R1(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2</label>

@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>Packet Tracerの画面に慣れ、PC・Switch・Routerを配置して最初の操作ができる状態を目指します。</p>
+        <p>Packet Tracer の画面に慣れ、PC・Switch・Router を配置して最初の操作ができる状態を目指します。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,21 +44,21 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">このページでは「どこをクリックするか」を意識して進めます。迷ったら上から順に操作してください。</p>
+      <p class="sidebar-help">このページでは「どこをクリックするか」を意識して進めます。迷ったら、上から順に操作してみてください。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Packet Tracer Basics / Hands-on</div>
         <h1>Packet Tracerの画面と、最初の操作を覚える。</h1>
-        <p>実機に入る前の練習として、Packet Tracerはとても優秀です。ここでは、初心者が最初に触るべき機能だけに絞って説明します。</p>
+        <p>Packet Tracer は、実機に触れる前の練習環境としてとても優秀です。ここでは、初心者が最初に覚えるべき機能だけに絞って説明します。</p>
       </header>
 
       <section class="section fade-in delay-2">
         <div class="section-head">
           <div class="small-pill">Unit Topology</div>
           <h2>この単元で構築する最小構成</h2>
-          <p>Packet Tracer の最初の練習では、End Device 1台、L2 Switch 1台、Router 1台の最小構成を使います。ここで使うIPを先に頭へ入れておくと、以降の操作が理解しやすくなります。</p>
+          <p>最初の練習では、PC 1台・L2 Switch 1台・Router 1台の最小構成を使います。ここで使う IP アドレスを先に頭に入れておくと、このあとの操作の意味が分かりやすくなります。</p>
         </div>
 
         <div class="topic-diagram">
@@ -73,17 +73,17 @@
           <article class="card">
             <h3>装置の役割</h3>
             <ul class="packet-list">
-              <li>PC-A はIP設定の練習対象</li>
-              <li>SW1 はL2でPCとRouterを中継するSwitch</li>
-              <li>R1 はPC-A のデフォルトゲートウェイになるRouter</li>
+              <li>PC-A は IP 設定を練習する端末</li>
+              <li>SW1 は PC と Router を L2 で中継する Switch</li>
+              <li>R1 は PC-A のデフォルトゲートウェイになる Router</li>
             </ul>
           </article>
           <article class="card">
             <h3>値の見方</h3>
             <ul class="packet-list">
-              <li><code>192.168.10.10</code> は PC-A 自身のIP</li>
-              <li><code>255.255.255.0</code> は同一ネットワークの範囲</li>
-              <li><code>192.168.10.1</code> は別ネットワークへ出る出口</li>
+              <li><code>192.168.10.10</code> は PC-A 自身の IP アドレス</li>
+              <li><code>255.255.255.0</code> は同じネットワークの範囲を示すサブネットマスク</li>
+              <li><code>192.168.10.1</code> は別のネットワークへ出るときの出口(デフォルトゲートウェイ)</li>
             </ul>
           </article>
         </div>
@@ -97,19 +97,19 @@
         <div class="grid-2">
           <article class="card">
             <h3>機器パレット</h3>
-            <p>画面下部付近から Router、Switch、End Devices を選んでワークスペースに配置します。最初は PC、2960系Switch、Router の3種類で十分です。</p>
+            <p>画面下部のパレットから Router、Switch、End Devices を選んでワークスペースに配置します。最初は PC、2960 系の Switch、Router の3種類だけで十分です。</p>
           </article>
           <article class="card">
             <h3>Realtime と Simulation</h3>
-            <p>Realtime は通常動作、Simulation はパケットの流れを可視化するモードです。概念を掴む段階では Simulation が強力です。</p>
+            <p>Realtime は実際の機器と同じように動くモード、Simulation はパケットの流れをゆっくり可視化できるモードです。仕組みを理解する段階では、Simulation モードが特に役立ちます。</p>
           </article>
           <article class="card">
             <h3>PCのDesktopタブ</h3>
-            <p>PCをクリックすると Desktop タブから IP Configuration を開けます。ここでたとえば <code>192.168.10.10</code>、<code>255.255.255.0</code>、<code>192.168.10.1</code> のような具体的な値を入力します。</p>
+            <p>PC をクリックすると、Desktop タブから IP Configuration を開けます。ここに <code>192.168.10.10</code>、<code>255.255.255.0</code>、<code>192.168.10.1</code> といった具体的な値を入力します。</p>
           </article>
           <article class="card">
             <h3>Router / Switch のCLIタブ</h3>
-            <p>機器をクリックして CLI タブを開くと Cisco IOS 風のコマンド操作ができます。ここが今回の中心です。</p>
+            <p>機器をクリックして CLI タブを開くと、Cisco IOS と同じ感覚でコマンドを入力できます。この教材の中心になる画面です。</p>
           </article>
         </div>
       </section>
@@ -118,7 +118,7 @@
         <div class="section-head">
           <div class="small-pill">Address Example</div>
           <h2>IP、サブネットマスク、デフォルトゲートウェイを値で理解する</h2>
-          <p>ここでは PC-A に <code>192.168.10.10 / 255.255.255.0 / 192.168.10.1</code> を入れる前提で考えます。数字の意味を分けて理解すると、設定ミスがぐっと減ります。</p>
+          <p>ここでは PC-A に <code>192.168.10.10 / 255.255.255.0 / 192.168.10.1</code> を設定する前提で考えます。それぞれの数字の意味を分けて理解しておくと、設定ミスがぐっと減ります。</p>
         </div>
 
         <div class="grid-2">
@@ -129,14 +129,14 @@
               <li>サブネットマスク: <code>255.255.255.0</code></li>
               <li>デフォルトゲートウェイ: <code>192.168.10.1</code></li>
             </ul>
-            <p>この3つは別々の意味を持っています。特に、IPアドレスとデフォルトゲートウェイを同じ値にしてしまうミスは初心者に多いです。</p>
+            <p>この3つはそれぞれ役割が違います。特に、IP アドレスとデフォルトゲートウェイに同じ値を入れてしまうミスは、初心者によく見られます。</p>
           </article>
           <article class="card">
             <h3>この値が意味すること</h3>
             <ul class="check-list">
               <li><code>192.168.10.10</code> は PC-A 自身の住所</li>
               <li><code>255.255.255.0</code> は「192.168.10」までが同じネットワークだと示す</li>
-              <li><code>192.168.10.1</code> は別ネットワークへ出るための出口で、RouterのIPになる</li>
+              <li><code>192.168.10.1</code> は別のネットワークへ出るための出口で、R1 の LAN 側 IP を指定する</li>
             </ul>
           </article>
         </div>
@@ -154,17 +154,17 @@
               <tr>
                 <td>IPアドレス</td>
                 <td><code>192.168.10.10</code></td>
-                <td>PC-A 自身の識別子。最後の <code>10</code> がこの端末を表すイメージです。</td>
+                <td>PC-A 自身を表す住所です。最後の <code>10</code> がこの端末を指しているイメージです。</td>
               </tr>
               <tr>
                 <td>サブネットマスク</td>
                 <td><code>255.255.255.0</code></td>
-                <td><code>192.168.10.x</code> までが同じセグメントだと判断します。たとえば <code>192.168.10.1</code> は同じネットワーク、<code>192.168.20.1</code> は別ネットワークです。</td>
+                <td><code>192.168.10.x</code> までが同じネットワークだと判断する目印です。たとえば <code>192.168.10.1</code> は同じネットワーク、<code>192.168.20.1</code> は別のネットワークになります。</td>
               </tr>
               <tr>
                 <td>デフォルトゲートウェイ</td>
                 <td><code>192.168.10.1</code></td>
-                <td>相手が別ネットワークにいるとき、PC-A が最初に送る相手です。通常はRouterのインターフェースIPを入れます。</td>
+                <td>宛先が別のネットワークにいるとき、PC-A が最初にデータを渡す相手です。通常は Router のインターフェースの IP を指定します。</td>
               </tr>
             </tbody>
           </table>
@@ -172,7 +172,7 @@
 
         <section class="callout success">
           <h3>数字で考えると分かりやすいポイント</h3>
-          <p>PC-A から <code>192.168.10.20</code> に送るなら同じネットワーク内なので直接届く可能性があります。一方、<code>192.168.20.20</code> に送りたいなら別ネットワークなので、まず <code>192.168.10.1</code> のRouterへ渡す必要があります。</p>
+          <p>PC-A から <code>192.168.10.20</code> に送る場合は、同じネットワーク内なので直接届きます。一方 <code>192.168.20.20</code> に送りたい場合は別のネットワークなので、まず <code>192.168.10.1</code> の Router に渡す必要があります。</p>
         </section>
       </section>
 
@@ -186,28 +186,28 @@
             <div class="step-number">STEP 1</div>
             <div>
               <h3>新しいファイルを開く</h3>
-              <p>Packet Tracer を起動し、新規ワークスペースを開きます。最初は白紙から作るほうが構成の意味を理解しやすいです。</p>
+              <p>Packet Tracer を起動し、新規ワークスペースを開きます。最初は白紙から自分で組み立てたほうが、構成の意味を理解しやすくなります。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 2</div>
             <div>
               <h3>PC、Switch、Routerを1台ずつ置く</h3>
-              <p>End Devices から PC、Switches から 2960、Routers から任意のRouterを1台ずつ置きます。</p>
+              <p>End Devices から PC を、Switches から 2960 を、Routers から任意の Router を選んで、1台ずつ配置します。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 3</div>
             <div>
               <h3>ケーブルで接続する</h3>
-              <p>Connections から自動接続または Copper Straight-Through を選び、PC-Switch、Switch-Router の順に接続します。</p>
+              <p>Connections から自動接続、または Copper Straight-Through を選び、PC と Switch、Switch と Router の順につなぎます。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 4</div>
             <div>
               <h3>PCにIPを設定する</h3>
-              <p>PCの Desktop → IP Configuration を開き、今回は次の値を実際に入れます。値を入れるときは、IPアドレスとデフォルトゲートウェイを混同しないことが大切です。</p>
+              <p>PC の Desktop → IP Configuration を開き、次の値を入力します。IP アドレスとデフォルトゲートウェイを取り違えないように注意してください。</p>
               <div class="code-block">IP Address: 192.168.10.10
 Subnet Mask: 255.255.255.0
 Default Gateway: 192.168.10.1</div>
@@ -217,7 +217,7 @@ Default Gateway: 192.168.10.1</div>
             <div class="step-number">STEP 5</div>
             <div>
               <h3>RouterのCLIを開く</h3>
-              <p>Routerをクリックし、CLIタブからコマンド入力を始めます。今回は Router 側のLANポートに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。次のページでこの操作を具体的に学びます。</p>
+              <p>Router をクリックし、CLI タブからコマンド入力を始めます。今回は Router の LAN 側ポートに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。具体的なコマンドは次のページで学びます。</p>
             </div>
           </article>
         </div>
@@ -257,7 +257,7 @@ Default Gateway: 192.168.10.1</div>
               <li>SW1 ip default-gateway: <code>192.168.10.1</code></li>
               <li>R1 G0/0: <code>192.168.10.1 / 255.255.255.0</code></li>
             </ul>
-            <p>Switchの管理IPは、学習上「SwitchにもIPを振るとどう見えるか」を理解するために入れています。L2スイッチの通常転送そのものに必須ではありませんが、管理用途でよく使われます。</p>
+            <p>SW1 の管理 IP は、通信の転送そのものに必須ではありません。ここでは「Switch にも IP を振るとどう見えるか」を体験するために設定しています。実務でも、Switch へリモート接続するための管理用 IP としてよく使われます。</p>
           </article>
         </div>
       </section>
@@ -266,7 +266,7 @@ Default Gateway: 192.168.10.1</div>
         <div class="section-head">
           <div class="small-pill">Mini Config</div>
           <h2>最小構成で入れる具体的な設定値</h2>
-          <p>ここでは Packet Tracer 上で「実際に何を入れるか」が見えるように、PC、Switch、Routerそれぞれの値を揃えてあります。</p>
+          <p>Packet Tracer 上で「実際に何を入力するのか」が分かるように、PC・Switch・Router それぞれの設定値をまとめました。</p>
         </div>
 
         <div class="grid-2">
@@ -298,7 +298,7 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
           </article>
           <article class="callout warning">
             <h3>初心者が引っかかりやすい点</h3>
-            <p>Routerのインターフェースは初期状態で shutdown のことがあります。見た目上つながっていても、<code>192.168.10.1</code> を入れたあとに <code>Router(config-if)# no shutdown</code> をしないと通信できない場合があります。</p>
+            <p>Router のインターフェースは、初期状態では shutdown(無効)になっていることがあります。ケーブルがつながって見えても、<code>192.168.10.1</code> を設定したあとに <code>Router(config-if)# no shutdown</code> を入力しないと通信できない場合があります。</p>
           </article>
         </div>
       </section>
@@ -311,15 +311,15 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
         <div class="grid-3">
           <article class="card">
             <h3>接続先ポート</h3>
-            <p>違うポートに差していないか、RouterとSwitchが正しいインターフェースでつながっているかを見ます。</p>
+            <p>ケーブルを違うポートに差していないか、Router と Switch が意図したインターフェース同士でつながっているかを確認します。</p>
           </article>
           <article class="card">
             <h3>IP設定</h3>
-            <p>PCなら <code>192.168.10.10 / 255.255.255.0 / 192.168.10.1</code>、Routerなら <code>192.168.10.1 / 255.255.255.0</code> になっているか具体値で確認します。</p>
+            <p>PC なら <code>192.168.10.10 / 255.255.255.0 / 192.168.10.1</code>、Router なら <code>192.168.10.1 / 255.255.255.0</code> と、具体的な値どおりに入っているかを確認します。</p>
           </article>
           <article class="card">
             <h3>Simulation確認</h3>
-            <p>Packet TracerのSimulationモードで、どこまでパケットが進んだかを追うと原因の切り分けがしやすくなります。</p>
+            <p>Simulation モードでパケットがどこまで進んだかを追いかけると、原因の切り分けがしやすくなります。</p>
           </article>
         </div>
       </section>
@@ -328,12 +328,12 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
         <div class="section-head">
           <div class="small-pill">Check</div>
           <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">Packet Tracer でどこを触り、どの値を入れるかを確認します。</p>
+          <p class="quiz-help">Packet Tracer のどこを触り、どの値を入れるのかを確認します。</p>
         </div>
 
         <form data-quiz-form>
           <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="PCのIPやサブネットマスク、デフォルトゲートウェイは Desktop タブの IP Configuration から設定します。">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="PC の IP アドレス・サブネットマスク・デフォルトゲートウェイは、Desktop タブの IP Configuration から設定します。">
               <fieldset>
                 <legend>Q1. PC-A の <code>192.168.10.10 / 255.255.255.0 / 192.168.10.1</code> を設定する場所として正しいのはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="pt-q1" data-correct="true"> Desktop → IP Configuration</label>
@@ -341,7 +341,7 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
                 <label class="option-label"><input type="radio" name="pt-q1"> Config → VLAN Database</label>
               </fieldset>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="別ネットワークへ出るための出口として、PC-A のデフォルトゲートウェイには R1 の 192.168.10.1 を設定します。">
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="別のネットワークへ出るための出口として、PC-A のデフォルトゲートウェイには R1 の 192.168.10.1 を設定します。">
               <fieldset>
                 <legend>Q2. PC-A のデフォルトゲートウェイに入れるべき値はどれですか？</legend>
                 <label class="option-label"><input type="radio" name="pt-q2"> 192.168.10.10</label>
@@ -369,7 +369,7 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
         <a class="lesson-link" href="cisco-cli.html">
           <span>次のレッスン</span>
           <strong>Cisco CLIの基本へ進む</strong>
-          <p>次はRouterやSwitchのCLIで何を打てばよいかを順番に学びます。</p>
+          <p>次は Router や Switch の CLI で何を入力すればよいかを順番に学びます。</p>
         </a>
       </section>
     </main>

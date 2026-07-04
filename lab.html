@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>PC、Switch、Routerの最小構成をPacket Tracerで作り、順番通りに設定してPing成功まで進みます。ここが中級ラボへ進む土台です。</p>
+        <p>PC・Switch・Router の最小構成を Packet Tracer で組み、順番どおりに設定して Ping の成功まで進みます。ここが中級ラボへ進むための土台になります。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,14 +44,14 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">このページでは、必ず上から順に設定してください。基礎ラボを自力で再現できると、中級ラボの理解がかなり楽になります。</p>
+      <p class="sidebar-help">このページでは、必ず上から順に設定してください。基礎ラボを自力で再現できるようになると、中級ラボの理解がかなり楽になります。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Basic Lab / Packet Tracer</div>
         <h1>最初に固めたい、Packet Tracerの基礎ラボ。</h1>
-        <p>ここでは Packet Tracer 上で PC-A、SW1、R1 を使って小さなネットワークを組みます。目的は「手順を追えば疎通まで行ける」を超えて、「なぜその設定が必要か」まで説明できるようになることです。</p>
+        <p>ここでは PC-A・SW1・R1 を使って、小さなネットワークを実際に組みます。手順どおりに疎通させるだけでなく、「なぜその設定が必要なのか」まで説明できるようになることがゴールです。</p>
       </header>
 
       <section class="section fade-in delay-2">
@@ -72,9 +72,9 @@
           <article class="card">
             <h3>ゴール</h3>
             <ul class="check-list">
-              <li>PC-AからR1へPingが通る</li>
-              <li>Routerのインターフェースが up になる</li>
-              <li>Switch側のポートが VLAN 10 に所属する</li>
+              <li>PC-A から R1 へ Ping が通る</li>
+              <li>Router のインターフェースが up になる</li>
+              <li>Switch 側のポートが VLAN 10 に所属する</li>
             </ul>
           </article>
           <article class="card">
@@ -99,14 +99,14 @@
             <div class="step-number">STEP 1</div>
             <div>
               <h3>機器を配置して接続する</h3>
-              <p>PC、2960 Switch、Routerを1台ずつ置きます。PC-Switch、Switch-Routerの順にケーブル接続します。</p>
+              <p>PC、2960 Switch、Router を1台ずつ置き、PC と Switch、Switch と Router の順にケーブルで接続します。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 2</div>
             <div>
               <h3>PC-AにIPを設定する</h3>
-              <p>PC-A → Desktop → IP Configuration で以下を入力します。</p>
+              <p>PC-A → Desktop → IP Configuration の順に開き、次の値を入力します。</p>
               <div class="code-block">IP Address: 192.168.10.10
 Subnet Mask: 255.255.255.0
 Default Gateway: 192.168.10.1</div>
@@ -116,7 +116,7 @@ Default Gateway: 192.168.10.1</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>SW1でVLAN 10とアクセスポートを設定する</h3>
-              <p>PC-A がつながるポートを VLAN 10 の access ポートにします。</p>
+              <p>VLAN 10 を作成し、PC-A がつながるポートを VLAN 10 の access ポートにします。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# vlan 10
@@ -134,7 +134,7 @@ Switch# copy running-config startup-config</div>
             <div class="step-number">STEP 4</div>
             <div>
               <h3>R1のインターフェースを設定する</h3>
-              <p>SwitchにつながるポートへIPを入れ、<code>R1(config-if)# no shutdown</code> で有効化します。</p>
+              <p>Switch につながるポートに IP アドレスを設定し、<code>R1(config-if)# no shutdown</code> で有効化します。</p>
               <div class="code-block">Router> enable
 Router# configure terminal
 Router(config)# hostname R1
@@ -150,7 +150,7 @@ R1# copy running-config startup-config</div>
             <div class="step-number">STEP 5</div>
             <div>
               <h3>確認コマンドとPingを実行する</h3>
-              <p>Routerで状態を見たあと、PC-Aから <code>192.168.10.1</code> にPingします。</p>
+              <p>Router 側で状態を確認したあと、PC-A の Command Prompt から <code>192.168.10.1</code> へ Ping を打ちます。応答が返ってくれば成功です。</p>
               <div class="code-block">R1# show ip interface brief
 R1# show running-config</div>
             </div>
@@ -162,21 +162,21 @@ R1# show running-config</div>
         <div class="section-head">
           <div class="small-pill">Why It Works</div>
           <h2>このラボで本当に理解したい3つのこと</h2>
-          <p>設定を丸ごと写して終わりにしないために、特に大事な意味を3点に絞って整理します。</p>
+          <p>設定を丸写しして終わりにしないために、特に大事な意味を3つに絞って整理します。</p>
         </div>
 
         <div class="grid-3">
           <article class="card">
             <h3>PCのGatewayは出口</h3>
-            <p>PCは、自分と同じネットワーク外に行くとき、どこへ送ればよいかをデフォルトゲートウェイで判断します。今回は <code>192.168.10.1</code> がその役目です。</p>
+            <p>PC は、自分と別のネットワークへ通信するとき、どこへ送ればよいかをデフォルトゲートウェイで判断します。今回はその出口が <code>192.168.10.1</code>(R1)です。</p>
           </article>
           <article class="card">
             <h3>Switchは同一LANの交通整理役</h3>
-            <p>Switchは主にL2で動きます。今回VLAN 10 にポートを所属させるのは、「このPCはこのLANにいる」と明示する意味があります。</p>
+            <p>Switch は主に L2 で動きます。今回ポートを VLAN 10 に所属させるのは、「この PC はこの LAN の一員だ」と明示するためです。</p>
           </article>
           <article class="card">
             <h3>Routerは no shutdown で動き出す</h3>
-            <p>Routerのポートは、IPを入れただけでは使えないことがあります。<code>R1(config-if)# no shutdown</code> によって初めて通信可能な状態になります。</p>
+            <p>Router のポートは、IP アドレスを入れただけでは有効になりません。<code>R1(config-if)# no shutdown</code> を入力して初めて、通信できる状態になります。</p>
           </article>
         </div>
       </section>
@@ -192,7 +192,7 @@ R1# show running-config</div>
             <h3>Router側の確認</h3>
             <div class="code-block">R1# show ip interface brief
 R1# show running-config</div>
-            <p><code>g0/1</code> が up/up になっているか、IPアドレスが正しいかを見ます。</p>
+            <p><code>g0/1</code> が up/up になっているか、IP アドレスが正しく入っているかを確認します。</p>
           </article>
           <article class="card">
             <h3>Switch側の確認</h3>
@@ -211,34 +211,34 @@ R1# show running-config</div>
         <div class="grid-3">
           <article class="card">
             <h3>1. PC設定</h3>
-            <p>IP、マスク、デフォルトゲートウェイに入力ミスがないか確認します。</p>
+            <p>IP アドレス、サブネットマスク、デフォルトゲートウェイに入力ミスがないかを確認します。</p>
           </article>
           <article class="card">
             <h3>2. Routerポート状態</h3>
-            <p><code>R1# show ip interface brief</code> で対象インターフェースが up/up か確認します。</p>
+            <p><code>R1# show ip interface brief</code> で、対象のインターフェースが up/up になっているかを確認します。</p>
           </article>
           <article class="card">
             <h3>3. Switchポート</h3>
-            <p>接続したポートが VLAN 10 に割り当てられているか確認します。</p>
+            <p>PC-A を接続したポートが VLAN 10 に割り当てられているかを確認します。</p>
           </article>
         </div>
       </section>
 
       <section class="callout warning fade-in delay-3">
         <h3>ひとつ上の視点で見るポイント</h3>
-        <p>PCからRouterへPingが通るということは、L1/L2/L3の最小条件が揃ったという意味です。単に「成功した」ではなく、何が成立したのかを言葉にできると理解が深まります。</p>
+        <p>PC から Router へ Ping が通ったということは、L1(ケーブル)・L2(Switch)・L3(IP)の最小条件がすべて揃ったということです。単に「成功した」で終わらせず、何が成立したのかを自分の言葉で説明できると、理解が一段深まります。</p>
       </section>
 
       <section class="section fade-in delay-3">
         <div class="section-head">
           <div class="small-pill">Check</div>
           <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">最小構成の設定順と確認ポイントを確認します。</p>
+          <p class="quiz-help">最小構成の設定手順と、確認ポイントを振り返ります。</p>
         </div>
 
         <form data-quiz-form>
           <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="PC-A の出口は R1 の 192.168.10.1 なので、デフォルトゲートウェイにはその値を入れます。">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="PC-A の出口となるのは R1 の 192.168.10.1 なので、デフォルトゲートウェイにはその値を設定します。">
               <fieldset>
                 <legend>Q1. 基礎ラボで PC-A のデフォルトゲートウェイとして設定する値はどれですか？</legend>
                 <label class="option-label"><input type="radio" name="lab-q1"> 192.168.10.10</label>
@@ -246,7 +246,7 @@ R1# show running-config</div>
                 <label class="option-label"><input type="radio" name="lab-q1"> 255.255.255.0</label>
               </fieldset>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="Router 側でインターフェース状態を簡潔に確認したいときは R1# show ip interface brief が定番です。">
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="Router のインターフェース状態を手早く確認したいときは、R1# show ip interface brief が定番です。">
               <fieldset>
                 <legend>Q2. R1 のポートが up/up かをまず確認したいとき、最も適切なコマンドはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="lab-q2"> Switch# show vlan brief</label>
@@ -274,7 +274,7 @@ R1# show running-config</div>
         <a class="lesson-link" href="intermediate-labs.html">
           <span>次のレッスン</span>
           <strong>中級ラボへ進む</strong>
-          <p>次はVLAN間通信と静的ルーティングで、一段実践寄りの構成に進みます。</p>
+          <p>次は VLAN 間通信と静的ルーティングで、一段実践寄りの構成に進みます。</p>
         </a>
       </section>
     </main>

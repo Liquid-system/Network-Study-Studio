@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>Packet Tracer上でCisco IOSに触れる前提で、show系と設定系の基本コマンドを順番に学びます。</p>
+        <p>Packet Tracer 上で Cisco IOS に触れる前提で、show 系と設定系の基本コマンドを順番に学びます。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,21 +44,21 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">CLIは暗記だけでなく、どのモードで何をしているかを意識すると理解が早く進みます。</p>
+      <p class="sidebar-help">CLI は丸暗記するものではありません。「いまどのモードで、何をしているのか」を意識すると理解が早く進みます。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Cisco IOS / Command Flow</div>
         <h1>初心者が最初に覚えるCiscoコマンドの流れ。</h1>
-        <p>現場でも大事なのは、いきなり設定を書くことではなく「確認してから設定し、最後に保存する」流れです。Packet Tracerでも同じ順番で練習します。</p>
+        <p>大切なのは、いきなり設定を書き込むことではなく「まず確認し、次に設定し、最後に保存する」という流れです。実際の現場と同じこの順番を、Packet Tracer で練習します。</p>
       </header>
 
       <section class="section fade-in delay-2">
         <div class="section-head">
           <div class="small-pill">Unit Topology</div>
           <h2>この単元で意識する構成</h2>
-          <p>Cisco CLI の基本は、PC-A、L2 Switch、Router の最小構成で理解するのが最も分かりやすいです。どの装置にどのコマンドを入れるのかを、構成図とIPから先に把握します。</p>
+          <p>Cisco CLI の基本は、PC・L2 Switch・Router の最小構成で学ぶのが一番の近道です。どの機器にどのコマンドを入れるのかを、まず構成図と IP アドレスで確認しておきましょう。</p>
         </div>
 
         <div class="topic-diagram">
@@ -72,11 +72,11 @@
         <div class="grid-2">
           <article class="card">
             <h3>CLIを主に触る装置</h3>
-            <p>このページでは Router の CLI を中心に学びますが、Switch 側でも <code>Switch# show vlan brief</code> のような基本確認コマンドを使います。</p>
+            <p>このページでは Router の CLI を中心に学びますが、Switch 側でも <code>Switch# show vlan brief</code> のような基本の確認コマンドを使います。</p>
           </article>
           <article class="card">
             <h3>IP値の前提</h3>
-            <p>Router の LAN 側インターフェースには <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。これが PC-A のゲートウェイになります。</p>
+            <p>Router の LAN 側インターフェースに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。この IP が、そのまま PC-A のデフォルトゲートウェイになります。</p>
           </article>
         </div>
       </section>
@@ -131,7 +131,7 @@
             <div class="timeline-mark">01</div>
             <div class="timeline-copy">
               <h3>特権モードへ移る</h3>
-              <p><code>Router&gt; enable</code> を入力して <code>Router#</code> のプロンプトへ移ります。ここから確認系コマンドの幅が広がります。</p>
+              <p><code>Router&gt; enable</code> と入力すると、プロンプトが <code>Router#</code> に変わります。ここから使える確認コマンドの幅が広がります。</p>
               <div class="code-block">Router> enable</div>
             </div>
           </article>
@@ -139,7 +139,7 @@
             <div class="timeline-mark">02</div>
             <div class="timeline-copy">
               <h3>現状を確認する</h3>
-              <p>まずは現在の状態を見ます。インターフェース状態や設定の有無をここで把握します。</p>
+              <p>設定を触る前に、まず現在の状態を確認します。インターフェースの状態や、すでに入っている設定をここで把握します。</p>
               <div class="code-block">Router# show ip interface brief
 Router# show running-config</div>
             </div>
@@ -148,7 +148,7 @@ Router# show running-config</div>
             <div class="timeline-mark">03</div>
             <div class="timeline-copy">
               <h3>設定モードに入る</h3>
-              <p><code>Router# configure terminal</code> で設定モードに入り、機器名やインターフェース設定を入れます。</p>
+              <p><code>Router# configure terminal</code> で設定モードに入ります。機器名(hostname)の変更やインターフェース設定は、ここから始めます。</p>
               <div class="code-block">Router# configure terminal
 Router(config)# hostname R1</div>
             </div>
@@ -157,7 +157,7 @@ Router(config)# hostname R1</div>
             <div class="timeline-mark">04</div>
             <div class="timeline-copy">
               <h3>インターフェースにIPを設定する</h3>
-              <p>対象インターフェースを選んで、IPとマスクを設定し、最後に <code>R1(config-if)# no shutdown</code> を入れます。</p>
+              <p>対象のインターフェースに移動して IP アドレスとサブネットマスクを設定し、最後に <code>R1(config-if)# no shutdown</code> でポートを有効化します。</p>
               <div class="code-block">R1(config)# interface gigabitEthernet0/1
 R1(config-if)# ip address 192.168.10.1 255.255.255.0
 R1(config-if)# no shutdown</div>
@@ -167,7 +167,7 @@ R1(config-if)# no shutdown</div>
             <div class="timeline-mark">05</div>
             <div class="timeline-copy">
               <h3>保存する</h3>
-              <p>終わったら必ず保存します。Packet Tracerでもこのクセをつけると実機に移ったときに役立ちます。</p>
+              <p>設定が終わったら必ず保存します。保存しないと、再起動したときに設定が消えてしまいます。Packet Tracer のうちからこの癖をつけておくと、実機に移ったときに必ず役立ちます。</p>
               <div class="code-block">R1(config-if)# end
 R1# copy running-config startup-config</div>
             </div>
@@ -185,19 +185,19 @@ R1# copy running-config startup-config</div>
           <article class="card">
             <h3>確認系</h3>
             <ul class="packet-list">
-              <li><code>Router# show ip interface brief</code> でポート状態とIPを見る</li>
+              <li><code>Router# show ip interface brief</code> でポートの状態とIPを見る</li>
               <li><code>Router# show running-config</code> で現在の設定を見る</li>
               <li><code>Switch# show vlan brief</code> でVLANを見る</li>
-              <li><code>Router# show ip route</code> でルートを見る</li>
+              <li><code>Router# show ip route</code> で経路情報を見る</li>
             </ul>
           </article>
           <article class="card">
             <h3>設定系</h3>
             <ul class="packet-list">
-              <li><code>Router# configure terminal</code> で設定開始</li>
-              <li><code>Router(config)# hostname Branch-R1</code> で機器名設定</li>
-              <li><code>Router(config)# interface g0/1</code> で対象ポートへ移動</li>
-              <li><code>Router(config-if)# ip address ...</code> と <code>Router(config-if)# no shutdown</code> でL3ポート設定</li>
+              <li><code>Router# configure terminal</code> で設定を開始する</li>
+              <li><code>Router(config)# hostname Branch-R1</code> で機器名を設定する</li>
+              <li><code>Router(config)# interface g0/1</code> で対象ポートへ移動する</li>
+              <li><code>Router(config-if)# ip address ...</code> と <code>Router(config-if)# no shutdown</code> でL3ポートを設定する</li>
             </ul>
           </article>
         </div>
@@ -205,19 +205,19 @@ R1# copy running-config startup-config</div>
 
       <section class="callout success fade-in delay-3">
         <h3>CLI学習のコツ</h3>
-        <p>コマンドを1行ずつ丸暗記するより、「Router&gt; enable → Router# show → Router# configure terminal → Router(config)# interface → Router# save」という順番を体で覚えるほうがずっと定着します。</p>
+        <p>コマンドを1行ずつ丸暗記するより、「<code>enable</code> で特権モードへ → <code>show</code> で現状確認 → <code>configure terminal</code> で設定 → <code>copy running-config startup-config</code> で保存」という一連の流れを体で覚えるほうが、ずっと定着します。</p>
       </section>
 
       <section class="section fade-in delay-3">
         <div class="section-head">
           <div class="small-pill">Check</div>
           <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">CLI のモードと基本コマンドの流れを確認します。</p>
+          <p class="quiz-help">CLI のモードと、基本コマンドの流れを確認します。</p>
         </div>
 
         <form data-quiz-form>
           <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="Router# configure terminal で Global Configuration モードに入り、そこでホスト名やインターフェース設定を始めます。">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="Router# configure terminal で Global Configuration モードに入り、そこからホスト名やインターフェースの設定を始めます。">
               <fieldset>
                 <legend>Q1. Router の設定を始めるために、<code>Router#</code> プロンプトから次に入力する代表コマンドはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="cli-q1"> Router# show ip route</label>
@@ -225,7 +225,7 @@ R1# copy running-config startup-config</div>
                 <label class="option-label"><input type="radio" name="cli-q1"> Router# copy running-config startup-config</label>
               </fieldset>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="設定を再起動後も残すには、Privileged EXEC モードで copy running-config startup-config を実行します。">
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="設定を再起動後も残すには、特権モード(Privileged EXEC)で copy running-config startup-config を実行します。">
               <fieldset>
                 <legend>Q2. 設定を保存する代表コマンドとして正しいのはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="cli-q2"> Router(config)# hostname R1</label>
@@ -253,7 +253,7 @@ R1# copy running-config startup-config</div>
         <a class="lesson-link" href="lab.html">
           <span>次のレッスン</span>
           <strong>基礎ラボへ進む</strong>
-          <p>次はPacket Tracer上で小さな構成を組み、実際に疎通させます。</p>
+          <p>次は Packet Tracer 上で小さな構成を組み、実際に疎通させます。</p>
         </a>
       </section>
     </main>

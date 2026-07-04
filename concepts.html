@@ -21,7 +21,7 @@
         </a>
         <div class="sidebar-note">
           <strong>このページの役割</strong>
-          <p>Packet Tracerで機器を触る前に、通信がなぜ成立するのかを頭の中で整理します。</p>
+          <p>Packet Tracer で機器に触れる前に、そもそも通信はなぜ成立するのかを頭の中で整理します。</p>
         </div>
         <div>
           <p class="sidebar-title">Learning Path</p>
@@ -70,27 +70,25 @@
           </label>
           <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
         </div>
-        <p class="sidebar-help">難しく感じたら、このページに戻って「同一ネットワークか、別ネットワークか」を起点に考えるのがコツです。</p>
+        <p class="sidebar-help">難しく感じたらこのページに戻り、「相手は同じネットワークにいるのか、別のネットワークにいるのか」から考え直すのがコツです。</p>
       </aside>
 
       <main class="content">
         <header class="page-header fade-in delay-1">
           <div class="eyebrow">Concepts First / Beginner Friendly</div>
           <h1>ネットワーク通信を、図と順番で理解する。</h1>
-          <p>コマンド暗記より先に、「PCがどこへ送るのか」「SwitchやRouterは何を見て転送するのか」を理解すると、Packet Tracerの演習が一気にやりやすくなります。</p>
+          <p>コマンドを暗記する前に、「PC はデータをどこへ送るのか」「Switch や Router は何を見て転送するのか」を理解しておくと、Packet Tracer の演習が一気に進めやすくなります。</p>
         </header>
 
         <section class="section fade-in delay-2">
           <div class="section-head">
             <div class="small-pill">Unit Topology</div>
             <h2>この単元でイメージする構成</h2>
-            <p>このページでは、PC-A から PC-B へ通信する2つのパターンを意識します。<span class="highlight-concept">同じネットワーク内ならSwitch中心</span>、<span
-                class="highlight-concept">別ネットワークならRouter経由</span> という流れを、具体的なIPと機器種別つきで頭に置いてから解説へ入ります。</p>
+            <p>このページでは、PC-A から PC-B へ通信するときの2つのパターンを扱います。<span class="highlight-concept">同じネットワーク内なら Switch が転送の主役</span>になり、<span class="highlight-concept">別のネットワーク宛てなら Router が中継役</span>になります。まずは下の構成図を、IP アドレスと機器の種類ごと頭に入れてから解説に進みましょう。</p>
           </div>
 
           <div class="wide-diagram">
-            <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.10.10 /24</small>
-            </div>
+            <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.10.10 /24</small></div>
             <div class="diagram-link"></div>
             <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>L2 Switch</small></div>
             <div class="diagram-link"></div>
@@ -98,20 +96,17 @@
                 <div class="router-interfaces"><span>G0/0: 192.168.10.1</span><span>G0/1: 192.168.20.1</span></div>
               </small></div>
             <div class="diagram-link"></div>
-            <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.20.10 /24</small>
-            </div>
+            <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.20.10 /24</small></div>
           </div>
 
           <div class="grid-2">
             <article class="card">
               <h3>同じネットワーク内の通信</h3>
-              <p>たとえば PC-A が <code>192.168.10.20</code> に送るなら、送信先も <code>192.168.10.x</code> なので、Switchが中心になって転送されます。
-              </p>
+              <p>たとえば PC-A が <code>192.168.10.20</code> にデータを送る場合、宛先は自分と同じ <code>192.168.10.x</code> の範囲にいます。この場合は Router を経由せず、Switch の転送だけで相手に届きます。</p>
             </article>
             <article class="card">
               <h3>別ネットワークへの通信</h3>
-              <p>PC-A が <code>192.168.20.10</code> に送りたいときは、まずデフォルトゲートウェイの <code>192.168.10.1</code>
-                へ渡し、Routerが別ネットワークへ転送します。</p>
+              <p>PC-A が <code>192.168.20.10</code> に送りたい場合、宛先は別のネットワークにいます。そこで PC-A はまずデフォルトゲートウェイの <code>192.168.10.1</code>(R1)にデータを渡し、R1 が宛先のネットワークへ転送します。</p>
             </article>
           </div>
         </section>
@@ -127,28 +122,28 @@
               <div class="step-number">STEP 1</div>
               <div>
                 <h3>送信先は同じネットワークかを考える</h3>
-                <p>PCは、相手IPが自分と同じセグメントにいるかをサブネットマスクで判断します。ここが最初の分岐です。</p>
+                <p>PC は、宛先の IP アドレスを自分のサブネットマスクと突き合わせて、相手が同じネットワークにいるかどうかを判断します。すべての通信は、この分岐から始まります。</p>
               </div>
             </article>
             <article class="step-card">
               <div class="step-number">STEP 2</div>
               <div>
                 <h3>同じならSwitch中心、違うならGatewayへ送る</h3>
-                <p>同一ネットワークなら宛先端末へ向かい、別ネットワークならデフォルトゲートウェイとして設定されたRouterへ渡します。</p>
+                <p>同じネットワークなら宛先の端末へ直接送り、別のネットワークなら、デフォルトゲートウェイとして設定された Router へまず渡します。</p>
               </div>
             </article>
             <article class="step-card">
               <div class="step-number">STEP 3</div>
               <div>
                 <h3>SwitchはMAC、RouterはIPを見る</h3>
-                <p>SwitchはL2機器なのでMACアドレス中心、RouterはL3機器なのでIPアドレス中心に判断して転送します。</p>
+                <p>Switch は L2 の機器なので MAC アドレスを手がかりに転送先を決めます。一方、Router は L3 の機器なので IP アドレスを手がかりに転送先を決めます。</p>
               </div>
             </article>
             <article class="step-card">
               <div class="step-number">STEP 4</div>
               <div>
                 <h3>戻りの通信が成立して初めて成功になる</h3>
-                <p>片道だけでは不十分です。Pingが通るには、戻りの経路や相手側の設定も整っている必要があります。</p>
+                <p>行きのパケットが届くだけでは不十分です。Ping が成功するには、相手からの返事が戻ってくる経路と、相手側の設定も整っている必要があります。</p>
               </div>
             </article>
           </div>
@@ -163,7 +158,7 @@
           <div class="grid-2">
             <article class="card">
               <h3>OSI参照モデル</h3>
-              <p>厳密に暗記するより、障害の切り分けで「どの層の話か」を整理できれば十分役立ちます。</p>
+              <p>すべてを暗記する必要はありません。障害の切り分けのときに「いまはどの層の話をしているのか」を整理できれば、それだけで十分役立ちます。</p>
               <ul class="bullet-list">
                 <li>L1-L2: ケーブル、リンク、MAC、Switch</li>
                 <li>L3: IP、ルーティング、デフォルトゲートウェイ</li>
@@ -172,20 +167,20 @@
             </article>
             <article class="card">
               <h3>IPアドレスとサブネット</h3>
-              <p><code>192.168.10.10/24</code> の <code>/24</code> は、どこまでが同一ネットワークかを判定するための情報です。</p>
+              <p><code>192.168.10.10/24</code> の <code>/24</code> は、IP アドレスのどこまでが「同じネットワーク」を表すのかを示す情報です。</p>
               <ul class="bullet-list">
-                <li>同じネットワークなら直接届く可能性がある</li>
-                <li>違うネットワークならRouterが必要</li>
-                <li>IP重複は典型的な障害原因</li>
+                <li>同じネットワーク宛てなら Router を経由せず直接届く</li>
+                <li>別のネットワーク宛てなら Router の中継が必要</li>
+                <li>IP アドレスの重複は典型的な障害の原因</li>
               </ul>
             </article>
             <article class="card">
               <h3>Switching と Routing</h3>
-              <p>SwitchはLAN内の通信整理、Routerは異なるネットワーク間の仲介です。この違いを理解すると構成図が読みやすくなります。</p>
+              <p>Switch は同じ LAN 内の通信をさばく係、Router は異なるネットワーク同士をつなぐ係です。この役割分担が分かると、構成図がぐっと読みやすくなります。</p>
             </article>
             <article class="card">
               <h3>VLAN と Default Gateway</h3>
-              <p>VLANは1台のSwitch内でネットワークを分ける仕組みです。別VLANへ行くにはL3機器が必要になり、その入口がデフォルトゲートウェイです。</p>
+              <p>VLAN は、1台の Switch の中をいくつかのネットワークに分ける仕組みです。別の VLAN と通信するには Router などの L3 機器が必要で、その入り口となる IP アドレスがデフォルトゲートウェイです。</p>
             </article>
           </div>
         </section>
@@ -232,32 +227,29 @@
 
         <section class="callout success fade-in delay-3">
           <h3>Packet Tracerで確認すると理解しやすいポイント</h3>
-          <p>このあとPacket Tracerページに進んだら、RealtimeモードとSimulationモードを切り替えて、パケットがどこへ進むのかを目で追ってみてください。概念が操作に結びつきます。</p>
+          <p>このあと Packet Tracer のページに進んだら、Realtime モードと Simulation モードを切り替えて、パケットがどの機器をどう進むのかを目で追ってみてください。ここで学んだ概念が、実際の操作と結びつきます。</p>
         </section>
 
         <section class="section fade-in delay-3">
           <div class="section-head">
             <div class="small-pill">Check</div>
             <h2>この単元の理解度チェック</h2>
-            <p class="quiz-help">概念だけを短く確認します。構成図を見返しながら答えるのがおすすめです。</p>
+            <p class="quiz-help">概念だけを短く確認します。上の構成図を見返しながら答えるのがおすすめです。</p>
           </div>
 
           <form data-quiz-form>
             <div class="quiz-grid">
-              <article class="quiz-card quiz-question" data-question="q1"
-                data-explanation="別ネットワークに送るときは、まず自分のデフォルトゲートウェイへ渡す必要があります。">
+              <article class="quiz-card quiz-question" data-question="q1" data-explanation="別のネットワークに送るときは、まず自分のデフォルトゲートウェイ(ここでは R1 の 192.168.10.1)へ渡す必要があります。">
                 <fieldset>
-                  <legend>Q1. PC-A が <code>192.168.20.10</code> に通信したいとき、最初に渡す相手として最も適切なのはどれですか？</legend>
+                  <legend>Q1. PC-A が <code>192.168.20.10</code> に通信したいとき、最初にデータを渡す相手として最も適切なのはどれですか？</legend>
                   <label class="option-label"><input type="radio" name="concepts-q1"> PC-B のIPアドレス</label>
-                  <label class="option-label"><input type="radio" name="concepts-q1" data-correct="true"> R1 の
-                    <code>192.168.10.1</code></label>
+                  <label class="option-label"><input type="radio" name="concepts-q1" data-correct="true"> R1 の <code>192.168.10.1</code></label>
                   <label class="option-label"><input type="radio" name="concepts-q1"> SW1 のMACアドレスだけ</label>
                 </fieldset>
               </article>
-              <article class="quiz-card quiz-question" data-question="q2"
-                data-explanation="Switch は主に L2 でMACを見て転送し、Router は L3 でIPを見て別ネットワークへ転送します。">
+              <article class="quiz-card quiz-question" data-question="q2" data-explanation="Switch は主に L2 で MAC アドレスを見て転送し、Router は L3 で IP アドレスを見て別のネットワークへ転送します。">
                 <fieldset>
-                  <legend>Q2. 別ネットワーク間通信で、主に IP アドレスを見て転送判断する機器はどれですか？</legend>
+                  <legend>Q2. 別ネットワーク間の通信で、主に IP アドレスを見て転送先を判断する機器はどれですか？</legend>
                   <label class="option-label"><input type="radio" name="concepts-q2"> L2 Switch</label>
                   <label class="option-label"><input type="radio" name="concepts-q2" data-correct="true"> Router</label>
                   <label class="option-label"><input type="radio" name="concepts-q2"> Patch Panel</label>
@@ -283,7 +275,7 @@
           <a class="lesson-link" href="packet-tracer.html">
             <span>次のレッスン</span>
             <strong>Packet Tracerの操作へ進む</strong>
-            <p>次は画面の見方と、最初に触るべき操作だけを絞って学びます。</p>
+            <p>次は画面の見方と、最初に触るべき操作だけに絞って学びます。</p>
           </a>
         </section>
       </main>

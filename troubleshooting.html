@@ -19,7 +19,7 @@
       </a>
       <div class="sidebar-note">
         <strong>このページの役割</strong>
-        <p>Packet Tracerで通信できないときに、感覚ではなく順番で切り分けるための考え方を整理します。</p>
+        <p>Packet Tracer で通信できないとき、勘に頼らず決まった順番で原因を切り分けるための考え方を整理します。</p>
       </div>
       <div>
         <p class="sidebar-title">Learning Path</p>
@@ -44,21 +44,21 @@
         </label>
         <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
       </div>
-      <p class="sidebar-help">ポイントは、いきなり全部を見るのではなく、上流から順番に絞っていくことです。</p>
+      <p class="sidebar-help">ポイントは、いきなり全部を確認しようとせず、下の層(物理)から順番に候補を絞っていくことです。</p>
     </aside>
 
     <main class="content">
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Troubleshooting / Packet Tracer</div>
         <h1>通信できないときに、何から見るかを迷わない。</h1>
-        <p>ネットワーク学習では、設定できることと同じくらい「崩れたときに戻せること」が大切です。ここでは、Packet Tracerで再現しやすい失敗例を使って、切り分けの順番を固めます。</p>
+        <p>ネットワークの学習では、設定できることと同じくらい「壊れたときに直せること」が大切です。ここでは、Packet Tracer で再現しやすい失敗例を題材に、原因を切り分ける順番を固めます。</p>
       </header>
 
       <section class="section fade-in delay-2">
         <div class="section-head">
           <div class="small-pill">Unit Topology</div>
           <h2>この単元で切り分け対象にする構成</h2>
-          <p>トラブルシュートでは、どの単元でも応用できる代表構成を使って考えます。PC-A から別ネットワークの PC-B へ通信する流れを前提に、どこが崩れるとどんな症状になるかを見ていきます。</p>
+          <p>どの単元にも応用できる代表的な構成で考えます。PC-A から別ネットワークの PC-B へ通信する流れを前提に、どこが崩れるとどんな症状が出るのかを見ていきます。</p>
         </div>
 
         <div class="wide-diagram">
@@ -74,14 +74,14 @@
         <div class="grid-2">
           <article class="card">
             <h3>この図で見たいこと</h3>
-            <p>物理接続、VLAN、IP、Gateway、経路のどこかが崩れると通信できなくなります。切り分けは、上から順に原因を減らしていく作業です。</p>
+            <p>物理接続・VLAN・IP・Gateway・経路のどれか1つが崩れるだけで、通信はできなくなります。切り分けとは、この候補を上から順番に消していく作業です。</p>
           </article>
           <article class="card">
             <h3>代表的な確認対象</h3>
             <ul class="packet-list">
               <li>PC-A の Gateway が <code>192.168.10.1</code> になっているか</li>
               <li>SW1 のポートが正しい VLAN に所属しているか</li>
-              <li>R1 のインターフェースが up/up か</li>
+              <li>R1 のインターフェースが up/up になっているか</li>
             </ul>
           </article>
         </div>
@@ -98,35 +98,35 @@
             <div class="step-number">1</div>
             <div>
               <h3>物理接続を見る</h3>
-              <p>ケーブル接続、機器の電源、ポートのリンク状態を見ます。L1が崩れていると、その上をいくら見ても前に進みません。</p>
+              <p>ケーブルの接続、機器の電源、ポートのリンク状態を確認します。L1 が崩れている状態で上の層をいくら調べても、原因にはたどり着けません。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">2</div>
             <div>
               <h3>L2の状態を見る</h3>
-              <p>VLAN、access / trunk、MAC学習状況を確認します。特にVLANの割り当て違いは、Packet Tracerの学習初期で頻出です。</p>
+              <p>VLAN の割り当て、access / trunk の設定、MAC アドレスの学習状況を確認します。特に VLAN の割り当て間違いは、学習初期にとてもよく起きます。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">3</div>
             <div>
               <h3>L3の設定を見る</h3>
-              <p>IPアドレス、サブネットマスク、デフォルトゲートウェイ、インターフェースの up/down を確認します。</p>
+              <p>IP アドレス、サブネットマスク、デフォルトゲートウェイ、そしてインターフェースの up/down を確認します。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">4</div>
             <div>
               <h3>経路を見る</h3>
-              <p>別セグメント通信なら <code>Router# show ip route</code> でルーティング情報を確認します。静的ルートの抜けや次ホップ間違いはここで見つかります。</p>
+              <p>別のネットワークへの通信なら、<code>Router# show ip route</code> で経路情報を確認します。静的ルートの入れ忘れや、次ホップ(ネクストホップ)の間違いは、ここで見つかります。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">5</div>
             <div>
               <h3>最後に疎通試験をする</h3>
-              <p>途中経過を確認した上で、Ping や Simulation を使ってどこまで届いているかを見ます。最初からPingだけ打つと原因がぼやけやすいです。</p>
+              <p>ここまでの確認を踏まえたうえで、Ping や Simulation モードでどこまで届いているかを確かめます。何も確認せずに Ping だけ繰り返すと、かえって原因がぼやけてしまいます。</p>
             </div>
           </article>
         </div>
@@ -140,15 +140,15 @@
         <div class="grid-3">
           <article class="card">
             <h3>PCの Desktop / Command Prompt</h3>
-            <p>IP設定画面でGatewayを見直し、Command Promptで <code>ping</code> や <code>ipconfig</code> 的な確認を行います。</p>
+            <p>IP Configuration で Gateway の値を見直し、Command Prompt から <code>ping</code> や <code>ipconfig</code> で設定と疎通を確認します。</p>
           </article>
           <article class="card">
             <h3>Switch / Router のCLI</h3>
-            <p><code>Router# show ip interface brief</code>、<code>Switch# show vlan brief</code>、<code>Router# show ip route</code> が基本の確認セットです。</p>
+            <p><code>Router# show ip interface brief</code>、<code>Switch# show vlan brief</code>、<code>Router# show ip route</code> の3つが、基本の確認セットです。</p>
           </article>
           <article class="card">
             <h3>Simulationモード</h3>
-            <p>どの機器までパケットが届いたかを視覚的に追えます。設定ミスの場所を狭めるのに非常に役立ちます。</p>
+            <p>パケットがどの機器まで届いたかを目で追えます。設定ミスの場所を絞り込むのに非常に役立ちます。</p>
           </article>
         </div>
       </section>
@@ -163,25 +163,25 @@
           <article class="card">
             <h3>症状: 同一LANなのにPingが通らない</h3>
             <ul class="packet-list">
-              <li>まず物理接続とポート状態を見る</li>
-              <li>次にPCのIPとマスクを見る</li>
-              <li>Switch側のVLAN割り当てが意図通りか確認する</li>
+              <li>まず物理接続とポートの状態を見る</li>
+              <li>次に PC の IP アドレスとサブネットマスクを見る</li>
+              <li>Switch 側の VLAN 割り当てが意図どおりか確認する</li>
             </ul>
           </article>
           <article class="card">
             <h3>症状: Routerの向こう側だけ届かない</h3>
             <ul class="packet-list">
-              <li>PCのGatewayが正しいか確認する</li>
-              <li>Routerのインターフェースが up/up か見る</li>
-              <li><code>Router# show ip route</code> で遠隔ネットワークの経路を見る</li>
+              <li>PC の Gateway が正しいか確認する</li>
+              <li>Router のインターフェースが up/up か見る</li>
+              <li><code>Router# show ip route</code> で遠隔ネットワークへの経路を見る</li>
             </ul>
           </article>
           <article class="card">
             <h3>症状: VLAN間通信だけ失敗する</h3>
             <ul class="packet-list">
-              <li>trunkポート設定を確認する</li>
-              <li>Routerサブインターフェースと VLAN 番号の対応を見る</li>
-              <li>各PCのGatewayが VLAN ごとのRouter IPになっているか確認する</li>
+              <li>trunk ポートの設定を確認する</li>
+              <li>Router のサブインターフェースと VLAN 番号の対応を見る</li>
+              <li>各 PC の Gateway が、自分の VLAN 用の Router IP になっているか確認する</li>
             </ul>
           </article>
         </div>
@@ -208,7 +208,7 @@ Router# show ip route</div>
         </div>
         <section class="callout success">
           <h3>考え方のコツ</h3>
-          <p>「設定を全部読む」のではなく、「この症状なら次に何を見るべきか」を決めてからコマンドを打つと、切り分けが早くなります。これはPacket Tracerでも実機でも同じです。</p>
+          <p>設定を頭から全部読み直すのではなく、「この症状なら、次はここを見る」と決めてからコマンドを打つと、切り分けは一気に速くなります。これは Packet Tracer でも実機でも同じです。</p>
         </section>
       </section>
 
@@ -216,12 +216,12 @@ Router# show ip route</div>
         <div class="section-head">
           <div class="small-pill">Check</div>
           <h2>この単元の理解度チェック</h2>
-          <p class="quiz-help">切り分けの順番と確認コマンドを確認します。</p>
+          <p class="quiz-help">切り分けの順番と、確認コマンドを振り返ります。</p>
         </div>
 
         <form data-quiz-form>
           <div class="quiz-grid">
-            <article class="quiz-card quiz-question" data-question="q1" data-explanation="切り分けは、物理接続 → L2 → L3 → 経路 → 疎通試験 の順で上から狭めていくのが基本です。">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="切り分けは、物理接続 → L2 → L3 → 経路 → 疎通試験の順に、下の層から候補を絞っていくのが基本です。">
               <fieldset>
                 <legend>Q1. トラブルシュートの最初の確認として最も適切なのはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="ts-q1" data-correct="true"> 物理接続とポート状態</label>
@@ -229,7 +229,7 @@ Router# show ip route</div>
                 <label class="option-label"><input type="radio" name="ts-q1"> 保存コマンドを先に打つ</label>
               </fieldset>
             </article>
-            <article class="quiz-card quiz-question" data-question="q2" data-explanation="遠隔ネットワークへの経路確認には Router# show ip route が基本です。">
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="遠隔ネットワークへの経路を確認する代表コマンドは Router# show ip route です。">
               <fieldset>
                 <legend>Q2. 遠隔ネットワークへの経路が入っているか確認したいときの代表コマンドはどれですか？</legend>
                 <label class="option-label"><input type="radio" name="ts-q2"> Switch# show mac address-table</label>
@@ -257,7 +257,7 @@ Router# show ip route</div>
         <a class="lesson-link" href="index.html">
           <span>学習トップへ</span>
           <strong>全体の流れを見直す</strong>
-          <p>必要な単元へサイドバーから戻り、各ページ末尾の理解度チェックで復習できます。</p>
+          <p>サイドバーから必要な単元に戻り、各ページ末尾の理解度チェックで復習できます。</p>
         </a>
       </section>
     </main>

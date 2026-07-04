@@ -89,13 +89,13 @@ document.querySelectorAll("[data-quiz-form]").forEach((quizForm) => {
     let summary = "";
 
     if (ratio === 1) {
-      summary = "満点です。この単元の要点がかなりしっかり整理できています。";
+      summary = "満点です。この単元の要点をしっかり整理できています。";
     } else if (ratio >= 0.75) {
-      summary = "良い結果です。構成図とコマンド例をもう一度見ると、さらに定着しやすくなります。";
+      summary = "良い結果です。構成図とコマンド例をもう一度見直すと、さらに定着します。";
     } else if (ratio >= 0.5) {
-      summary = "基礎は掴めています。構成図のIPと機器の役割を見直してから、もう一度答えると理解が深まります。";
+      summary = "基礎は掴めています。構成図のIPと機器の役割を見直してから答え直すと、理解が深まります。";
     } else {
-      summary = "ここから伸ばせます。最初の構成図と step by step を上から見直してから再挑戦してみてください。";
+      summary = "ここから伸ばせます。最初の構成図と手順を上から見直して、もう一度挑戦してみてください。";
     }
 
     resultBox.innerHTML = `
