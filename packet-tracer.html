@@ -69,7 +69,7 @@
           <div class="diagram-link"></div>
           <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>管理IP 192.168.10.2 /24</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/0: 192.168.10.1 /24</small></div>
+          <div class="diagram-node">R1<small><span class="device-name">ISR 1941</span>G0/0: 192.168.10.1 /24</small></div>
         </div>
 
         <div class="grid-2">
@@ -100,7 +100,7 @@
         <div class="grid-2">
           <article class="card">
             <h3>機器パレット</h3>
-            <p>画面下部のパレットから Router、Switch、End Devices を選んでワークスペースに配置します。最初は PC、2960 系の Switch、Router の3種類だけで十分です。</p>
+            <p>画面下部のパレットから Router、Switch、End Devices を選んでワークスペースに配置します。最初は PC、2960 系の Switch、<strong>1941</strong> の Router の3種類だけで十分です。機種の選び方は、このあとの「装置の選び方とポート名の関係」で詳しく説明します。</p>
           </article>
           <article class="card">
             <h3>Realtime と Simulation</h3>
@@ -181,6 +181,66 @@
 
       <section class="section fade-in delay-2">
         <div class="section-head">
+          <div class="small-pill">Device Selection</div>
+          <h2>装置の選び方とポート名の関係</h2>
+          <p>Packet Tracer のパレットには、Router や Switch の機種が何種類も並んでいます。どれを選んでも学習はできますが、<strong>機種によって搭載しているポートの種類と番号が違う</strong>ため、選んだ機種が教材と異なると、コマンド例のポート名がそのままでは使えません。この教材では、次の機種を選ぶことを前提にしています。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>ポートの種類とポート名</h3>
+            <p>Cisco 機器のポート名は「ポートの種類 + 番号」で決まります。代表的な種類は次の2つです。</p>
+            <ul class="packet-list">
+              <li><strong>FastEthernet</strong>(100Mbps): <code>Fa0/1</code> のように表記。コマンドでは <code>interface fastEthernet0/1</code></li>
+              <li><strong>GigabitEthernet</strong>(1Gbps): <code>G0/0</code> のように表記。コマンドでは <code>interface gigabitEthernet0/0</code></li>
+            </ul>
+            <p>同じ「0/1」でも、FastEthernet 0/1 と GigabitEthernet 0/1 は<strong>別のポート</strong>です。種類の部分まで含めて初めてポートが特定できます。</p>
+          </article>
+          <article class="card">
+            <h3>機種が違うとポート名も変わる</h3>
+            <p>たとえば古い機種の 1841 は FastEthernet しか搭載していないため、教材の <code>gigabitEthernet0/0</code> という指定は存在しません。逆に新しい ISR4331 は <code>GigabitEthernet0/0/0</code> という3階層の番号になり、これも教材の表記と一致しません。</p>
+            <p>選んだ機種に実際にどんなポートがあるかは、CLI で次のコマンドを打つと一覧できます。</p>
+            <div class="code-block">Router# show ip interface brief</div>
+          </article>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>役割</th>
+                <th>この教材で選ぶ機種</th>
+                <th>搭載ポートと教材での使い方</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Router</td>
+                <td><strong>1941</strong></td>
+                <td>GigabitEthernet が <code>G0/0</code>・<code>G0/1</code> の2ポート。教材のコマンド例(<code>interface gigabitEthernet0/0</code> など)がそのまま使えます。同じポート名を持つ 2911 でも代用できます。</td>
+              </tr>
+              <tr>
+                <td>Switch(L2)</td>
+                <td><strong>Catalyst 2960</strong></td>
+                <td>PC の接続には FastEthernet の <code>Fa0/1</code>〜<code>Fa0/24</code> を、アップリンクには GigabitEthernet の <code>G0/1</code>・<code>G0/2</code> を使います。</td>
+              </tr>
+              <tr>
+                <td>L3 Switch</td>
+                <td><strong>Catalyst 3560</strong></td>
+                <td>L3 スイッチ・SVI の単元で使用します。ダウンリンクは 2960 と同じく FastEthernet(<code>Fa0/1</code>〜)です。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <section class="callout warning">
+          <h3>別の機種を選んでしまったら</h3>
+          <p>教材と違う機種でも、ポート名を読み替えれば同じ手順で学習できます。たとえば 1841 や 2811 なら <code>interface gigabitEthernet0/0</code> を <code>interface fastEthernet0/0</code> に、ISR4331 なら <code>interface gigabitEthernet0/0/0</code> に読み替えてください。迷ったら <code>show ip interface brief</code> で実際のポート名を確認してから設定するのが確実です。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
           <div class="small-pill">First Actions</div>
           <h2>最初のラボを作るまでの手順</h2>
         </div>
@@ -196,7 +256,7 @@
             <div class="step-number">STEP 2</div>
             <div>
               <h3>PC、Switch、Routerを1台ずつ置く</h3>
-              <p>End Devices から PC を、Switches から 2960 を、Routers から任意の Router を選んで、1台ずつ配置します。</p>
+              <p>End Devices から PC を、Switches から <strong>2960</strong> を、Routers から <strong>1941</strong> を選んで、1台ずつ配置します。Router の機種は必ず 1941(または 2911)にしてください。別の機種を選ぶと、GigabitEthernet ではなく FastEthernet 搭載だったり番号の桁数が違ったりして、教材のポート名と一致しなくなります。</p>
             </div>
           </article>
           <article class="step-card">

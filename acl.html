@@ -98,7 +98,7 @@
           <div class="diagram-link"></div>
           <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>社内LANのスイッチ</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/0: 192.168.1.1<br>G0/1: 192.168.2.1</small></div>
+          <div class="diagram-node">R1<small><span class="device-name">ISR 1941</span>G0/0: 192.168.1.1<br>G0/1: 192.168.2.1</small></div>
           <div class="diagram-link"></div>
           <div class="diagram-node">Server<small><span class="device-name">Web Server</span>192.168.2.100 /24<br>GW 192.168.2.1</small></div>
         </div>
@@ -117,6 +117,11 @@
             <p>Packet Tracer の Server は、Services タブで HTTP が最初から有効になっています。この単元では Ping(ICMP)と Web(HTTP)という2種類の通信を用意し、後半の拡張 ACL で「Ping は通るのに Web だけ止まる」という選別を体験します。</p>
           </article>
         </div>
+
+        <section class="callout warning">
+          <h3>Packet Tracer で選ぶ Router は 1941</h3>
+          <p>この単元のコマンド例は、GigabitEthernet ポート(<code>G0/0</code>・<code>G0/1</code>)を持つ <strong>1941</strong>(2911 でも可)を選んだ前提です。1841 のような FastEthernet 搭載機種を選んだ場合は、<code>interface gigabitEthernet0/0</code> を <code>interface fastEthernet0/0</code> のようにポート名を読み替えてください。ACL は「どのポートのどの方向に付けるか」がすべてなので、ポート名の取り違えは結果に直結します。実際のポート名は <code>show ip interface brief</code> で確認できます。詳しくは<a href="packet-tracer.html">Packet Tracer の使い方</a>の「装置の選び方とポート名の関係」を参照してください。</p>
+        </section>
       </section>
 
       <section class="section fade-in delay-2">

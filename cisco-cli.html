@@ -69,7 +69,7 @@
           <div class="diagram-link"></div>
           <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>Access Port</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/1: 192.168.10.1 /24</small></div>
+          <div class="diagram-node">R1<small><span class="device-name">ISR 1941</span>G0/1: 192.168.10.1 /24</small></div>
         </div>
 
         <div class="grid-2">
@@ -82,6 +82,11 @@
             <p>Router の LAN 側インターフェースに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。この IP が、そのまま PC-A のデフォルトゲートウェイになります。</p>
           </article>
         </div>
+
+        <section class="callout warning">
+          <h3>Packet Tracer で選ぶ Router は 1941</h3>
+          <p>この単元のコマンド例は、GigabitEthernet ポート(<code>G0/0</code>・<code>G0/1</code>)を持つ <strong>1941</strong>(2911 でも可)を選んだ前提です。1841 のような FastEthernet 搭載機種を選んだ場合は、<code>interface gigabitEthernet0/1</code> を <code>interface fastEthernet0/1</code> のようにポート名を読み替えてください。実際のポート名は <code>show ip interface brief</code> で確認できます。詳しくは<a href="packet-tracer.html">Packet Tracer の使い方</a>の「装置の選び方とポート名の関係」を参照してください。</p>
+        </section>
       </section>
 
       <section class="section fade-in delay-2">

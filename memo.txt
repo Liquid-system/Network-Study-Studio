@@ -69,3 +69,23 @@ in / out の重点解説
 - index.html: 統計(11ページ・7演習・10チェック)、ロードマップ、ページ一覧、到達目標に ACL を反映
 
 検証スクリプトで、全11ページのナビ件数と番号、リンク切れなし、クイズが app.js の仕組み(3問・採点・解説表示)に適合していること、使用 CSS クラスがすべて styles.css に存在することを確認済みです。コミットが必要でしたらお知らせください。
+j
+すべての変更が完了し、検証も通りました。
+
+変更の概要
+
+教材はルーターの設定例が GigabitEthernet0/0・0/1 表記なのに機種が「任意の Router」と非指定だったため、推奨機種を ISR 1941(G0/0・G0/1 の2ポート搭載。全ラボは最大2ポートしか使わないので十分。2911 でも代用可)として全ページに明示しました。
+
+packet-tracer.html(中心的な追記)
+- 新セクション「装置の選び方とポート名の関係」を追加。FastEthernet(100Mbps・Fa0/1)と GigabitEthernet(1Gbps・G0/0)というポートの種類の違い、「同じ 0/1 でも種類が違えば別ポート」であること、推奨装置の対応表(Router → 1941、L2 Switch → Catalyst 2960、L3 Switch → Catalyst 3560)を解説
+- 「別の機種を選んでしまったら」の callout で、1841/2811 なら fastEthernet0/0、ISR4331 なら gigabitEthernet0/0/0 への読み替え方と、show ip interface brief での確認方法を案内
+- 装置配置の手順(STEP 2)を「任意の Router」から「1941 を選ぶ」に変更
+
+各ハンズオンページ(lab、cisco-cli、intermediate-labs、troubleshooting、acl、ospf、advanced-labs の7ページ)
+- トポロジ図の機種名を「Router」から「ISR 1941」に更新(advanced-labs は「社内Router (1941)」)
+- 「今回の構成」セクション末尾に callout 注記を追加。各単元の内容に合わせて文面を調整しています(例: intermediate-labs ではサブインターフェースが fastEthernet0/0.10 になる点、advanced-labs では NAT コマンドのポート名、acl では「ポート名の取り違えが結果に直結する」点に言及)
+
+l3-switch-svi.html
+- 既存の「3560 系を選ぶ」ヒントに、3560 の PC 向けポートが FastEthernet(Fa0/1〜)である旨を一文補足
+
+検証として、「任意の Router」と図中の汎用「Router」表記が残っていないこと、7ページすべてに注記が1つずつ入ったこと、全9ファイルの HTML タグ対応が崩れていないことを確認済みです。コミットが必要であれば言ってください。

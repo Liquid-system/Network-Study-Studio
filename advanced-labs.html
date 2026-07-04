@@ -68,9 +68,9 @@
           <div class="diagram-link"></div>
           <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>社内LANのスイッチ</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">社内Router</span>G0/0: 192.168.10.1<br>G0/1: 203.0.113.1 /30</small></div>
+          <div class="diagram-node">R1<small><span class="device-name">社内Router (1941)</span>G0/0: 192.168.10.1<br>G0/1: 203.0.113.1 /30</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">ISP<small><span class="device-name">Router</span>G0/0: 203.0.113.2 /30<br>G0/1: 198.51.100.1 /24</small></div>
+          <div class="diagram-node">ISP<small><span class="device-name">ISR 1941</span>G0/0: 203.0.113.2 /30<br>G0/1: 198.51.100.1 /24</small></div>
           <div class="diagram-link"></div>
           <div class="diagram-node">Server<small><span class="device-name">Web Server</span>198.51.100.10 /24<br>GW 198.51.100.1</small></div>
         </div>
@@ -92,6 +92,11 @@
             </ul>
           </article>
         </div>
+
+        <section class="callout warning">
+          <h3>Packet Tracer で選ぶ Router は 1941</h3>
+          <p>R1・ISP の2台とも、GigabitEthernet ポート(<code>G0/0</code>・<code>G0/1</code>)を持つ <strong>1941</strong>(2911 でも可)を選んでください。1841 のような FastEthernet 搭載機種を選んだ場合は、<code>interface gigabitEthernet0/0</code> を <code>interface fastEthernet0/0</code> のようにポート名を読み替える必要があります(NAT の <code>ip nat inside source list 1 interface ...</code> のポート名も同様です)。実際のポート名は <code>show ip interface brief</code> で確認できます。詳しくは<a href="packet-tracer.html">Packet Tracer の使い方</a>の「装置の選び方とポート名の関係」を参照してください。</p>
+        </section>
       </section>
 
       <section class="section fade-in delay-2">

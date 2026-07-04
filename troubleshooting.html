@@ -69,7 +69,7 @@
           <div class="diagram-link"></div>
           <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>VLAN 10</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/0: 192.168.10.1<br>G0/1: 10.0.0.1 /30</small></div>
+          <div class="diagram-node">R1<small><span class="device-name">ISR 1941</span>G0/0: 192.168.10.1<br>G0/1: 10.0.0.1 /30</small></div>
           <div class="diagram-link"></div>
           <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.20.10 /24<br>GW 192.168.20.1</small></div>
         </div>
@@ -88,6 +88,11 @@
             </ul>
           </article>
         </div>
+
+        <section class="callout warning">
+          <h3>Packet Tracer で選ぶ Router は 1941</h3>
+          <p>この単元も、Router には GigabitEthernet ポート(<code>G0/0</code>・<code>G0/1</code>)を持つ <strong>1941</strong>(2911 でも可)を使う前提です。1841 のような FastEthernet 搭載機種では図の <code>G0/0</code>・<code>G0/1</code> が <code>Fa0/0</code>・<code>Fa0/1</code> に変わるため、確認コマンドの結果もそのポート名で表示されます。実際のポート名は <code>show ip interface brief</code> で確認できます。詳しくは<a href="packet-tracer.html">Packet Tracer の使い方</a>の「装置の選び方とポート名の関係」を参照してください。</p>
+        </section>
       </section>
 
       <section class="section fade-in delay-2">
