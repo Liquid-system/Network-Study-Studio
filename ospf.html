@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSPF入門 | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="ospf">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>Router が3台になると、静的ルートの管理は一気に大変になります。ここでは動的ルーティングの代表格 OSPF を使い、経路を自動で学習させる方法を学びます。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">09</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">10</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">中級ラボの静的ルーティングを終えてから取り組むと、「自動で経路が入る」ありがたみが実感できます。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">Dynamic Routing / OSPF / Single Area</div>
+        <h1>経路を手で書く世界から、自動で学ぶ世界へ。</h1>
+        <p>中級ラボでは、Router に静的ルートを1本ずつ手で入力しました。この単元では Router を3台に増やし、静的ルートの限界を体感したうえで、OSPF に経路を自動で学習させます。動的ルーティングの第一歩として、シングルエリア(Area 0)だけに絞って学びます。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Why Dynamic Routing</div>
+          <h2>なぜ静的ルートだけでは足りないのか</h2>
+          <p>Router が2台までなら静的ルートで十分戦えます。しかし3台以上になると、書くべきルートの本数が急に増え、構成変更のたびに全 Router を手作業で直すことになります。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>静的ルートの場合</h3>
+            <ul class="packet-list">
+              <li>今回の3台構成では、合計6本の静的ルートを手で書く必要があります</li>
+              <li>ネットワークを1つ追加するたびに、離れた Router 全部に経路を追記します</li>
+              <li>経路が壊れても、自動では復旧しません</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>OSPFの場合</h3>
+            <ul class="check-list">
+              <li>各 Router に「自分が持っているネットワーク」を宣言するだけで、残りは自動で交換されます</li>
+              <li>Router 同士が隣接関係(ネイバー)を結び、経路情報を常に同期します</li>
+              <li>リンクが切れると、経路を自動で計算し直します</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Unit Topology</div>
+          <h2>この単元で構築する構成</h2>
+          <p>Router 3台を一直線につなぎ、両端の LAN に PC を1台ずつ置きます。Router 間のリンクには、2台しか入らない小さなネットワーク(/30)を使う点も、この単元の新しい学習ポイントです。</p>
+        </div>
+        <div class="wide-diagram">
+          <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.1.10 /24<br>GW 192.168.1.1</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/0: 192.168.1.1<br>G0/1: 10.0.12.1 /30</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R2<small><span class="device-name">Router</span>G0/0: 10.0.12.2 /30<br>G0/1: 10.0.23.1 /30</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R3<small><span class="device-name">Router</span>G0/0: 10.0.23.2 /30<br>G0/1: 192.168.3.1 /24</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>192.168.3.10 /24<br>GW 192.168.3.1</small></div>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>アドレス表</h3>
+            <ul class="packet-list">
+              <li>PC-A の LAN: <code>192.168.1.0 /24</code></li>
+              <li>R1 と R2 の間: <code>10.0.12.0 /30</code>(R1 が .1、R2 が .2)</li>
+              <li>R2 と R3 の間: <code>10.0.23.0 /30</code>(R2 が .1、R3 が .2)</li>
+              <li>PC-B の LAN: <code>192.168.3.0 /24</code></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>/30 を使う理由</h3>
+            <p>Router 同士をつなぐリンクには機器が2台しかいません。<code>/30</code>(サブネットマスク <code>255.255.255.252</code>)は使える IP がちょうど2個のネットワークなので、Router 間リンクの定番として使われます。/24 との違いを意識しながら設定してみてください。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Step by Step</div>
+          <h2>OSPFを動かすまでの手順</h2>
+        </div>
+
+        <div class="step-list">
+          <article class="step-card">
+            <div class="step-number">STEP 1</div>
+            <div>
+              <h3>機器を配置して IP を設定する</h3>
+              <p>Router 3台と PC 2台を配置し、まずは各インターフェースに IP を設定します。ここは基礎ラボ・中級ラボの復習です。R1 の例を示すので、R2 と R3 もアドレス表どおりに設定してください。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.0
+R1(config-if)# no shutdown
+R1(config-if)# exit
+R1(config)# interface gigabitEthernet0/1
+R1(config-if)# ip address 10.0.12.1 255.255.255.252
+R1(config-if)# no shutdown
+R1(config-if)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 2</div>
+            <div>
+              <h3>隣どうしの疎通を確認する</h3>
+              <p>OSPF を設定する前に、R1 から <code>10.0.12.2</code>(R2)へ、R2 から <code>10.0.23.2</code>(R3)へ Ping を打ちます。隣接リンクが通らない状態で OSPF を入れても、ネイバーは絶対に張れません。先に土台を固めるのがコツです。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 3</div>
+            <div>
+              <h3>R1 に OSPF を設定する</h3>
+              <p><code>network</code> コマンドで「OSPF に参加させるネットワーク」を宣言します。ここで使うワイルドカードマスクは、サブネットマスクの 0 と 255 を反転させたものです(<code>/24</code> なら <code>0.0.0.255</code>、<code>/30</code> なら <code>0.0.0.3</code>)。</p>
+              <div class="code-block">R1(config)# router ospf 1
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
+R1(config-router)# network 10.0.12.0 0.0.0.3 area 0
+R1(config-router)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 4</div>
+            <div>
+              <h3>R2 と R3 にも OSPF を設定する</h3>
+              <p>各 Router は「自分に直接つながっているネットワーク」だけを宣言します。離れたネットワークを書く必要がないのが、静的ルートとの大きな違いです。</p>
+              <div class="code-block">R2(config)# router ospf 1
+R2(config-router)# router-id 2.2.2.2
+R2(config-router)# network 10.0.12.0 0.0.0.3 area 0
+R2(config-router)# network 10.0.23.0 0.0.0.3 area 0
+R2(config-router)# exit
+
+R3(config)# router ospf 1
+R3(config-router)# router-id 3.3.3.3
+R3(config-router)# network 10.0.23.0 0.0.0.3 area 0
+R3(config-router)# network 192.168.3.0 0.0.0.255 area 0
+R3(config-router)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 5</div>
+            <div>
+              <h3>ネイバーと経路を確認する</h3>
+              <p>設定直後にコンソールへ表示される <code>Full adjacency</code> のメッセージが、ネイバー確立のサインです。コマンドでも状態を確かめます。</p>
+              <div class="code-block">R1# show ip ospf neighbor
+R1# show ip route ospf
+R1# copy running-config startup-config</div>
+              <p><code>show ip ospf neighbor</code> で State が <code>FULL</code> になっていれば、経路交換は完了しています。<code>show ip route</code> では、自分で書いていない <code>192.168.3.0/24</code> が <code>O</code>(OSPF)付きで載っているはずです。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 6</div>
+            <div>
+              <h3>疎通確認と「自動復旧」の観察</h3>
+              <p>PC-A から PC-B へ Ping が通ることを確認したら、仕上げに OSPF らしさを体験しましょう。R2 の <code>G0/1</code> を <code>shutdown</code> してから <code>show ip route</code> を見ると、失われた経路が経路表から自動で消えます。<code>no shutdown</code> で戻すと、数秒で経路が復活します。静的ルートでは起きない動きです。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Why It Works</div>
+          <h2>OSPFの中で起きていること</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>1. ネイバーを見つける</h3>
+            <p>OSPF を有効にした Router は、リンク上に Hello パケットを定期的に送り、同じ Area の相手を見つけて隣接関係を結びます。</p>
+          </article>
+          <article class="card">
+            <h3>2. 地図を共有する</h3>
+            <p>各 Router は「自分がどのネットワークにつながっているか」という情報(LSA)を交換し、全員が同じネットワーク地図(LSDB)を持ちます。</p>
+          </article>
+          <article class="card">
+            <h3>3. 最短経路を計算する</h3>
+            <p>共有した地図をもとに、各 Router が自分視点での最短経路を計算し、その結果だけを経路表に載せます。リンク断が起きると再計算します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">If It Fails</div>
+          <h2>うまくいかないときの確認ポイント</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>ネイバーが張れない</h3>
+            <p>まず <code>R1# show ip ospf neighbor</code> に相手が出てくるかを見ます。出てこない場合は、リンクの up/down と、<code>network</code> コマンドの範囲にそのインターフェースが含まれているかを確認します。</p>
+          </article>
+          <article class="card">
+            <h3>ワイルドカードの間違い</h3>
+            <p><code>network 10.0.12.0 0.0.0.3</code> と書くべきところを <code>255.255.255.252</code> と書いてしまうのが定番のミスです。ワイルドカードマスクはサブネットマスクの反転だと覚えてください。</p>
+          </article>
+          <article class="card">
+            <h3>area 番号の不一致</h3>
+            <p>今回はすべて <code>area 0</code> に統一します。片方だけ <code>area 1</code> になっていると、同じリンク上にいてもネイバーになれません。<code>R1# show running-config</code> で見直します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">動的ルーティングの利点と、OSPF 設定の要点を振り返ります。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="OSPF は Router 同士が経路情報を自動で交換し、構成変更や障害時には経路を自動で再計算します。手作業での経路追加が不要になる点が静的ルートとの最大の違いです。">
+              <fieldset>
+                <legend>Q1. 静的ルートと比べたときの OSPF の利点として最も適切なのはどれですか？</legend>
+                <label class="option-label"><input type="radio" name="ospf-q1"> 設定コマンドが1行で済むので設定ミスが起きない</label>
+                <label class="option-label"><input type="radio" name="ospf-q1" data-correct="true"> 経路を自動で学習し、障害時にも経路を再計算してくれる</label>
+                <label class="option-label"><input type="radio" name="ospf-q1"> Ping の速度が上がり、通信が高速になる</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="ワイルドカードマスクはサブネットマスクの反転です。/30(255.255.255.252)の反転は 0.0.0.3 になります。">
+              <fieldset>
+                <legend>Q2. <code>/30</code> のネットワークを network コマンドで宣言するとき、正しいワイルドカードマスクはどれですか？</legend>
+                <label class="option-label"><input type="radio" name="ospf-q2"> 255.255.255.252</label>
+                <label class="option-label"><input type="radio" name="ospf-q2"> 0.0.0.255</label>
+                <label class="option-label"><input type="radio" name="ospf-q2" data-correct="true"> 0.0.0.3</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q3" data-explanation="ネイバー関係の確認は show ip ospf neighbor が基本で、State が FULL なら経路交換が完了しています。">
+              <fieldset>
+                <legend>Q3. OSPF のネイバーが正しく確立しているかを確認する代表コマンドはどれですか？</legend>
+                <label class="option-label"><input type="radio" name="ospf-q3"> R1# show mac address-table</label>
+                <label class="option-label"><input type="radio" name="ospf-q3" data-correct="true"> R1# show ip ospf neighbor</label>
+                <label class="option-label"><input type="radio" name="ospf-q3"> R1# show vlan brief</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">3問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="troubleshooting.html">
+          <span>前のページ</span>
+          <strong>トラブルシュートへ戻る</strong>
+          <p>ネイバーが張れないときも、物理 → L2 → L3 の切り分け手順がそのまま役立ちます。</p>
+        </a>
+        <a class="lesson-link" href="advanced-labs.html">
+          <span>次のレッスン</span>
+          <strong>応用ラボへ進む</strong>
+          <p>DHCP・NAT・ACL を設定して、実務のネットワークにぐっと近づきます。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -20,7 +20,7 @@
 
       <div class="sidebar-note">
         <strong>学習前提</strong>
-        <p>この教材では、Cisco Packet Tracer を使って、概念の理解から中級ラボ、L3 Switch / SVI、トラブルシュートまでを段階的に学びます。各単元の最後には理解度チェックがあり、その場で学んだ内容を振り返れます。</p>
+        <p>この教材では、Cisco Packet Tracer を使って、概念の理解から中級ラボ、L3 Switch / SVI、トラブルシュート、さらに OSPF や DHCP・NAT・ACL の応用まで段階的に学びます。各単元の最後には理解度チェックがあり、その場で学んだ内容を振り返れます。</p>
       </div>
 
       <div>
@@ -82,6 +82,20 @@
               <small>切り分け力を伸ばす</small>
             </div>
           </a>
+          <a href="ospf.html" data-page-link="ospf">
+            <div class="nav-number">09</div>
+            <div class="nav-copy">
+              <strong>OSPF入門</strong>
+              <small>経路を自動で学ぶ</small>
+            </div>
+          </a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs">
+            <div class="nav-number">10</div>
+            <div class="nav-copy">
+              <strong>応用ラボ</strong>
+              <small>DHCP・NAT・ACL</small>
+            </div>
+          </a>
         </nav>
       </div>
 
@@ -102,7 +116,7 @@
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Packet Tracer / Beginner Friendly / Cisco IOS</div>
         <h1>初心者でも迷わない、段階式ネットワーク学習サイト。</h1>
-        <p>概念の理解、Packet Tracer の操作、Cisco コマンド、基礎ラボ、中級ラボ、L3 Switch / SVI、トラブルシュートを、1ページに詰め込まずテーマごとに分けて整理しました。最初の一歩から障害切り分けの入り口まで一歩ずつ進められ、各ページの最後で理解度も確認できます。</p>
+        <p>概念の理解、Packet Tracer の操作、Cisco コマンド、基礎ラボ、中級ラボ、L3 Switch / SVI、トラブルシュート、そして OSPF・DHCP・NAT・ACL の応用ラボまでを、1ページに詰め込まずテーマごとに分けて整理しました。最初の一歩から実務に近い構成まで一歩ずつ難易度を上げながら進められ、各ページの最後で理解度も確認できます。</p>
       </header>
 
       <section class="hero-grid fade-in delay-2">
@@ -118,19 +132,19 @@
         <article class="hero-panel fade-in delay-3">
           <div class="metric-grid">
             <div class="hero-stat">
-              <strong>8</strong>
+              <strong>10</strong>
               <span>学習ページ</span>
             </div>
             <div class="hero-stat">
-              <strong>4</strong>
+              <strong>6</strong>
               <span>演習フェーズ</span>
             </div>
             <div class="hero-stat">
-              <strong>25+</strong>
+              <strong>40+</strong>
               <span>CLIコマンド</span>
             </div>
             <div class="hero-stat">
-              <strong>7</strong>
+              <strong>9</strong>
               <span>単元別チェック</span>
             </div>
           </div>
@@ -162,7 +176,11 @@
             <p>VLAN 間通信、静的ルーティング、SVI による VLAN 間ルーティングへと順に進み、構成パターンの引き出しを増やします。</p>
           </article>
           <article class="card">
-            <h3>5. 単元末尾で理解度確認</h3>
+            <h3>5. OSPFと応用ラボで実務に近づく</h3>
+            <p>Router 3台構成の OSPF で経路の自動学習を体験し、DHCP・NAT・ACL で「自宅のルーターがやっていること」を自分の手で再現します。仕上げは全単元の知識を使う総合チャレンジです。</p>
+          </article>
+          <article class="card">
+            <h3>6. 単元末尾で理解度確認</h3>
             <p>各ページの最後に、その単元専用の理解度チェックを用意しています。読んだ内容をその場で振り返れるので、あいまいなまま先へ進む心配がありません。</p>
           </article>
         </div>
@@ -211,6 +229,16 @@
             <strong>通信できない時の確認順を固める</strong>
             <p>Packet Tracer で起きやすい失敗例をもとに、原因を切り分ける順番を身につけます。</p>
           </a>
+          <a class="lesson-link" href="ospf.html">
+            <span>09. OSPF入門</span>
+            <strong>経路を自動で学ぶ動的ルーティング</strong>
+            <p>Router 3台構成で静的ルートの限界を体感し、OSPF に経路を自動学習させます。</p>
+          </a>
+          <a class="lesson-link" href="advanced-labs.html">
+            <span>10. 応用ラボ</span>
+            <strong>DHCP・NAT・ACLと総合チャレンジ</strong>
+            <p>IP の自動配布、プライベート IP の変換、通信制御を1つの構成に積み上げ、最後は要件だけを見て一人で構築します。</p>
+          </a>
         </div>
       </section>
 
@@ -230,6 +258,8 @@
               <li>Router と Switch の基本設定を正しい順番で投入できる</li>
               <li>VLAN 間通信と静的ルーティングの基本構成を自力で再現できる</li>
               <li>L3 Switch の SVI で VLAN 間ルーティングの最小構成を作れる</li>
+              <li>OSPF で Router 3台構成の経路を自動学習させ、ネイバーの状態を確認できる</li>
+              <li>DHCP・NAT(PAT)・ACL を設定し、動作をコマンドで検証できる</li>
             </ul>
           </article>
           <article class="card">
@@ -241,6 +271,8 @@
               <li>基礎ラボで手順を固める</li>
               <li>中級ラボと L3 Switch / SVI で構成パターンを広げる</li>
               <li>トラブルシュートで確認の順番を身につける</li>
+              <li>OSPF 入門と応用ラボで、実務に近い構成に挑戦する</li>
+              <li>最後に総合チャレンジで、全単元の知識を結びつける</li>
               <li>各単元の最後に理解度チェックで振り返る</li>
             </ul>
           </article>

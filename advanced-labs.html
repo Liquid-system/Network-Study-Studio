@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>応用ラボ | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="advanced-labs">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>家庭やオフィスのネットワークで実際に動いている DHCP・NAT・ACL を、1つのトポロジに順番に積み上げて学びます。この教材の最終単元です。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">09</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">10</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">Lab A → B → C は同じトポロジに設定を積み上げていく構成です。途中を飛ばさず、1つずつ動作確認しながら進めてください。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">DHCP / NAT / ACL / Capstone Challenge</div>
+        <h1>自宅のルーターがやっていることを、自分の手で作る。</h1>
+        <p>ここまでの単元は「届くようにする」ための学習でした。この単元では、IP を自動で配る DHCP、社内のプライベート IP をインターネット向けに変換する NAT、通信を制御する ACL という、実務のネットワークに必ず登場する3つのサービスを、1つのトポロジに順番に積み上げます。最後には、全単元の知識を総動員する総合チャレンジも用意しました。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Unit Topology</div>
+          <h2>この単元で構築する構成</h2>
+          <p>社内 LAN と「インターネット側」を R1 が仲介する構成です。ISP Router の先にある Server を、インターネット上の Web サーバーに見立てます。Lab A から Lab C まで、この1つの構成を育てていきます。</p>
+        </div>
+        <div class="wide-diagram">
+          <div class="diagram-node">PC-A / PC-B<small><span class="device-name">End Device</span>IPはDHCPで自動取得<br>192.168.10.0 /24</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>社内LANのスイッチ</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1<small><span class="device-name">社内Router</span>G0/0: 192.168.10.1<br>G0/1: 203.0.113.1 /30</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">ISP<small><span class="device-name">Router</span>G0/0: 203.0.113.2 /30<br>G0/1: 198.51.100.1 /24</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">Server<small><span class="device-name">Web Server</span>198.51.100.10 /24<br>GW 198.51.100.1</small></div>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>アドレス設計の意図</h3>
+            <ul class="packet-list">
+              <li><code>192.168.10.0 /24</code> は社内専用のプライベート IP です</li>
+              <li><code>203.0.113.0 /30</code> と <code>198.51.100.0 /24</code> をグローバル IP(インターネット側)に見立てます</li>
+              <li>プライベート IP のままではインターネット側と通信できない、という前提が NAT の出発点です</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>先に手を動かす準備</h3>
+            <ul class="check-list">
+              <li>R1・ISP の各インターフェースに図のとおり IP を設定し、<code>no shutdown</code> まで済ませます</li>
+              <li>Server には固定で <code>198.51.100.10 /24</code>、GW <code>198.51.100.1</code> を設定します</li>
+              <li>PC の IP はまだ設定しません。Lab A で DHCP から配ります</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Lab A / DHCP</div>
+          <h2>Lab A: IPアドレスを自動で配る</h2>
+          <p>ここまでの単元では PC に IP を手入力してきましたが、実際のオフィスで社員の PC に1台ずつ手入力することはありません。R1 を DHCP サーバーにして、IP・サブネットマスク・ゲートウェイ・DNS を自動配布します。</p>
+        </div>
+        <div class="step-list">
+          <article class="step-card">
+            <div class="step-number">STEP 1</div>
+            <div>
+              <h3>配布しない IP を予約する</h3>
+              <p>Router や Server 用の IP が PC に配られてしまわないように、先頭の範囲を配布対象から外します。</p>
+              <div class="code-block">R1(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.9</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 2</div>
+            <div>
+              <h3>DHCP プールを作る</h3>
+              <p>「どのネットワークの IP を、どんな付属情報と一緒に配るか」をプールとして定義します。<code>default-router</code> が PC のデフォルトゲートウェイに、<code>dns-server</code> が PC の DNS 設定になります。</p>
+              <div class="code-block">R1(config)# ip dhcp pool LAN-POOL
+R1(dhcp-config)# network 192.168.10.0 255.255.255.0
+R1(dhcp-config)# default-router 192.168.10.1
+R1(dhcp-config)# dns-server 198.51.100.10
+R1(dhcp-config)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 3</div>
+            <div>
+              <h3>PC 側を DHCP に切り替えて確認する</h3>
+              <p>PC-A と PC-B の Desktop → IP Configuration で「DHCP」を選びます。<code>192.168.10.10</code> 以降の IP が自動で入れば成功です。Router 側でも、誰に何を配ったかを確認できます。</p>
+              <div class="code-block">R1# show ip dhcp binding</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Lab B / NAT</div>
+          <h2>Lab B: プライベートIPを変換して外へ出す</h2>
+          <p>この時点で PC から Server へ Ping を打っても、返事は戻ってきません。インターネット側(ISP)はプライベート IP <code>192.168.10.0/24</code> への戻り道を知らないからです。そこで R1 に NAT(PAT)を設定し、社内の全 PC が R1 の外側 IP <code>203.0.113.1</code> を共有して外に出られるようにします。これは家庭のブロードバンドルーターと同じ仕組みです。</p>
+        </div>
+        <div class="step-list">
+          <article class="step-card">
+            <div class="step-number">STEP 1</div>
+            <div>
+              <h3>変換対象を ACL で指定する</h3>
+              <p>「どの送信元 IP を変換するか」を番号付き ACL で定義します。ここで OSPF 単元で学んだワイルドカードマスクが再登場します。</p>
+              <div class="code-block">R1(config)# access-list 1 permit 192.168.10.0 0.0.0.255</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 2</div>
+            <div>
+              <h3>NAT の内側と外側を宣言する</h3>
+              <p>NAT では「どちらが社内(inside)で、どちらがインターネット側(outside)か」を Router に教える必要があります。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip nat inside
+R1(config-if)# exit
+R1(config)# interface gigabitEthernet0/1
+R1(config-if)# ip nat outside
+R1(config-if)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 3</div>
+            <div>
+              <h3>PAT と外向きの経路を設定する</h3>
+              <p><code>overload</code> が PAT(1つのグローバル IP を複数 PC で共有)の指定です。あわせて、外向きの通信をすべて ISP へ送るデフォルトルートも入れます。</p>
+              <div class="code-block">R1(config)# ip nat inside source list 1 interface gigabitEthernet0/1 overload
+R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 4</div>
+            <div>
+              <h3>変換の様子を観察する</h3>
+              <p>PC-A から <code>198.51.100.10</code> へ Ping を打ち、続けて PC-A の Web Browser で <code>http://198.51.100.10</code> を開いてみてください。そのうえで R1 の変換テーブルを見ると、送信元が <code>203.0.113.1</code> に書き換えられている様子が確認できます。</p>
+              <div class="code-block">R1# show ip nat translations</div>
+            </div>
+          </article>
+        </div>
+        <section class="callout success">
+          <h3>ここで一度立ち止まって考える</h3>
+          <p>ISP Router には <code>192.168.10.0/24</code> への経路を1本も書いていないのに、なぜ Ping の返事が PC まで戻れるのでしょうか。答えは「ISP から見ると、通信相手は R1 の <code>203.0.113.1</code> に見えているから」です。この理屈が自分の言葉で説明できれば、NAT は理解できています。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Lab C / ACL</div>
+          <h2>Lab C: 通信を選んで止める</h2>
+          <p>最後はセキュリティの第一歩、ACL(アクセスコントロールリスト)です。「PC-B からは Server への Web アクセスを禁止するが、それ以外の通信は許可する」というルールを R1 に設定します。全部止めるのではなく、狙った通信だけを止めるのがポイントです。</p>
+        </div>
+        <div class="step-list">
+          <article class="step-card">
+            <div class="step-number">STEP 1</div>
+            <div>
+              <h3>PC-B の IP を固定する</h3>
+              <p>DHCP のままだと PC-B の IP が変わる可能性があるため、この Lab では PC-B に <code>192.168.10.20 /24</code>(GW <code>192.168.10.1</code>)を手動設定して対象を固定します。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 2</div>
+            <div>
+              <h3>拡張 ACL でルールを書く</h3>
+              <p>拡張 ACL は「誰が・どこへ・何の通信か」まで指定できます。1行目で PC-B から Server への Web(HTTP)だけを拒否し、2行目でそれ以外をすべて許可します。</p>
+              <div class="code-block">R1(config)# access-list 100 deny tcp host 192.168.10.20 host 198.51.100.10 eq 80
+R1(config)# access-list 100 permit ip any any</div>
+              <p>2行目の <code>permit ip any any</code> を忘れると、ACL の末尾に隠れている「暗黙の deny」によって、社内からの通信がすべて止まってしまいます。ACL 事故の定番なので、必ずセットで覚えてください。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 3</div>
+            <div>
+              <h3>インターフェースに適用する</h3>
+              <p>ACL は作っただけでは動きません。「どのインターフェースの、どの向きの通信に適用するか」を指定して初めて効果が出ます。今回は社内 LAN から R1 に入ってくる通信(<code>in</code>)に適用します。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip access-group 100 in
+R1(config-if)# exit</div>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 4</div>
+            <div>
+              <h3>狙いどおりに効いているか確認する</h3>
+              <p>PC-B の Web Browser から <code>http://198.51.100.10</code> が開けなくなり、PC-B からの Ping と、PC-A からの Web アクセスは今までどおり成功すれば合格です。ACL の各行に何回ヒットしたかも確認できます。</p>
+              <div class="code-block">R1# show access-lists</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Capstone Challenge</div>
+          <h2>総合チャレンジ: 小さなオフィスネットワークを一人で作る</h2>
+          <p>手順書はここにはありません。要件だけを見て、これまでの全単元の知識を組み合わせて構築してみてください。詰まったら、各単元のページとトラブルシュートの「確認の順番」に戻れば必ずヒントがあります。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>要件</h3>
+            <ul class="packet-list">
+              <li>社内に VLAN 10(営業部)と VLAN 20(開発部)を作り、L3 Switch の SVI で VLAN 間通信させる(07 の内容)</li>
+              <li>L3 Switch と R1、R1 と ISP を /30 のリンクでつなぎ、社内区間は OSPF で経路交換する(09 の内容)</li>
+              <li>各 VLAN の PC には R1 から DHCP で IP を配る(この単元の Lab A の発展。プールが2つ必要です)</li>
+              <li>R1 の NAT(PAT)経由で、全 PC から ISP 先の Server に届くようにする(Lab B の内容)</li>
+              <li>VLAN 20 から Server への Web アクセスだけを ACL で禁止する(Lab C の内容)</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>合格チェックリスト</h3>
+            <ul class="check-list">
+              <li>VLAN 10 の PC から VLAN 20 の PC へ Ping が通る</li>
+              <li>すべての PC が DHCP で正しいゲートウェイを取得している</li>
+              <li>R1 の経路表に OSPF で学んだ VLAN のネットワークが <code>O</code> 付きで載っている</li>
+              <li>VLAN 10 の PC から Server の Web ページが開ける</li>
+              <li>VLAN 20 の PC は Web だけ失敗し、Ping は成功する</li>
+            </ul>
+          </article>
+        </div>
+        <section class="callout success">
+          <h3>ここまで来たあなたへ</h3>
+          <p>このチャレンジが自力で完成すれば、CCNA の学習範囲のうち、構築の中核部分にはすでに手が届いています。うまくいかない箇所こそ最大の教材です。Simulation モードでパケットを追いながら、どの単元の知識が抜けていたのかを言葉にしてみてください。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">DHCP・NAT・ACL の要点を振り返ります。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="DHCP プールの default-router で配った IP が、PC のデフォルトゲートウェイとして設定されます。IP アドレスだけでなく、ゲートウェイや DNS もまとめて自動配布できるのが DHCP の役割です。">
+              <fieldset>
+                <legend>Q1. DHCP プールの <code>default-router 192.168.10.1</code> は、PC の何の設定として配られますか？</legend>
+                <label class="option-label"><input type="radio" name="adv-q1"> DNS サーバー</label>
+                <label class="option-label"><input type="radio" name="adv-q1" data-correct="true"> デフォルトゲートウェイ</label>
+                <label class="option-label"><input type="radio" name="adv-q1"> サブネットマスク</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="overload(PAT)は、複数のプライベート IP を1つのグローバル IP で共有する仕組みです。ポート番号で通信を区別することで、多数の PC が同時に外へ出られます。">
+              <fieldset>
+                <legend>Q2. NAT 設定の <code>overload</code> キーワードの意味として最も適切なのはどれですか？</legend>
+                <label class="option-label"><input type="radio" name="adv-q2"> 通信量が多いときに帯域を自動で増やす</label>
+                <label class="option-label"><input type="radio" name="adv-q2" data-correct="true"> 複数のプライベート IP が1つのグローバル IP を共有できるようにする</label>
+                <label class="option-label"><input type="radio" name="adv-q2"> NAT の設定を起動時に自動で復元する</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q3" data-explanation="ACL の末尾には目に見えない「暗黙の deny」があり、どの行にも一致しない通信はすべて破棄されます。そのため、許可したい通信が残る場合は permit ip any any などの許可行が必要です。">
+              <fieldset>
+                <legend>Q3. ACL の最後に <code>permit ip any any</code> を入れ忘れると何が起きますか？</legend>
+                <label class="option-label"><input type="radio" name="adv-q3"> 何も起きない。ACL は書いた行だけが評価される</label>
+                <label class="option-label"><input type="radio" name="adv-q3" data-correct="true"> 暗黙の deny により、どの行にも一致しない通信がすべて止まる</label>
+                <label class="option-label"><input type="radio" name="adv-q3"> ACL が自動で削除される</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">3問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="ospf.html">
+          <span>前のページ</span>
+          <strong>OSPF入門へ戻る</strong>
+          <p>総合チャレンジで OSPF まわりに詰まったら、network コマンドとネイバー確認を見直しましょう。</p>
+        </a>
+        <a class="lesson-link" href="index.html">
+          <span>学習トップへ</span>
+          <strong>全体を振り返る</strong>
+          <p>ここが最終単元です。各ページの理解度チェックを解き直して、知識の抜けを埋めましょう。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
