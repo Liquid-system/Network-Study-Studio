@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACL入門 | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="acl">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>通信を意図的に「許可・拒否」する ACL を学びます。番号で指定するタイプと名前で指定するタイプを1つずつ作り、混同しやすい in と out の違いは、わざと間違える実験で確かめます。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">in と out で迷ったら、いつでも「Router を主人公にして、パケットが入ってくる瞬間か、出ていく瞬間か」に立ち返ってください。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">Security / Standard &amp; Extended ACL / In &amp; Out</div>
+        <h1>「全部通す」から「選んで通す」へ。</h1>
+        <p>ここまでの単元は、通信が「届くようにする」ための学習でした。この単元では ACL(アクセスコントロールリスト)を使って、通信を意図的に許可・拒否します。番号で指定するタイプと名前で指定するタイプの両方を実際に作り、止まる瞬間・止まらない瞬間をコマンドで観察します。特に混同しやすい in と out の違いは、わざと間違った方向に適用する実験まで行って、確実に身につけます。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Why ACL</div>
+          <h2>ACLとは何か: 上から順に照合される「通行ルールのリスト」</h2>
+          <p>ACL は「どんなパケットを(条件)、通すか止めるか(permit / deny)」を1行ずつ並べたリストです。Router はパケットを受け取るたびにリストを上から順に照合し、最初に一致した行の permit / deny で処理を即決します。そして、どの行にも一致しなかったパケットは、リストの末尾に隠れている「暗黙の deny」によってすべて破棄されます。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>標準 ACL(番号 1〜99)</h3>
+            <ul class="packet-list">
+              <li>判断材料は<strong>送信元 IP アドレスだけ</strong>です</li>
+              <li>「誰から来たか」しか見ないため、宛先を区別できません</li>
+              <li>送信元の近くで止めると、無関係な宛先への通信まで巻き添えにするので、<strong>宛先の近くに置く</strong>のが定石です</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>拡張 ACL(番号 100〜199)</h3>
+            <ul class="packet-list">
+              <li><strong>送信元・宛先・プロトコル・ポート番号</strong>まで細かく指定できます</li>
+              <li>「PC-A から Server への HTTP だけ拒否」のような狙い撃ちができます</li>
+              <li>条件が細かく巻き添えの心配がないため、無駄なパケットを早く捨てられる<strong>送信元の近くに置く</strong>のが定石です</li>
+            </ul>
+          </article>
+        </div>
+        <article class="card" style="margin-top: 18px;">
+          <h3>「番号で指定」と「名前で指定」の2つの書き方</h3>
+          <p>標準・拡張のどちらの ACL も、<code>access-list 10 ...</code> のように<strong>番号</strong>で作る書き方と、<code>ip access-list extended BLOCK-A-WEB</code> のように<strong>名前</strong>で作る書き方があります。名前付きは「何のためのルールか」が一目でわかるうえ、行単位での削除・挿入ができるという実務上の大きな利点があります。この単元では、番号付きの標準 ACL と、名前付きの拡張 ACL を1つずつ作って両方を体験します。</p>
+        </article>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Unit Topology</div>
+          <h2>この単元で構築する構成</h2>
+          <p>社内 LAN の PC 2台と、別ネットワークの Web サーバーを R1 が仲介する構成です。PC が2台あるのは、「PC-A だけ止まり、PC-B は通る」という ACL の選別を目で確かめるためです。</p>
+        </div>
+        <div class="wide-diagram">
+          <div class="diagram-node">PC-A / PC-B<small><span class="device-name">End Device</span>192.168.1.10 と .20 /24<br>GW 192.168.1.1</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>社内LANのスイッチ</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1<small><span class="device-name">Router</span>G0/0: 192.168.1.1<br>G0/1: 192.168.2.1</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">Server<small><span class="device-name">Web Server</span>192.168.2.100 /24<br>GW 192.168.2.1</small></div>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>アドレス表</h3>
+            <ul class="packet-list">
+              <li>PC-A: <code>192.168.1.10 /24</code>(GW <code>192.168.1.1</code>)</li>
+              <li>PC-B: <code>192.168.1.20 /24</code>(GW <code>192.168.1.1</code>)</li>
+              <li>R1: G0/0 が <code>192.168.1.1 /24</code>、G0/1 が <code>192.168.2.1 /24</code></li>
+              <li>Server: <code>192.168.2.100 /24</code>(GW <code>192.168.2.1</code>)</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Server の HTTP を使う理由</h3>
+            <p>Packet Tracer の Server は、Services タブで HTTP が最初から有効になっています。この単元では Ping(ICMP)と Web(HTTP)という2種類の通信を用意し、後半の拡張 ACL で「Ping は通るのに Web だけ止まる」という選別を体験します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">In or Out</div>
+          <h2>最重要: in と out は「Router を主人公」にして考える</h2>
+          <p>ACL をインターフェースに適用するときは、必ず in か out の方向を指定します。ここで PC 視点(送る側・受ける側)で考えると必ず混乱します。<strong>主人公は Router</strong> です。そのインターフェースから Router に「入ってくる」パケットを検査するのが in、Router から「出ていく」パケットを検査するのが out です。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>in = Router に入ってくる瞬間に検査</h3>
+            <p><code>G0/0</code> に in で適用すると、LAN 側から R1 に飛び込んでくるパケットが検査対象になります。合格したパケットだけが R1 の中に入り、経路表に従って転送されます。不合格なら、転送の処理に入る前に捨てられます。</p>
+          </article>
+          <article class="card">
+            <h3>out = Router から出ていく瞬間に検査</h3>
+            <p><code>G0/1</code> に out で適用すると、R1 が Server 側へ送り出す直前のパケットが検査対象になります。どこから入ってきたかは関係なく、「このドアから外へ出ようとするパケット」がすべて検査されます。</p>
+          </article>
+        </div>
+        <article class="card" style="margin-top: 18px;">
+          <h3>Ping 1往復で通過する検査ポイントは4箇所</h3>
+          <p>PC-A から Server へ Ping を打つと、パケットは次の4つの検査ポイントを順に通過します。ACL はこのどこにでも置けます。</p>
+          <ul class="packet-list">
+            <li>行き(送信元 PC-A → 宛先 Server): <code>G0/0</code> の <strong>in</strong> → 経路判断 → <code>G0/1</code> の <strong>out</strong></li>
+            <li>帰り(送信元 Server → 宛先 PC-A): <code>G0/1</code> の <strong>in</strong> → 経路判断 → <code>G0/0</code> の <strong>out</strong></li>
+          </ul>
+          <p>ここで重要なのは、行きと帰りでは<strong>送信元と宛先が入れ替わる</strong>ことです。「PC-A が送信元のパケット」は <code>G0/0</code> の in と <code>G0/1</code> の out にしか現れません。帰りのパケットの送信元は Server だからです。この事実が、後のハンズオンの実験で効いてきます。迷ったら「自分がパケットになって、いま R1 に入る瞬間なのか、出る瞬間なのか」を想像してください。</p>
+        </article>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Step by Step</div>
+          <h2>ハンズオン: 作る → 当てる → わざと間違える</h2>
+        </div>
+
+        <div class="step-list">
+          <article class="step-card">
+            <div class="step-number">STEP 1</div>
+            <div>
+              <h3>トポロジを組んで「全部通る」状態を確認する</h3>
+              <p>機器を配置してケーブルをつなぎ、R1 に IP を設定します。PC と Server は Desktop / Services タブから図のとおり設定してください。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.0
+R1(config-if)# no shutdown
+R1(config-if)# exit
+R1(config)# interface gigabitEthernet0/1
+R1(config-if)# ip address 192.168.2.1 255.255.255.0
+R1(config-if)# no shutdown</div>
+              <p>設定できたら、PC-A と PC-B の両方から <code>ping 192.168.2.100</code> が成功すること、PC-A の Web Browser で <code>http://192.168.2.100</code> が開けることを確認します。ACL の学習は「全部通る状態」を先に確認してから始めるのが鉄則です。そうしないと、後で通信が止まったとき、ACL のせいなのか元々の設定ミスなのかを切り分けられなくなります。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 2</div>
+            <div>
+              <h3>番号付き標準 ACL を作る(まだ適用しない)</h3>
+              <p>「PC-A からの通信だけを拒否し、それ以外は許可する」というルールを、番号 10 の標準 ACL として作ります。</p>
+              <div class="code-block">R1(config)# access-list 10 deny host 192.168.1.10
+R1(config)# access-list 10 permit any</div>
+              <p>コマンドの意味を1つずつ確認しましょう。<code>access-list 10</code> は「番号 10 の ACL に1行追加する」という意味で、番号が 1〜99 の範囲なので Router は標準 ACL だと解釈します。<code>deny host 192.168.1.10</code> は「送信元がこの1台のパケットを拒否」です。範囲で指定したい場合は <code>access-list 10 deny 192.168.1.0 0.0.0.255</code> のように、サブネットマスクの 0 と 255 を反転させたワイルドカードマスクを使います。<code>permit any</code> は「残りはすべて許可」で、この行を忘れると暗黙の deny によって全通信が止まります。</p>
+              <p>ここで PC-A から Ping を打ってみてください。<strong>まだ全部通ります。</strong>ACL は作っただけでは何も起きず、インターフェースに適用して初めて効果が出ます。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 3</div>
+            <div>
+              <h3>G0/1 の out に適用して、止まる瞬間を見る</h3>
+              <p>標準 ACL の定石どおり、宛先(Server)に近い <code>G0/1</code> の out に適用します。<code>ip access-group 10 out</code> は「このインターフェースから出ていくパケットを ACL 10 で検査せよ」という意味です。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/1
+R1(config-if)# ip access-group 10 out
+R1(config-if)# end
+R1# show access-lists</div>
+              <p>PC-A から <code>ping 192.168.2.100</code> を打つと、今度は <code>Reply from 192.168.2.1: Destination host unreachable</code> と表示されます。タイムアウトではなく R1 の IP から返事が来ているのがポイントで、「R1 が意図的に止めて、その旨を通知した」という証拠です。一方、PC-B からの Ping と、PC-A から PC-B への Ping は成功します。PC-A と PC-B の間の通信は R1 を通らないので、ACL の影響を受けません。</p>
+              <p>Ping を打った後に <code>show access-lists</code> をもう一度実行すると、deny の行に <code>(4 match(es))</code> のようなヒット数が付きます。この数字が増える瞬間こそ、ACL が働いている証拠です。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 4</div>
+            <div>
+              <h3>【実験】わざと間違った方向に適用してみる</h3>
+              <p>ここが今回のハイライトです。ACL 10 を G0/1 から外し、今度は LAN 側の <code>G0/0</code> に <strong>out</strong> で適用します。「PC-A は LAN 側にいるのだから、LAN 側のインターフェースに付ければ止まるはず」という、初学者がやりがちな考え方をあえて再現します。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/1
+R1(config-if)# no ip access-group 10 out
+R1(config-if)# exit
+R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip access-group 10 out</div>
+              <p>PC-A から Ping を打つ前に、結果を予想してみてください。実際に打つと——<strong>Ping は普通に成功してしまいます。</strong></p>
+              <p>理由を追いかけましょう。<code>G0/0</code> の out が検査するのは「R1 から LAN 側へ出ていく」パケット、つまり Server から PC-A へ戻ってくる<strong>帰りのパケット</strong>です。帰りのパケットの送信元は Server(<code>192.168.2.100</code>)であって PC-A ではないので、<code>deny host 192.168.1.10</code> には一致せず、<code>permit any</code> で素通りします。<code>show access-lists</code> を見ても、deny 行のヒット数は増えていないはずです。<strong>ACL が見るのはパケットの中身であり、in / out は Router 視点の方向</strong>——この2つがつながると、ACL の動きは正確に予想できるようになります。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 5</div>
+            <div>
+              <h3>正しい方向 in に付け替えて、違いを確定させる</h3>
+              <p>同じ <code>G0/0</code> のまま、方向だけを in に変えます。今度は「LAN 側から R1 に入ってくる」パケット、つまり PC-A が送信元の行きのパケットが検査されます。</p>
+              <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# no ip access-group 10 out
+R1(config-if)# ip access-group 10 in</div>
+              <p>PC-A からの Ping は再び止まります。同じインターフェース・同じ ACL でも、方向が違うだけで結果が正反対になることを、自分の手で確認できました。「PC-A の通信を止める」なら、PC-A のパケットが通る <code>G0/0</code> の in か <code>G0/1</code> の out が正解で、<code>G0/0</code> の out は不正解です。</p>
+              <p>実験が終わったら、次のステップに備えて <code>no ip access-group 10 in</code> で ACL を外し、全部通る状態に戻しておきます。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 6</div>
+            <div>
+              <h3>名前付き拡張 ACL で「Web だけ」止める</h3>
+              <p>今度は「PC-A から Server への Web(HTTP)だけを拒否し、Ping を含む他の通信はすべて許可する」というルールを、名前付き拡張 ACL で作ります。</p>
+              <div class="code-block">R1(config)# ip access-list extended BLOCK-A-WEB
+R1(config-ext-nacl)# deny tcp host 192.168.1.10 host 192.168.2.100 eq 80
+R1(config-ext-nacl)# permit ip any any
+R1(config-ext-nacl)# exit
+R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip access-group BLOCK-A-WEB in</div>
+              <p><code>ip access-list extended BLOCK-A-WEB</code> で、名前付き拡張 ACL の編集モードに入ります(プロンプトが <code>config-ext-nacl</code> に変わります)。<code>deny tcp host 192.168.1.10 host 192.168.2.100 eq 80</code> は「送信元 PC-A から、宛先 Server の TCP ポート 80(HTTP)へ向かうパケットだけを拒否」という意味です。標準 ACL では書けなかった宛先・プロトコル・ポートの条件が、1行に全部入っています。<code>permit ip any any</code> は「すべてのプロトコルの、すべての送信元から、すべての宛先への通信を許可」です。適用は、拡張 ACL の定石どおり送信元に近い <code>G0/0</code> の in にします。</p>
+              <p>PC-A から <code>ping 192.168.2.100</code> は成功するのに、Web Browser で <code>http://192.168.2.100</code> を開こうとすると失敗します。PC-B からは両方成功します。「同じ相手なのに、通信の種類で通る・通らないが分かれる」——これが拡張 ACL の力です。</p>
+            </div>
+          </article>
+          <article class="step-card">
+            <div class="step-number">STEP 7</div>
+            <div>
+              <h3>確認コマンドと、名前付き ACL ならではの編集</h3>
+              <p>ACL の運用で使う確認コマンドは2つです。「どんなルールが何回ヒットしたか」は <code>show access-lists</code>、「どのインターフェースのどの方向に付いているか」は <code>show ip interface</code> で確認します。</p>
+              <div class="code-block">R1# show access-lists
+R1# show ip interface gigabitEthernet0/0</div>
+              <p><code>show ip interface</code> の出力にある <code>Inbound access list is BLOCK-A-WEB</code> という行が、適用場所と方向の証拠です。「ACL が効かない」トラブルの大半は方向の間違いなので、まずこのコマンドで事実を確認する習慣をつけてください。</p>
+              <p>さらに <code>show access-lists</code> を見ると、名前付き ACL の各行には 10、20 というシーケンス番号が付いています。名前付き ACL は、この番号を使って行単位の削除や挿入ができます。番号付き ACL では <code>no access-list 10</code> とするとリスト全体が消えてしまうので、これは名前付きの大きな利点です。</p>
+              <div class="code-block">R1(config)# ip access-list extended BLOCK-A-WEB
+R1(config-ext-nacl)# no 10
+R1(config-ext-nacl)# 10 deny tcp host 192.168.1.10 host 192.168.2.100 eq 80
+R1(config-ext-nacl)# exit
+R1(config)# exit
+R1# copy running-config startup-config</div>
+              <p><code>no 10</code> で 10 番の行だけを削除し、<code>10 deny ...</code> のように行頭に番号を付けて打つと、その位置に行を挿入できます。最後に設定を保存して完了です。</p>
+            </div>
+          </article>
+        </div>
+        <section class="callout success">
+          <h3>ここで一度立ち止まって考える</h3>
+          <p>STEP 4 で <code>G0/0</code> の out に適用したとき、なぜ Ping が通ってしまったのかを、自分の言葉で説明してみてください。「<code>G0/0</code> の out を通るのは帰りのパケットで、その送信元は Server だから deny に一致しない」——ここまで言えれば、in と out はもう混同しません。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Three Rules</div>
+          <h2>ACLを支配する3つのルール</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>1. 上から順、最初の一致で即決</h3>
+            <p>パケットはリストを上から照合され、最初に一致した行で permit / deny が確定します。それより下の行は見られません。<code>permit any</code> を先頭に書くと、以降の deny は永遠に評価されない「死んだ行」になります。</p>
+          </article>
+          <article class="card">
+            <h3>2. 末尾には暗黙の deny</h3>
+            <p>どの行にも一致しなかったパケットは、設定画面には表示されない「暗黙の deny」ですべて破棄されます。deny だけの ACL を適用すると全通信が止まるのはこのためです。許可行とセットで書くのが基本です。</p>
+          </article>
+          <article class="card">
+            <h3>3. 1インターフェース・1方向に1つ</h3>
+            <p>1つのインターフェースの同じ方向に適用できる ACL は1つだけです。同じ方向に別の ACL を適用すると、前の ACL は上書きされて外れます。条件を増やしたいときは、同じ ACL に行を足します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">If It Fails</div>
+          <h2>うまくいかないときの確認ポイント</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>通信が全部止まった</h3>
+            <p>ほぼ確実に <code>permit any</code>(拡張なら <code>permit ip any any</code>)の入れ忘れです。<code>R1# show access-lists</code> で許可行があるかを確認します。番号付き ACL は行の削除ができないので、<code>no access-list 10</code> で消してから作り直します。</p>
+          </article>
+          <article class="card">
+            <h3>ACL が効いていない</h3>
+            <p>まず <code>R1# show ip interface gigabitEthernet0/0</code> で、意図したインターフェースの意図した方向に付いているかを確認します。STEP 4 の実験のとおり、方向が違うと ACL は「存在するのに一度も評価されない」状態になります。ヒット数が増えない ACL は、パケットの通り道にいません。</p>
+          </article>
+          <article class="card">
+            <h3>止めたいものと違う通信が止まる</h3>
+            <p>行の順番を疑います。ACL は最初の一致で即決なので、広い条件の行(<code>permit any</code> など)が狭い条件の deny より上にあると、deny は機能しません。<code>show access-lists</code> でシーケンス番号順に読み直し、名前付きなら行の挿入で順番を直します。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">in / out の方向、暗黙の deny、標準と拡張の違いを振り返ります。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="in / out は Router を主人公にした方向です。PC-A が送信元のパケットは、LAN 側の G0/0 から R1 に「入ってくる」ので in が正解です。G0/0 の out を通るのは Server からの帰りのパケットで、送信元が違うため止められません。">
+              <fieldset>
+                <legend>Q1. PC-A(192.168.1.10)から Server への通信を、送信元を条件にした ACL で R1 の LAN 側インターフェース G0/0 で止めたいとき、正しい適用方向はどれですか？</legend>
+                <label class="option-label"><input type="radio" name="acl-q1"> out(PC-A は LAN の外へ出ていくから)</label>
+                <label class="option-label"><input type="radio" name="acl-q1" data-correct="true"> in(PC-A のパケットは G0/0 から R1 に入ってくるから)</label>
+                <label class="option-label"><input type="radio" name="acl-q1"> どちらに適用しても結果は同じ</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="ACL の末尾には目に見えない「暗黙の deny」があり、どの行にも一致しない通信はすべて破棄されます。deny 1行だけの ACL は「PC-A を拒否し、残りも全部拒否」という意味になってしまうため、permit any が必須です。">
+              <fieldset>
+                <legend>Q2. <code>access-list 10 deny host 192.168.1.10</code> の1行だけを作ってインターフェースに適用すると、何が起きますか？</legend>
+                <label class="option-label"><input type="radio" name="acl-q2"> PC-A の通信だけが止まり、他は通る</label>
+                <label class="option-label"><input type="radio" name="acl-q2" data-correct="true"> 暗黙の deny により、その方向の通信がすべて止まる</label>
+                <label class="option-label"><input type="radio" name="acl-q2"> permit 行がない ACL は無効になり、全部通る</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q3" data-explanation="標準 ACL(1〜99)は送信元 IP だけで判断します。宛先やプロトコル、ポート番号まで条件にできるのは拡張 ACL(100〜199)で、「Web だけ止めて Ping は通す」といった制御は拡張 ACL の仕事です。">
+              <fieldset>
+                <legend>Q3. 標準 ACL と拡張 ACL の違いとして正しいのはどれですか？</legend>
+                <label class="option-label"><input type="radio" name="acl-q3" data-correct="true"> 標準は送信元 IP だけで判断し、拡張は宛先・プロトコル・ポートまで条件にできる</label>
+                <label class="option-label"><input type="radio" name="acl-q3"> 標準のほうが細かい条件を指定できる</label>
+                <label class="option-label"><input type="radio" name="acl-q3"> 拡張 ACL は名前付きでしか作れない</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">3問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="troubleshooting.html">
+          <span>前のページ</span>
+          <strong>トラブルシュートへ戻る</strong>
+          <p>ACL で通信が止まったときも、物理 → L2 → L3 → ACL の順で切り分ける考え方は同じです。</p>
+        </a>
+        <a class="lesson-link" href="ospf.html">
+          <span>次のレッスン</span>
+          <strong>OSPF入門へ進む</strong>
+          <p>ここで登場したワイルドカードマスクは、OSPF の network コマンドでも同じ形で使います。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -32,8 +32,9 @@
           <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
           <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
           <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
-          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">09</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
-          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">10</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
         </nav>
       </div>
       <div class="theme-toggle" aria-label="表示テーマ切替">
@@ -142,7 +143,7 @@ R1(dhcp-config)# exit</div>
             <div class="step-number">STEP 1</div>
             <div>
               <h3>変換対象を ACL で指定する</h3>
-              <p>「どの送信元 IP を変換するか」を番号付き ACL で定義します。ここで OSPF 単元で学んだワイルドカードマスクが再登場します。</p>
+              <p>「どの送信元 IP を変換するか」を、ACL 入門で学んだ番号付き標準 ACL で定義します。ワイルドカードマスクもここで再登場します。</p>
               <div class="code-block">R1(config)# access-list 1 permit 192.168.10.0 0.0.0.255</div>
             </div>
           </article>
@@ -187,7 +188,7 @@ R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2</div>
         <div class="section-head">
           <div class="small-pill">Lab C / ACL</div>
           <h2>Lab C: 通信を選んで止める</h2>
-          <p>最後はセキュリティの第一歩、ACL(アクセスコントロールリスト)です。「PC-B からは Server への Web アクセスを禁止するが、それ以外の通信は許可する」というルールを R1 に設定します。全部止めるのではなく、狙った通信だけを止めるのがポイントです。</p>
+          <p>最後は、ACL 入門で学んだアクセスコントロールリストの実践編です。「PC-B からは Server への Web アクセスを禁止するが、それ以外の通信は許可する」というルールを、NAT が動いている R1 に設定します。全部止めるのではなく、狙った通信だけを止めるのがポイントです。</p>
         </div>
         <div class="step-list">
           <article class="step-card">
@@ -211,7 +212,7 @@ R1(config)# access-list 100 permit ip any any</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>インターフェースに適用する</h3>
-              <p>ACL は作っただけでは動きません。「どのインターフェースの、どの向きの通信に適用するか」を指定して初めて効果が出ます。今回は社内 LAN から R1 に入ってくる通信(<code>in</code>)に適用します。</p>
+              <p>ACL は作っただけでは動きません。「どのインターフェースの、どの向きの通信に適用するか」を指定して初めて効果が出ます。今回は、拡張 ACL の定石どおり送信元に近い側、つまり社内 LAN から R1 に入ってくる通信(<code>in</code>)に適用します。in と out で迷ったら、ACL 入門の「わざと間違える実験」を思い出してください。</p>
               <div class="code-block">R1(config)# interface gigabitEthernet0/0
 R1(config-if)# ip access-group 100 in
 R1(config-if)# exit</div>
@@ -239,7 +240,7 @@ R1(config-if)# exit</div>
             <h3>要件</h3>
             <ul class="packet-list">
               <li>社内に VLAN 10(営業部)と VLAN 20(開発部)を作り、L3 Switch の SVI で VLAN 間通信させる(07 の内容)</li>
-              <li>L3 Switch と R1、R1 と ISP を /30 のリンクでつなぎ、社内区間は OSPF で経路交換する(09 の内容)</li>
+              <li>L3 Switch と R1、R1 と ISP を /30 のリンクでつなぎ、社内区間は OSPF で経路交換する(10 の内容)</li>
               <li>各 VLAN の PC には R1 から DHCP で IP を配る(この単元の Lab A の発展。プールが2つ必要です)</li>
               <li>R1 の NAT(PAT)経由で、全 PC から ISP 先の Server に届くようにする(Lab B の内容)</li>
               <li>VLAN 20 から Server への Web アクセスだけを ACL で禁止する(Lab C の内容)</li>

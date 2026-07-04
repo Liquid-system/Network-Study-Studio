@@ -32,8 +32,9 @@
           <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
           <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
           <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
-          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">09</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
-          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">10</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
         </nav>
       </div>
       <div class="theme-toggle" aria-label="表示テーマ切替">
@@ -149,7 +150,7 @@ R1(config-if)# exit</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>R1 に OSPF を設定する</h3>
-              <p><code>network</code> コマンドで「OSPF に参加させるネットワーク」を宣言します。ここで使うワイルドカードマスクは、サブネットマスクの 0 と 255 を反転させたものです(<code>/24</code> なら <code>0.0.0.255</code>、<code>/30</code> なら <code>0.0.0.3</code>)。</p>
+              <p><code>network</code> コマンドで「OSPF に参加させるネットワーク」を宣言します。ここで使うワイルドカードマスクは、ACL 入門にも登場した「サブネットマスクの 0 と 255 を反転させたもの」です(<code>/24</code> なら <code>0.0.0.255</code>、<code>/30</code> なら <code>0.0.0.3</code>)。</p>
               <div class="code-block">R1(config)# router ospf 1
 R1(config-router)# router-id 1.1.1.1
 R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
@@ -283,10 +284,10 @@ R1# copy running-config startup-config</div>
       </section>
 
       <section class="lesson-footer fade-in delay-3">
-        <a class="lesson-link" href="troubleshooting.html">
+        <a class="lesson-link" href="acl.html">
           <span>前のページ</span>
-          <strong>トラブルシュートへ戻る</strong>
-          <p>ネイバーが張れないときも、物理 → L2 → L3 の切り分け手順がそのまま役立ちます。</p>
+          <strong>ACL入門へ戻る</strong>
+          <p>ワイルドカードマスクの読み方があいまいになったら、ACL 入門で復習してから進みましょう。</p>
         </a>
         <a class="lesson-link" href="advanced-labs.html">
           <span>次のレッスン</span>
