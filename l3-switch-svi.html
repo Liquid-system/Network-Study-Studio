@@ -66,12 +66,10 @@
           <h2>この単元で構築する構成</h2>
           <p>Multilayer Switch 1台と PC 2台だけで、VLAN 間通信を成立させます。SVI が各 VLAN のゲートウェイになること、そして <code>MLS1(config)# ip routing</code> で L3 機能を有効にすることが要点です。</p>
         </div>
-        <div class="wide-diagram">
+        <div class="topic-diagram">
           <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>VLAN 10<br>192.168.10.10 /24</small></div>
           <div class="diagram-link"></div>
-          <div class="diagram-node">MLS1<small><span class="device-name">Catalyst 3560</span>SVI VLAN 10: 192.168.10.1<br>SVI VLAN 20: 192.168.20.1</small></div>
-          <div class="diagram-link"></div>
-          <div class="diagram-node">VLAN間ルーティング<small><span class="device-name">MLS1(config)# ip routing</span></small></div>
+          <div class="diagram-node">MLS1<small><span class="device-name">Catalyst 3560</span>SVI VLAN 10: 192.168.10.1<br>SVI VLAN 20: 192.168.20.1<br>ip routing で L3 有効</small></div>
           <div class="diagram-link"></div>
           <div class="diagram-node">PC-B<small><span class="device-name">End Device</span>VLAN 20<br>192.168.20.10 /24</small></div>
         </div>

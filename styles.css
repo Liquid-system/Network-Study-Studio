@@ -698,6 +698,20 @@ code {
   background: linear-gradient(90deg, var(--primary), var(--accent));
 }
 
+.diagram-link.vertical {
+  min-height: 44px;
+}
+
+.diagram-link.vertical::before {
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+}
+
+.diagram-center {
+  grid-column: 3;
+}
+
 .callout.success {
   background: linear-gradient(135deg, rgba(29, 143, 109, 0.12), rgba(15, 159, 144, 0.08));
 }
@@ -958,6 +972,10 @@ body.dark .quiz-submit {
   .diagram-link::before {
     width: 4px;
     height: 100%;
+  }
+
+  .diagram-center {
+    grid-column: auto;
   }
 }
 
