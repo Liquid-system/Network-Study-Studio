@@ -885,6 +885,15 @@ body.dark .quiz-submit {
   font-size: 0.88em;
 }
 
+/*
+ * packet-tracer.html — 「コマンドでは <code>...</code>」のまとまり。
+ * inline-block にすることで、幅が足りないときは説明文の途中ではなく
+ * このまとまりごと次の行へ折り返される。
+ */
+.port-command {
+  display: inline-block;
+}
+
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
