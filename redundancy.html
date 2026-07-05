@@ -73,7 +73,7 @@
           </article>
           <article class="card">
             <h3>L2ループが危険な理由</h3>
-            <p>IP パケットには TTL があり、ループしてもいずれ破棄されます。しかし L2 の Ethernet フレームには TTL に相当する仕組みがありません。ループ経路に入ったブロードキャストは減ることなく増殖し続けます。だから L2 の冗長化には STP が必須なのです。</p>
+            <p>IP パケットには TTL があり、ループしてもいずれ破棄されます。しかし <strong>L2 の Ethernet フレームには TTL に相当する仕組みがありません</strong>。ループ経路に入ったブロードキャストは減ることなく増殖し続けます。だから L2 の冗長化には STP が必須なのです。</p>
           </article>
         </div>
       </section>
@@ -110,7 +110,7 @@ SW1(config-if)# spanning-tree portfast</div>
           </article>
           <article class="callout warning">
             <h3>PortFast を Switch 間リンクに入れない</h3>
-            <p>PortFast は STP の安全確認を省略する設定です。Switch 同士をつなぐポートに設定すると、一時的にループが発生する危険があります。「PC・サーバーをつなぐポート専用」と覚えてください。</p>
+            <p>PortFast は STP の安全確認を省略する設定です。Switch 同士をつなぐポートに設定すると、一時的にループが発生する危険があります。<strong>「PC・サーバーをつなぐポート専用」</strong>と覚えてください。</p>
           </article>
         </div>
       </section>
@@ -130,7 +130,7 @@ SW1(config-if)# spanning-tree portfast</div>
               <li><strong>PAgP</strong>(Cisco独自): モードは <code>desirable</code> と <code>auto</code></li>
               <li><strong>on</strong>: 交渉せず強制的に束ねる(両端とも on のときのみ)</li>
             </ul>
-            <p>実務では標準規格の LACP を使い、少なくとも片側を <code>active</code> にするのが一般的です。</p>
+            <p>実務では<strong>標準規格の LACP を使い、少なくとも片側を <code>active</code> にする</strong>のが一般的です。</p>
           </article>
           <article class="card">
             <h3>設定と確認</h3>

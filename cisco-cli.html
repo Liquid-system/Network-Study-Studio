@@ -57,7 +57,7 @@
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Cisco IOS / Command Flow</div>
         <h1>初心者が最初に覚えるCiscoコマンドの流れ。</h1>
-        <p>大切なのは、いきなり設定を書き込むことではなく「まず確認し、次に設定し、最後に保存する」という流れです。実際の現場と同じこの順番を、Packet Tracer で練習します。</p>
+        <p>大切なのは、いきなり設定を書き込むことではなく<strong>「まず確認し、次に設定し、最後に保存する」という流れ</strong>です。実際の現場と同じこの順番を、Packet Tracer で練習します。</p>
       </header>
 
       <section class="section fade-in delay-2">
@@ -82,7 +82,7 @@
           </article>
           <article class="card">
             <h3>IP値の前提</h3>
-            <p>Router の LAN 側インターフェースに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。この IP が、そのまま PC-A のデフォルトゲートウェイになります。</p>
+            <p>Router の LAN 側インターフェースに <code>192.168.10.1 / 255.255.255.0</code> を設定する想定です。<strong>この IP が、そのまま PC-A のデフォルトゲートウェイになります</strong>。</p>
           </article>
         </div>
 
@@ -150,7 +150,7 @@
             <div class="timeline-mark">02</div>
             <div class="timeline-copy">
               <h3>現状を確認する</h3>
-              <p>設定を触る前に、まず現在の状態を確認します。インターフェースの状態や、すでに入っている設定をここで把握します。</p>
+              <p><strong>設定を触る前に、まず現在の状態を確認します</strong>。インターフェースの状態や、すでに入っている設定をここで把握します。</p>
               <div class="code-block">Router# show ip interface brief
 Router# show running-config</div>
             </div>
@@ -168,7 +168,7 @@ Router(config)# hostname R1</div>
             <div class="timeline-mark">04</div>
             <div class="timeline-copy">
               <h3>インターフェースにIPを設定する</h3>
-              <p>対象のインターフェースに移動して IP アドレスとサブネットマスクを設定し、最後に <code>R1(config-if)# no shutdown</code> でポートを有効化します。</p>
+              <p>対象のインターフェースに移動して IP アドレスとサブネットマスクを設定し、最後に <strong><code>R1(config-if)# no shutdown</code> でポートを有効化</strong>します。</p>
               <div class="code-block">R1(config)# interface gigabitEthernet0/1
 R1(config-if)# ip address 192.168.10.1 255.255.255.0
 R1(config-if)# no shutdown</div>
@@ -178,7 +178,7 @@ R1(config-if)# no shutdown</div>
             <div class="timeline-mark">05</div>
             <div class="timeline-copy">
               <h3>保存する</h3>
-              <p>設定が終わったら必ず保存します。保存しないと、再起動したときに設定が消えてしまいます。Packet Tracer のうちからこの癖をつけておくと、実機に移ったときに必ず役立ちます。</p>
+              <p>設定が終わったら必ず保存します。<strong>保存しないと、再起動したときに設定が消えてしまいます</strong>。Packet Tracer のうちからこの癖をつけておくと、実機に移ったときに必ず役立ちます。</p>
               <div class="code-block">R1(config-if)# end
 R1# copy running-config startup-config</div>
             </div>

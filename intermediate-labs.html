@@ -159,7 +159,7 @@
             <div class="step-number">STEP 2</div>
             <div>
               <h3>Switchに VLAN と access ポートを作る</h3>
-              <p>PC-A のポートを VLAN 10 に、PC-B のポートを VLAN 20 に割り当てます。これで L2 のレベルでは、2つの別ネットワークに分かれた状態になります。</p>
+              <p>PC-A のポートを VLAN 10 に、PC-B のポートを VLAN 20 に割り当てます。これで L2 のレベルでは、<strong>2つの別ネットワークに分かれた状態</strong>になります。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# vlan 10
@@ -183,7 +183,7 @@ Switch(config-if)# description PC-B</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>Router接続ポートを trunk にする</h3>
-              <p>複数の VLAN の通信を1本のリンクで運ぶために trunk を使います。ここが access のままだと、片方の VLAN しか Router に届きません。</p>
+              <p>複数の VLAN の通信を1本のリンクで運ぶために trunk を使います。<strong>ここが access のままだと、片方の VLAN しか Router に届きません</strong>。</p>
               <div class="code-block">Switch> enable
 Switch# configure terminal
 Switch(config)# interface fastEthernet0/24
@@ -197,7 +197,7 @@ Switch# copy running-config startup-config</div>
             <div class="step-number">STEP 4</div>
             <div>
               <h3>Routerにサブインターフェースを作る</h3>
-              <p>1本の物理ポートの上に、VLAN 10 用と VLAN 20 用の論理インターフェースを作ります。VLAN タグを扱うための <code>encapsulation dot1Q</code> が、この構成の要点です。</p>
+              <p>1本の物理ポートの上に、VLAN 10 用と VLAN 20 用の論理インターフェースを作ります。<strong>VLAN タグを扱うための <code>encapsulation dot1Q</code> が、この構成の要点</strong>です。</p>
               <div class="code-block">Router> enable
 Router# configure terminal
 Router(config)# interface gigabitEthernet0/0
@@ -225,7 +225,7 @@ Router# copy running-config startup-config</div>
 
         <section class="callout success">
           <h3>なぜこれで通信できるのか</h3>
-          <p>VLAN で分かれた端末同士は、そのままでは L2 の境界を越えられません。Router が VLAN ごとの Gateway となり、片方の VLAN から受け取ったパケットをもう片方の VLAN へ L3 で転送することで、初めて相互に通信できるようになります。</p>
+          <p>VLAN で分かれた端末同士は、そのままでは L2 の境界を越えられません。<strong>Router が VLAN ごとの Gateway となり</strong>、片方の VLAN から受け取ったパケットをもう片方の VLAN へ L3 で転送することで、初めて相互に通信できるようになります。</p>
         </section>
       </section>
 
@@ -296,7 +296,7 @@ R2(config-if)# no shutdown</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>PC-A と PC-B のIPを設定する</h3>
-              <p>それぞれ、自分の LAN 側にいる Router を Gateway に設定します。ここを間違えると、PC は別のネットワークへ出ていけません。</p>
+              <p>それぞれ、<strong>自分の LAN 側にいる Router を Gateway に設定</strong>します。ここを間違えると、PC は別のネットワークへ出ていけません。</p>
             </div>
           </article>
           <article class="step-card">
@@ -324,7 +324,7 @@ R2# copy running-config startup-config</div>
 
         <section class="callout warning">
           <h3>失敗しやすいポイント</h3>
-          <p>片方の Router にだけ静的ルートを入れて満足してしまうケースがよくあります。行きのパケットが届いても、戻りの経路がなければ通信は成立しません。また、/30 のサブネットマスク(255.255.255.252)の入力ミスも非常に起きやすいので注意してください。</p>
+          <p>片方の Router にだけ静的ルートを入れて満足してしまうケースがよくあります。<strong>行きのパケットが届いても、戻りの経路がなければ通信は成立しません</strong>。また、/30 のサブネットマスク(255.255.255.252)の入力ミスも非常に起きやすいので注意してください。</p>
         </section>
       </section>
 

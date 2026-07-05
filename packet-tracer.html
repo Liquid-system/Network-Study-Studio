@@ -107,7 +107,7 @@
           </article>
           <article class="card">
             <h3>Realtime と Simulation</h3>
-            <p>Realtime は実際の機器と同じように動くモード、Simulation はパケットの流れをゆっくり可視化できるモードです。仕組みを理解する段階では、Simulation モードが特に役立ちます。</p>
+            <p>Realtime は実際の機器と同じように動くモード、Simulation は<strong>パケットの流れをゆっくり可視化できる</strong>モードです。仕組みを理解する段階では、Simulation モードが特に役立ちます。</p>
           </article>
           <article class="card">
             <h3>PCのDesktopタブ</h3>
@@ -135,7 +135,7 @@
               <li>サブネットマスク: <code>255.255.255.0</code></li>
               <li>デフォルトゲートウェイ: <code>192.168.10.1</code></li>
             </ul>
-            <p>この3つはそれぞれ役割が違います。特に、IP アドレスとデフォルトゲートウェイに同じ値を入れてしまうミスは、初心者によく見られます。</p>
+            <p>この3つはそれぞれ役割が違います。特に、<strong>IP アドレスとデフォルトゲートウェイに同じ値を入れてしまうミス</strong>は、初心者によく見られます。</p>
           </article>
           <article class="card">
             <h3>この値が意味すること</h3>
@@ -178,7 +178,7 @@
 
         <section class="callout success">
           <h3>数字で考えると分かりやすいポイント</h3>
-          <p>PC-A から <code>192.168.10.20</code> に送る場合は、同じネットワーク内なので直接届きます。一方 <code>192.168.20.20</code> に送りたい場合は別のネットワークなので、まず <code>192.168.10.1</code> の Router に渡す必要があります。</p>
+          <p>PC-A から <code>192.168.10.20</code> に送る場合は、同じネットワーク内なので直接届きます。一方 <code>192.168.20.20</code> に送りたい場合は別のネットワークなので、<strong>まず <code>192.168.10.1</code> の Router に渡す</strong>必要があります。</p>
         </section>
       </section>
 
@@ -238,7 +238,7 @@
 
         <section class="callout warning">
           <h3>別の機種を選んでしまったら</h3>
-          <p>教材と違う機種でも、ポート名を読み替えれば同じ手順で学習できます。たとえば 1841 や 2811 なら <code>interface gigabitEthernet0/0</code> を <code>interface fastEthernet0/0</code> に、ISR4331 なら <code>interface gigabitEthernet0/0/0</code> に読み替えてください。迷ったら <code>show ip interface brief</code> で実際のポート名を確認してから設定するのが確実です。</p>
+          <p>教材と違う機種でも、ポート名を読み替えれば同じ手順で学習できます。たとえば 1841 や 2811 なら <code>interface gigabitEthernet0/0</code> を <code>interface fastEthernet0/0</code> に、ISR4331 なら <code>interface gigabitEthernet0/0/0</code> に読み替えてください。迷ったら <strong><code>show ip interface brief</code> で実際のポート名を確認してから設定する</strong>のが確実です。</p>
         </section>
       </section>
 
@@ -273,7 +273,7 @@
             <div class="step-number">STEP 4</div>
             <div>
               <h3>PCにIPを設定する</h3>
-              <p>PC の Desktop → IP Configuration を開き、次の値を入力します。IP アドレスとデフォルトゲートウェイを取り違えないように注意してください。</p>
+              <p>PC の Desktop → IP Configuration を開き、次の値を入力します。<strong>IP アドレスとデフォルトゲートウェイを取り違えない</strong>ように注意してください。</p>
               <div class="code-block">IP Address: 192.168.10.10
 Subnet Mask: 255.255.255.0
 Default Gateway: 192.168.10.1</div>
@@ -364,7 +364,7 @@ Switch(config)# ip default-gateway 192.168.10.1</div>
           </article>
           <article class="callout warning">
             <h3>初心者が引っかかりやすい点</h3>
-            <p>Router のインターフェースは、初期状態では shutdown(無効)になっていることがあります。ケーブルがつながって見えても、<code>192.168.10.1</code> を設定したあとに <code>Router(config-if)# no shutdown</code> を入力しないと通信できない場合があります。</p>
+            <p>Router のインターフェースは、初期状態では shutdown(無効)になっていることがあります。ケーブルがつながって見えても、<code>192.168.10.1</code> を設定したあとに <strong><code>Router(config-if)# no shutdown</code> を入力しないと通信できない</strong>場合があります。</p>
           </article>
         </div>
       </section>

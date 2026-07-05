@@ -64,7 +64,7 @@
         <div class="section-head">
           <div class="small-pill">Device Hardening</div>
           <h2>管理アクセスを守る: パスワードとSSH</h2>
-          <p>Telnet は通信が平文で流れるため、経路上で盗聴されるとパスワードがそのまま見えてしまいます。実務ではリモート管理を <strong>SSH(暗号化)に限定</strong>するのが基本です。</p>
+          <p><strong>Telnet は通信が平文で流れる</strong>ため、経路上で盗聴されるとパスワードがそのまま見えてしまいます。実務ではリモート管理を <strong>SSH(暗号化)に限定</strong>するのが基本です。</p>
         </div>
 
         <div class="grid-2">
@@ -116,7 +116,7 @@ SW1(config-if)# switchport port-security
 SW1(config-if)# switchport port-security maximum 1
 SW1(config-if)# switchport port-security mac-address sticky
 SW1(config-if)# switchport port-security violation shutdown</div>
-            <p><code>sticky</code> は「最初につながった機器の MAC アドレスを自動で覚えて固定する」設定です。ポートセキュリティは <strong>access モードのポートにしか設定できない</strong>点に注意してください。</p>
+            <p><code>sticky</code> は<strong>「最初につながった機器の MAC アドレスを自動で覚えて固定する」</strong>設定です。ポートセキュリティは <strong>access モードのポートにしか設定できない</strong>点に注意してください。</p>
           </article>
           <article class="card">
             <h3>違反時の3つの動作</h3>
@@ -136,7 +136,7 @@ SW1(config-if)# no shutdown</div>
 
         <section class="callout warning">
           <h3>実験のすすめ: わざと違反させる</h3>
-          <p>PC-A で sticky 学習させたあと、ケーブルを別の PC につなぎ替えてトラフィックを流すと、ポートが err-disabled になりリンクランプが赤になります。<code>show port-security</code> の違反カウントとあわせて観察してください。「復旧には shutdown → no shutdown が必要」という点は実務でも頻出です。</p>
+          <p>PC-A で sticky 学習させたあと、ケーブルを別の PC につなぎ替えてトラフィックを流すと、ポートが err-disabled になりリンクランプが赤になります。<code>show port-security</code> の違反カウントとあわせて観察してください。<strong>「復旧には shutdown → no shutdown が必要」</strong>という点は実務でも頻出です。</p>
         </section>
       </section>
 
@@ -144,7 +144,7 @@ SW1(config-if)# no shutdown</div>
         <div class="section-head">
           <div class="small-pill">Operations</div>
           <h2>運用の土台: SyslogとNTP</h2>
-          <p>障害対応の第一歩は「いつ・何が起きたか」を知ることです。ログを1か所に集める Syslog と、全機器の時刻を揃える NTP はセットで設定します。時刻がずれていると、複数機器のログを突き合わせて原因を追うことができません。</p>
+          <p>障害対応の第一歩は「いつ・何が起きたか」を知ることです。ログを1か所に集める Syslog と、全機器の時刻を揃える NTP はセットで設定します。<strong>時刻がずれていると、複数機器のログを突き合わせて原因を追うことができません</strong>。</p>
         </div>
 
         <div class="grid-2">

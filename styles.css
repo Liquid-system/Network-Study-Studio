@@ -19,6 +19,7 @@
   --warning: #d97706;
   --danger: #d9485f;
   --success: #1d8f6d;
+  --marker: rgba(255, 193, 64, 0.38);
   --shadow: 0 24px 56px rgba(19, 34, 56, 0.12);
   --font-head: "Bahnschrift", "Aptos Display", "Hiragino Sans", sans-serif;
   --font-body: "Aptos", "Segoe UI", "Yu Gothic UI", "Hiragino Sans", sans-serif;
@@ -90,6 +91,7 @@ body.dark {
   --warning: #f7b267;
   --danger: #ff8697;
   --success: #62d7ad;
+  --marker: rgba(247, 178, 103, 0.26);
   --shadow: 0 30px 68px rgba(0, 0, 0, 0.32);
 }
 
@@ -211,6 +213,17 @@ select {
 .timeline-copy p,
 .feedback-list li {
   color: var(--muted);
+}
+
+/* 本文中の強調(重要ポイント)は蛍光マーカー風の下地で目立たせる。
+ * ナビ・統計・クイズ結果など UI 部品の strong には効かせないため、
+ * .content 配下の p / li に限定している。 */
+.content p strong,
+.content li strong {
+  color: var(--text);
+  background: linear-gradient(transparent 60%, var(--marker) 60%);
+  padding: 0 0.1em;
+  border-radius: var(--space-3xs);
 }
 
 .sidebar-title {

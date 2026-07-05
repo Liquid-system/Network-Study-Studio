@@ -91,7 +91,7 @@
         <div class="section-head">
           <div class="small-pill">Address Types</div>
           <h2>アドレスの種類と、IPv4との対応関係</h2>
-          <p>IPv6 には用途別のアドレスが複数あり、1つのインターフェースが同時に複数のアドレスを持つのが普通です。特に「リンクローカルアドレスは必ず自動で付く」ことを覚えてください。</p>
+          <p>IPv6 には用途別のアドレスが複数あり、<strong>1つのインターフェースが同時に複数のアドレスを持つのが普通</strong>です。特に<strong>「リンクローカルアドレスは必ず自動で付く」</strong>ことを覚えてください。</p>
         </div>
 
         <div class="table-scroll">
@@ -140,7 +140,7 @@
           </article>
           <article class="card">
             <h3>SLAACとは</h3>
-            <p>SLAAC(ステートレスアドレス自動設定)では、Router が広告するプレフィックス(例: <code>2001:db8:10::/64</code>)を受け取った PC が、ホスト部を自分で生成してアドレスを完成させます。DHCP サーバーがなくてもアドレスが決まるのが IPv6 らしい仕組みです。Packet Tracer では PC の IP Configuration で「Automatic」を選ぶと体験できます。</p>
+            <p>SLAAC(ステートレスアドレス自動設定)では、Router が広告するプレフィックス(例: <code>2001:db8:10::/64</code>)を受け取った PC が、ホスト部を自分で生成してアドレスを完成させます。<strong>DHCP サーバーがなくてもアドレスが決まる</strong>のが IPv6 らしい仕組みです。Packet Tracer では PC の IP Configuration で「Automatic」を選ぶと体験できます。</p>
           </article>
         </div>
       </section>
@@ -188,7 +188,7 @@ R1# show ipv6 route</div>
 
         <section class="callout warning">
           <h3>つまずきポイント: ping が通らないとき</h3>
-          <p>まず <code>ipv6 unicast-routing</code> を入れ忘れていないかを疑ってください。インターフェースにアドレスが付いていても、これが無効だと R1 はパケットを転送しません。次に <code>show ipv6 interface brief</code> で、各インターフェースが <code>up/up</code> でグローバルアドレスとリンクローカルアドレス(<code>FE80::...</code>)の両方を持っているかを確認します。</p>
+          <p>まず <strong><code>ipv6 unicast-routing</code> を入れ忘れていないか</strong>を疑ってください。インターフェースにアドレスが付いていても、これが無効だと R1 はパケットを転送しません。次に <code>show ipv6 interface brief</code> で、各インターフェースが <code>up/up</code> でグローバルアドレスとリンクローカルアドレス(<code>FE80::...</code>)の両方を持っているかを確認します。</p>
         </section>
       </section>
 
@@ -203,7 +203,7 @@ R1# show ipv6 route</div>
             <p>書式は IPv4 と同じ発想で、宛先プレフィックスとネクストホップを指定します。</p>
             <div class="code-block">R1(config)# ipv6 route 2001:db8:30::/64 2001:db8:20::2
 R1(config)# ipv6 route ::/0 2001:db8:20::2</div>
-            <p><code>::/0</code> が IPv4 の <code>0.0.0.0 0.0.0.0</code>(デフォルトルート)に相当します。</p>
+            <p><strong><code>::/0</code> が IPv4 の <code>0.0.0.0 0.0.0.0</code>(デフォルトルート)に相当</strong>します。</p>
           </article>
           <article class="card">
             <h3>OSPFv3</h3>

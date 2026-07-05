@@ -121,7 +121,7 @@
             <div class="step-number">STEP 2</div>
             <div>
               <h3>DHCP プールを作る</h3>
-              <p>「どのネットワークの IP を、どんな付属情報と一緒に配るか」をプールとして定義します。<code>default-router</code> が PC のデフォルトゲートウェイに、<code>dns-server</code> が PC の DNS 設定になります。</p>
+              <p>「どのネットワークの IP を、どんな付属情報と一緒に配るか」をプールとして定義します。<strong><code>default-router</code> が PC のデフォルトゲートウェイに、<code>dns-server</code> が PC の DNS 設定になります</strong>。</p>
               <div class="code-block">R1(config)# ip dhcp pool LAN-POOL
 R1(dhcp-config)# network 192.168.10.0 255.255.255.0
 R1(dhcp-config)# default-router 192.168.10.1
@@ -144,7 +144,7 @@ R1(dhcp-config)# exit</div>
         <div class="section-head">
           <div class="small-pill">Lab B / NAT</div>
           <h2>Lab B: プライベートIPを変換して外へ出す</h2>
-          <p>この時点で PC から Server へ Ping を打っても、返事は戻ってきません。インターネット側(ISP)はプライベート IP <code>192.168.10.0/24</code> への戻り道を知らないからです。そこで R1 に NAT(PAT)を設定し、社内の全 PC が R1 の外側 IP <code>203.0.113.1</code> を共有して外に出られるようにします。これは家庭のブロードバンドルーターと同じ仕組みです。</p>
+          <p>この時点で PC から Server へ Ping を打っても、返事は戻ってきません。<strong>インターネット側(ISP)はプライベート IP <code>192.168.10.0/24</code> への戻り道を知らない</strong>からです。そこで R1 に NAT(PAT)を設定し、社内の全 PC が R1 の外側 IP <code>203.0.113.1</code> を共有して外に出られるようにします。これは家庭のブロードバンドルーターと同じ仕組みです。</p>
         </div>
         <div class="step-list">
           <article class="step-card">
@@ -172,7 +172,7 @@ R1(config-if)# exit</div>
             <div class="step-number">STEP 3</div>
             <div>
               <h3>PAT と外向きの経路を設定する</h3>
-              <p><code>overload</code> が PAT(1つのグローバル IP を複数 PC で共有)の指定です。あわせて、外向きの通信をすべて ISP へ送るデフォルトルートも入れます。</p>
+              <p><strong><code>overload</code> が PAT(1つのグローバル IP を複数 PC で共有)の指定</strong>です。あわせて、外向きの通信をすべて ISP へ送るデフォルトルートも入れます。</p>
               <div class="code-block">R1(config)# ip nat inside source list 1 interface gigabitEthernet0/1 overload
 R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2</div>
             </div>
@@ -188,7 +188,7 @@ R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2</div>
         </div>
         <section class="callout success">
           <h3>ここで一度立ち止まって考える</h3>
-          <p>ISP Router には <code>192.168.10.0/24</code> への経路を1本も書いていないのに、なぜ Ping の返事が PC まで戻れるのでしょうか。答えは「ISP から見ると、通信相手は R1 の <code>203.0.113.1</code> に見えているから」です。この理屈が自分の言葉で説明できれば、NAT は理解できています。</p>
+          <p>ISP Router には <code>192.168.10.0/24</code> への経路を1本も書いていないのに、なぜ Ping の返事が PC まで戻れるのでしょうか。答えは<strong>「ISP から見ると、通信相手は R1 の <code>203.0.113.1</code> に見えているから」</strong>です。この理屈が自分の言葉で説明できれば、NAT は理解できています。</p>
         </section>
       </section>
 
@@ -213,14 +213,14 @@ R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2</div>
               <p>拡張 ACL は「誰が・どこへ・何の通信か」まで指定できます。1行目で PC-B から Server への Web(HTTP)だけを拒否し、2行目でそれ以外をすべて許可します。</p>
               <div class="code-block">R1(config)# access-list 100 deny tcp host 192.168.10.20 host 198.51.100.10 eq 80
 R1(config)# access-list 100 permit ip any any</div>
-              <p>2行目の <code>permit ip any any</code> を忘れると、ACL の末尾に隠れている「暗黙の deny」によって、社内からの通信がすべて止まってしまいます。ACL 事故の定番なので、必ずセットで覚えてください。</p>
+              <p><strong>2行目の <code>permit ip any any</code> を忘れると、ACL の末尾に隠れている「暗黙の deny」によって、社内からの通信がすべて止まってしまいます</strong>。ACL 事故の定番なので、必ずセットで覚えてください。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 3</div>
             <div>
               <h3>インターフェースに適用する</h3>
-              <p>ACL は作っただけでは動きません。「どのインターフェースの、どの向きの通信に適用するか」を指定して初めて効果が出ます。今回は、拡張 ACL の定石どおり送信元に近い側、つまり社内 LAN から R1 に入ってくる通信(<code>in</code>)に適用します。in と out で迷ったら、ACL 入門の「わざと間違える実験」を思い出してください。</p>
+              <p><strong>ACL は作っただけでは動きません</strong>。「どのインターフェースの、どの向きの通信に適用するか」を指定して初めて効果が出ます。今回は、拡張 ACL の定石どおり送信元に近い側、つまり社内 LAN から R1 に入ってくる通信(<code>in</code>)に適用します。in と out で迷ったら、ACL 入門の「わざと間違える実験」を思い出してください。</p>
               <div class="code-block">R1(config)# interface gigabitEthernet0/0
 R1(config-if)# ip access-group 100 in
 R1(config-if)# exit</div>

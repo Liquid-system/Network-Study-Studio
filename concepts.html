@@ -135,11 +135,11 @@
           <div class="grid-2">
             <article class="card">
               <h3>同じネットワーク内の通信</h3>
-              <p>たとえば PC-A が <code>192.168.10.20</code> にデータを送る場合、宛先は自分と同じ <code>192.168.10.x</code> の範囲にいます。この場合は Router を経由せず、Switch の転送だけで相手に届きます。</p>
+              <p>たとえば PC-A が <code>192.168.10.20</code> にデータを送る場合、宛先は自分と同じ <code>192.168.10.x</code> の範囲にいます。この場合は <strong>Router を経由せず、Switch の転送だけで相手に届きます</strong>。</p>
             </article>
             <article class="card">
               <h3>別ネットワークへの通信</h3>
-              <p>PC-A が <code>192.168.20.10</code> に送りたい場合、宛先は別のネットワークにいます。そこで PC-A はまずデフォルトゲートウェイの <code>192.168.10.1</code>(R1)にデータを渡し、R1 が宛先のネットワークへ転送します。</p>
+              <p>PC-A が <code>192.168.20.10</code> に送りたい場合、宛先は別のネットワークにいます。そこで PC-A はまず<strong>デフォルトゲートウェイ</strong>の <code>192.168.10.1</code>(R1)にデータを渡し、R1 が宛先のネットワークへ転送します。</p>
             </article>
           </div>
         </section>
@@ -155,7 +155,7 @@
               <div class="step-number">STEP 1</div>
               <div>
                 <h3>送信先は同じネットワークかを考える</h3>
-                <p>PC は、宛先の IP アドレスを自分のサブネットマスクと突き合わせて、相手が同じネットワークにいるかどうかを判断します。すべての通信は、この分岐から始まります。</p>
+                <p>PC は、<strong>宛先の IP アドレスを自分のサブネットマスクと突き合わせて</strong>、相手が同じネットワークにいるかどうかを判断します。すべての通信は、この分岐から始まります。</p>
               </div>
             </article>
             <article class="step-card">
@@ -169,14 +169,14 @@
               <div class="step-number">STEP 3</div>
               <div>
                 <h3>SwitchはMAC、RouterはIPを見る</h3>
-                <p>Switch は L2 の機器なので MAC アドレスを手がかりに転送先を決めます。一方、Router は L3 の機器なので IP アドレスを手がかりに転送先を決めます。</p>
+                <p>Switch は L2 の機器なので <strong>MAC アドレス</strong>を手がかりに転送先を決めます。一方、Router は L3 の機器なので <strong>IP アドレス</strong>を手がかりに転送先を決めます。</p>
               </div>
             </article>
             <article class="step-card">
               <div class="step-number">STEP 4</div>
               <div>
                 <h3>戻りの通信が成立して初めて成功になる</h3>
-                <p>行きのパケットが届くだけでは不十分です。Ping が成功するには、相手からの返事が戻ってくる経路と、相手側の設定も整っている必要があります。</p>
+                <p>行きのパケットが届くだけでは不十分です。Ping が成功するには、<strong>相手からの返事が戻ってくる経路</strong>と、相手側の設定も整っている必要があります。</p>
               </div>
             </article>
           </div>
@@ -213,7 +213,7 @@
             </article>
             <article class="card">
               <h3>VLAN と Default Gateway</h3>
-              <p>VLAN は、1台の Switch の中をいくつかのネットワークに分ける仕組みです。別の VLAN と通信するには Router などの L3 機器が必要で、その入り口となる IP アドレスがデフォルトゲートウェイです。</p>
+              <p>VLAN は、1台の Switch の中をいくつかのネットワークに分ける仕組みです。別の VLAN と通信するには <strong>Router などの L3 機器が必要</strong>で、その入り口となる IP アドレスがデフォルトゲートウェイです。</p>
             </article>
           </div>
         </section>

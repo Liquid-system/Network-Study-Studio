@@ -57,7 +57,7 @@
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Basic Lab / Packet Tracer</div>
         <h1>最初に固めたい、Packet Tracerの基礎ラボ。</h1>
-        <p>ここでは PC-A・SW1・R1 を使って、小さなネットワークを実際に組みます。手順どおりに疎通させるだけでなく、「なぜその設定が必要なのか」まで説明できるようになることがゴールです。</p>
+        <p>ここでは PC-A・SW1・R1 を使って、小さなネットワークを実際に組みます。手順どおりに疎通させるだけでなく、<strong>「なぜその設定が必要なのか」まで説明できるようになる</strong>ことがゴールです。</p>
       </header>
 
       <section class="section fade-in delay-2">
@@ -179,7 +179,7 @@ R1# show running-config</div>
         <div class="grid-3">
           <article class="card">
             <h3>PCのGatewayは出口</h3>
-            <p>PC は、自分と別のネットワークへ通信するとき、どこへ送ればよいかをデフォルトゲートウェイで判断します。今回はその出口が <code>192.168.10.1</code>(R1)です。</p>
+            <p>PC は、自分と別のネットワークへ通信するとき、<strong>どこへ送ればよいかをデフォルトゲートウェイで判断</strong>します。今回はその出口が <code>192.168.10.1</code>(R1)です。</p>
           </article>
           <article class="card">
             <h3>Switchは同一LANの交通整理役</h3>
@@ -187,7 +187,7 @@ R1# show running-config</div>
           </article>
           <article class="card">
             <h3>Routerは no shutdown で動き出す</h3>
-            <p>Router のポートは、IP アドレスを入れただけでは有効になりません。<code>R1(config-if)# no shutdown</code> を入力して初めて、通信できる状態になります。</p>
+            <p>Router のポートは、<strong>IP アドレスを入れただけでは有効になりません</strong>。<code>R1(config-if)# no shutdown</code> を入力して初めて、通信できる状態になります。</p>
           </article>
         </div>
       </section>
@@ -203,7 +203,7 @@ R1# show running-config</div>
             <h3>Router側の確認</h3>
             <div class="code-block">R1# show ip interface brief
 R1# show running-config</div>
-            <p><code>g0/1</code> が up/up になっているか、IP アドレスが正しく入っているかを確認します。</p>
+            <p><code>g0/1</code> が <strong>up/up</strong> になっているか、IP アドレスが正しく入っているかを確認します。</p>
           </article>
           <article class="card">
             <h3>Switch側の確認</h3>

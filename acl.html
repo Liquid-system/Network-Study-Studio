@@ -64,7 +64,7 @@
         <div class="section-head">
           <div class="small-pill">Why ACL</div>
           <h2>ACLとは何か: 上から順に照合される「通行ルールのリスト」</h2>
-          <p>ACL は「どんなパケットを(条件)、通すか止めるか(permit / deny)」を1行ずつ並べたリストです。Router はパケットを受け取るたびにリストを上から順に照合し、最初に一致した行の permit / deny で処理を即決します。そして、どの行にも一致しなかったパケットは、リストの末尾に隠れている「暗黙の deny」によってすべて破棄されます。</p>
+          <p>ACL は「どんなパケットを(条件)、通すか止めるか(permit / deny)」を1行ずつ並べたリストです。Router はパケットを受け取るたびに<strong>リストを上から順に照合し、最初に一致した行の permit / deny で処理を即決</strong>します。そして、どの行にも一致しなかったパケットは、リストの末尾に隠れている<strong>「暗黙の deny」によってすべて破棄</strong>されます。</p>
         </div>
         <div class="grid-2">
           <article class="card">
@@ -173,7 +173,7 @@ R1(config-if)# exit
 R1(config)# interface gigabitEthernet0/1
 R1(config-if)# ip address 192.168.2.1 255.255.255.0
 R1(config-if)# no shutdown</div>
-              <p>設定できたら、PC-A と PC-B の両方から <code>ping 192.168.2.100</code> が成功すること、PC-A の Web Browser で <code>http://192.168.2.100</code> が開けることを確認します。ACL の学習は「全部通る状態」を先に確認してから始めるのが鉄則です。そうしないと、後で通信が止まったとき、ACL のせいなのか元々の設定ミスなのかを切り分けられなくなります。</p>
+              <p>設定できたら、PC-A と PC-B の両方から <code>ping 192.168.2.100</code> が成功すること、PC-A の Web Browser で <code>http://192.168.2.100</code> が開けることを確認します。ACL の学習は<strong>「全部通る状態」を先に確認してから始めるのが鉄則</strong>です。そうしないと、後で通信が止まったとき、ACL のせいなのか元々の設定ミスなのかを切り分けられなくなります。</p>
             </div>
           </article>
           <article class="step-card">
@@ -183,7 +183,7 @@ R1(config-if)# no shutdown</div>
               <p>「PC-A からの通信だけを拒否し、それ以外は許可する」というルールを、番号 10 の標準 ACL として作ります。</p>
               <div class="code-block">R1(config)# access-list 10 deny host 192.168.1.10
 R1(config)# access-list 10 permit any</div>
-              <p>コマンドの意味を1つずつ確認しましょう。<code>access-list 10</code> は「番号 10 の ACL に1行追加する」という意味で、番号が 1〜99 の範囲なので Router は標準 ACL だと解釈します。<code>deny host 192.168.1.10</code> は「送信元がこの1台のパケットを拒否」です。範囲で指定したい場合は <code>access-list 10 deny 192.168.1.0 0.0.0.255</code> のように、サブネットマスクの 0 と 255 を反転させたワイルドカードマスクを使います。<code>permit any</code> は「残りはすべて許可」で、この行を忘れると暗黙の deny によって全通信が止まります。</p>
+              <p>コマンドの意味を1つずつ確認しましょう。<code>access-list 10</code> は「番号 10 の ACL に1行追加する」という意味で、番号が 1〜99 の範囲なので Router は標準 ACL だと解釈します。<code>deny host 192.168.1.10</code> は「送信元がこの1台のパケットを拒否」です。範囲で指定したい場合は <code>access-list 10 deny 192.168.1.0 0.0.0.255</code> のように、サブネットマスクの 0 と 255 を反転させたワイルドカードマスクを使います。<code>permit any</code> は「残りはすべて許可」で、<strong>この行を忘れると暗黙の deny によって全通信が止まります</strong>。</p>
               <p>ここで PC-A から Ping を打ってみてください。<strong>まだ全部通ります。</strong>ACL は作っただけでは何も起きず、インターフェースに適用して初めて効果が出ます。</p>
             </div>
           </article>
@@ -274,15 +274,15 @@ R1# copy running-config startup-config</div>
         <div class="grid-3">
           <article class="card">
             <h3>1. 上から順、最初の一致で即決</h3>
-            <p>パケットはリストを上から照合され、最初に一致した行で permit / deny が確定します。それより下の行は見られません。<code>permit any</code> を先頭に書くと、以降の deny は永遠に評価されない「死んだ行」になります。</p>
+            <p>パケットはリストを上から照合され、<strong>最初に一致した行で permit / deny が確定します</strong>。それより下の行は見られません。<code>permit any</code> を先頭に書くと、以降の deny は永遠に評価されない「死んだ行」になります。</p>
           </article>
           <article class="card">
             <h3>2. 末尾には暗黙の deny</h3>
-            <p>どの行にも一致しなかったパケットは、設定画面には表示されない「暗黙の deny」ですべて破棄されます。deny だけの ACL を適用すると全通信が止まるのはこのためです。許可行とセットで書くのが基本です。</p>
+            <p>どの行にも一致しなかったパケットは、<strong>設定画面には表示されない「暗黙の deny」ですべて破棄されます</strong>。deny だけの ACL を適用すると全通信が止まるのはこのためです。許可行とセットで書くのが基本です。</p>
           </article>
           <article class="card">
             <h3>3. 1インターフェース・1方向に1つ</h3>
-            <p>1つのインターフェースの同じ方向に適用できる ACL は1つだけです。同じ方向に別の ACL を適用すると、前の ACL は上書きされて外れます。条件を増やしたいときは、同じ ACL に行を足します。</p>
+            <p><strong>1つのインターフェースの同じ方向に適用できる ACL は1つだけ</strong>です。同じ方向に別の ACL を適用すると、前の ACL は上書きされて外れます。条件を増やしたいときは、同じ ACL に行を足します。</p>
           </article>
         </div>
       </section>
@@ -295,7 +295,7 @@ R1# copy running-config startup-config</div>
         <div class="grid-3">
           <article class="card">
             <h3>通信が全部止まった</h3>
-            <p>ほぼ確実に <code>permit any</code>(拡張なら <code>permit ip any any</code>)の入れ忘れです。<code>R1# show access-lists</code> で許可行があるかを確認します。番号付き ACL は行の削除ができないので、<code>no access-list 10</code> で消してから作り直します。</p>
+            <p>ほぼ確実に <strong><code>permit any</code>(拡張なら <code>permit ip any any</code>)の入れ忘れ</strong>です。<code>R1# show access-lists</code> で許可行があるかを確認します。番号付き ACL は行の削除ができないので、<code>no access-list 10</code> で消してから作り直します。</p>
           </article>
           <article class="card">
             <h3>ACL が効いていない</h3>

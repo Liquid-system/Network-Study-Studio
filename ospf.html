@@ -115,7 +115,7 @@
           </article>
           <article class="card">
             <h3>/30 を使う理由</h3>
-            <p>Router 同士をつなぐリンクには機器が2台しかいません。<code>/30</code>(サブネットマスク <code>255.255.255.252</code>)は使える IP がちょうど2個のネットワークなので、Router 間リンクの定番として使われます。/24 との違いを意識しながら設定してみてください。</p>
+            <p>Router 同士をつなぐリンクには機器が2台しかいません。<code>/30</code>(サブネットマスク <code>255.255.255.252</code>)は<strong>使える IP がちょうど2個のネットワーク</strong>なので、Router 間リンクの定番として使われます。/24 との違いを意識しながら設定してみてください。</p>
           </article>
         </div>
 
@@ -151,14 +151,14 @@ R1(config-if)# exit</div>
             <div class="step-number">STEP 2</div>
             <div>
               <h3>隣どうしの疎通を確認する</h3>
-              <p>OSPF を設定する前に、R1 から <code>10.0.12.2</code>(R2)へ、R2 から <code>10.0.23.2</code>(R3)へ Ping を打ちます。隣接リンクが通らない状態で OSPF を入れても、ネイバーは絶対に張れません。先に土台を固めるのがコツです。</p>
+              <p>OSPF を設定する前に、R1 から <code>10.0.12.2</code>(R2)へ、R2 から <code>10.0.23.2</code>(R3)へ Ping を打ちます。<strong>隣接リンクが通らない状態で OSPF を入れても、ネイバーは絶対に張れません</strong>。先に土台を固めるのがコツです。</p>
             </div>
           </article>
           <article class="step-card">
             <div class="step-number">STEP 3</div>
             <div>
               <h3>R1 に OSPF を設定する</h3>
-              <p><code>network</code> コマンドで「OSPF に参加させるネットワーク」を宣言します。ここで使うワイルドカードマスクは、ACL 入門にも登場した「サブネットマスクの 0 と 255 を反転させたもの」です(<code>/24</code> なら <code>0.0.0.255</code>、<code>/30</code> なら <code>0.0.0.3</code>)。</p>
+              <p><code>network</code> コマンドで「OSPF に参加させるネットワーク」を宣言します。ここで使うワイルドカードマスクは、ACL 入門にも登場した<strong>「サブネットマスクの 0 と 255 を反転させたもの」</strong>です(<code>/24</code> なら <code>0.0.0.255</code>、<code>/30</code> なら <code>0.0.0.3</code>)。</p>
               <div class="code-block">R1(config)# router ospf 1
 R1(config-router)# router-id 1.1.1.1
 R1(config-router)# network 192.168.1.0 0.0.0.255 area 0
@@ -170,7 +170,7 @@ R1(config-router)# exit</div>
             <div class="step-number">STEP 4</div>
             <div>
               <h3>R2 と R3 にも OSPF を設定する</h3>
-              <p>各 Router は「自分に直接つながっているネットワーク」だけを宣言します。離れたネットワークを書く必要がないのが、静的ルートとの大きな違いです。</p>
+              <p>各 Router は<strong>「自分に直接つながっているネットワーク」だけを宣言</strong>します。離れたネットワークを書く必要がないのが、静的ルートとの大きな違いです。</p>
               <div class="code-block">R2(config)# router ospf 1
 R2(config-router)# router-id 2.2.2.2
 R2(config-router)# network 10.0.12.0 0.0.0.3 area 0
@@ -192,7 +192,7 @@ R3(config-router)# exit</div>
               <div class="code-block">R1# show ip ospf neighbor
 R1# show ip route ospf
 R1# copy running-config startup-config</div>
-              <p><code>show ip ospf neighbor</code> で State が <code>FULL</code> になっていれば、経路交換は完了しています。<code>show ip route</code> では、自分で書いていない <code>192.168.3.0/24</code> が <code>O</code>(OSPF)付きで載っているはずです。</p>
+              <p><strong><code>show ip ospf neighbor</code> で State が <code>FULL</code> になっていれば、経路交換は完了</strong>しています。<code>show ip route</code> では、自分で書いていない <code>192.168.3.0/24</code> が <code>O</code>(OSPF)付きで載っているはずです。</p>
             </div>
           </article>
           <article class="step-card">
@@ -238,11 +238,11 @@ R1# copy running-config startup-config</div>
           </article>
           <article class="card">
             <h3>ワイルドカードの間違い</h3>
-            <p><code>network 10.0.12.0 0.0.0.3</code> と書くべきところを <code>255.255.255.252</code> と書いてしまうのが定番のミスです。ワイルドカードマスクはサブネットマスクの反転だと覚えてください。</p>
+            <p><code>network 10.0.12.0 0.0.0.3</code> と書くべきところを <code>255.255.255.252</code> と書いてしまうのが定番のミスです。<strong>ワイルドカードマスクはサブネットマスクの反転</strong>だと覚えてください。</p>
           </article>
           <article class="card">
             <h3>area 番号の不一致</h3>
-            <p>今回はすべて <code>area 0</code> に統一します。片方だけ <code>area 1</code> になっていると、同じリンク上にいてもネイバーになれません。<code>R1# show running-config</code> で見直します。</p>
+            <p>今回はすべて <code>area 0</code> に統一します。<strong>片方だけ <code>area 1</code> になっていると、同じリンク上にいてもネイバーになれません</strong>。<code>R1# show running-config</code> で見直します。</p>
           </article>
         </div>
       </section>
