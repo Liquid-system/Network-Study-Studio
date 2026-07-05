@@ -20,7 +20,7 @@
 
       <div class="sidebar-note">
         <strong>学習前提</strong>
-        <p>この教材では、Cisco Packet Tracer を使って、概念の理解から中級ラボ、L3 Switch / SVI、トラブルシュート、ACL 入門、さらに OSPF や DHCP・NAT の応用まで段階的に学びます。各単元の最後には理解度チェックがあり、その場で学んだ内容を振り返れます。</p>
+        <p>この教材では、Cisco Packet Tracer を使って、概念の理解から中級ラボ、L3 Switch / SVI、トラブルシュート、ACL 入門、OSPF や DHCP・NAT の応用、さらに冗長化・IPv6・セキュリティと運用の上級テーマまで段階的に学びます。各単元の最後には理解度チェックがあり、その場で学んだ内容を振り返れます。</p>
       </div>
 
       <div>
@@ -103,6 +103,27 @@
               <small>DHCP・NAT・ACL</small>
             </div>
           </a>
+          <a href="redundancy.html" data-page-link="redundancy">
+            <div class="nav-number">12</div>
+            <div class="nav-copy">
+              <strong>冗長化</strong>
+              <small>STP・EtherChannel・HSRP</small>
+            </div>
+          </a>
+          <a href="ipv6.html" data-page-link="ipv6">
+            <div class="nav-number">13</div>
+            <div class="nav-copy">
+              <strong>IPv6入門</strong>
+              <small>次世代アドレスを学ぶ</small>
+            </div>
+          </a>
+          <a href="security-ops.html" data-page-link="security-ops">
+            <div class="nav-number">14</div>
+            <div class="nav-copy">
+              <strong>セキュリティと運用</strong>
+              <small>守る設定と管理</small>
+            </div>
+          </a>
         </nav>
       </div>
 
@@ -123,7 +144,7 @@
       <header class="page-header fade-in delay-1">
         <div class="eyebrow">Packet Tracer / Beginner Friendly / Cisco IOS</div>
         <h1>初心者でも迷わない、段階式ネットワーク学習サイト。</h1>
-        <p>概念の理解、Packet Tracer の操作、Cisco コマンド、基礎ラボ、中級ラボ、L3 Switch / SVI、トラブルシュート、ACL 入門、そして OSPF・DHCP・NAT の応用ラボまでを、1ページに詰め込まずテーマごとに分けて整理しました。最初の一歩から実務に近い構成まで一歩ずつ難易度を上げながら進められ、各ページの最後で理解度も確認できます。</p>
+        <p>概念の理解、Packet Tracer の操作、Cisco コマンド、基礎ラボ、中級ラボ、L3 Switch / SVI、トラブルシュート、ACL 入門、OSPF・DHCP・NAT の応用ラボ、そして冗長化・IPv6・セキュリティと運用の上級テーマまでを、1ページに詰め込まずテーマごとに分けて整理しました。最初の一歩から実務に近い構成まで一歩ずつ難易度を上げながら進められ、各ページの最後で理解度も確認できます。</p>
       </header>
 
       <section class="hero-grid fade-in delay-2">
@@ -139,19 +160,19 @@
         <article class="hero-panel fade-in delay-3">
           <div class="metric-grid">
             <div class="hero-stat">
-              <strong>11</strong>
+              <strong>14</strong>
               <span>学習ページ</span>
             </div>
             <div class="hero-stat">
-              <strong>7</strong>
+              <strong>10</strong>
               <span>演習フェーズ</span>
             </div>
             <div class="hero-stat">
-              <strong>40+</strong>
+              <strong>60+</strong>
               <span>CLIコマンド</span>
             </div>
             <div class="hero-stat">
-              <strong>10</strong>
+              <strong>13</strong>
               <span>単元別チェック</span>
             </div>
           </div>
@@ -187,7 +208,11 @@
             <p>ACL で通信を選んで止める制御を学び、Router 3台構成の OSPF で経路の自動学習を体験します。応用ラボでは DHCP・NAT を積み上げて「自宅のルーターがやっていること」を自分の手で再現し、仕上げは全単元の知識を使う総合チャレンジです。</p>
           </article>
           <article class="card">
-            <h3>6. 単元末尾で理解度確認</h3>
+            <h3>6. 上級テーマで実務レベルへ</h3>
+            <p>冗長化(STP・EtherChannel・HSRP)で「壊れても止まらない」設計を学び、IPv6 で次世代アドレスに対応し、セキュリティと運用管理で「作った後に守る」視点を身につけます。</p>
+          </article>
+          <article class="card">
+            <h3>7. 単元末尾で理解度確認</h3>
             <p>各ページの最後に、その単元専用の理解度チェックを用意しています。読んだ内容をその場で振り返れるので、あいまいなまま先へ進む心配がありません。</p>
           </article>
         </div>
@@ -251,6 +276,21 @@
             <strong>DHCP・NAT・ACLと総合チャレンジ</strong>
             <p>IP の自動配布、プライベート IP の変換、通信制御を1つの構成に積み上げ、最後は要件だけを見て一人で構築します。</p>
           </a>
+          <a class="lesson-link" href="redundancy.html">
+            <span>12. 冗長化</span>
+            <strong>STP・EtherChannel・HSRPで止めない設計</strong>
+            <p>ケーブルや機器が1つ壊れても通信を継続できる構成を作り、わざと壊して切り替わりを観察します。</p>
+          </a>
+          <a class="lesson-link" href="ipv6.html">
+            <span>13. IPv6入門</span>
+            <strong>次世代アドレスを読める・設定できる</strong>
+            <p>128ビットアドレスの省略ルールとアドレスの種類を整理し、IPv6 だけで疎通が取れる構成を組みます。</p>
+          </a>
+          <a class="lesson-link" href="security-ops.html">
+            <span>14. セキュリティと運用</span>
+            <strong>SSH・ポートセキュリティ・Syslog・NTP</strong>
+            <p>機器への不正アクセスを防ぐ設定と、障害対応の土台になるログ・時刻管理を学びます。</p>
+          </a>
         </div>
       </section>
 
@@ -273,6 +313,9 @@
               <li>標準 ACL と拡張 ACL を正しい場所と向き(in / out)に適用し、通信を意図どおりに制御できる</li>
               <li>OSPF で Router 3台構成の経路を自動学習させ、ネイバーの状態を確認できる</li>
               <li>DHCP・NAT(PAT)・ACL を設定し、動作をコマンドで検証できる</li>
+              <li>STP・EtherChannel・HSRP で冗長構成を組み、障害時の切り替わりを説明できる</li>
+              <li>IPv6 アドレスを正しく省略表記し、Router と PC に設定して疎通確認できる</li>
+              <li>SSH・ポートセキュリティ・Syslog・NTP で機器を守り、運用の記録を残せる</li>
             </ul>
           </article>
           <article class="card">
@@ -286,7 +329,8 @@
               <li>トラブルシュートで確認の順番を身につける</li>
               <li>ACL 入門で in と out の方向感覚を掴む</li>
               <li>OSPF 入門と応用ラボで、実務に近い構成に挑戦する</li>
-              <li>最後に総合チャレンジで、全単元の知識を結びつける</li>
+              <li>総合チャレンジで、基礎〜応用の知識を結びつける</li>
+              <li>冗長化・IPv6・セキュリティと運用の上級テーマで実務レベルに近づく</li>
               <li>各単元の最後に理解度チェックで振り返る</li>
             </ul>
           </article>

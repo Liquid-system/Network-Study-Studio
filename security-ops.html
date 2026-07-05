@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セキュリティと運用 | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="security-ops">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>機器への不正アクセスを防ぐ基本設定(SSH・ポートセキュリティ)と、Syslog・NTP を使った日々の運用管理を学びます。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+          <a href="redundancy.html" data-page-link="redundancy"><div class="nav-number">12</div><div class="nav-copy"><strong>冗長化</strong><small>STP・EtherChannel・HSRP</small></div></a>
+          <a href="ipv6.html" data-page-link="ipv6"><div class="nav-number">13</div><div class="nav-copy"><strong>IPv6入門</strong><small>次世代アドレスを学ぶ</small></div></a>
+          <a href="security-ops.html" data-page-link="security-ops"><div class="nav-number">14</div><div class="nav-copy"><strong>セキュリティと運用</strong><small>守る設定と管理</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">「作れる」から「守れる・運用できる」へ。ここまでの単元で組んだどの構成にも、このページの設定をそのまま追加できます。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">Security &amp; Operations / Hardening &amp; Management</div>
+        <h1>作ったネットワークを、守って運用する。</h1>
+        <p>実務のネットワークエンジニアは、構築した後のほうが長い時間を過ごします。この単元では、機器に入る経路を守る設定(パスワード・SSH・ポートセキュリティ)と、障害対応に欠かせない記録の仕組み(Syslog・NTP)を学びます。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Device Hardening</div>
+          <h2>管理アクセスを守る: パスワードとSSH</h2>
+          <p>Telnet は通信が平文で流れるため、経路上で盗聴されるとパスワードがそのまま見えてしまいます。実務ではリモート管理を <strong>SSH(暗号化)に限定</strong>するのが基本です。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>パスワードの基本</h3>
+            <div class="code-block">R1(config)# enable secret class123
+R1(config)# service password-encryption
+R1(config)# banner motd #Authorized access only#</div>
+            <ul class="packet-list">
+              <li><code>enable secret</code> は特権モードのパスワードをハッシュ化して保存(<code>enable password</code> より安全)</li>
+              <li><code>service password-encryption</code> は設定ファイル内の平文パスワードを暗号化表示にする</li>
+              <li><code>banner motd</code> はログイン時の警告文。不正アクセスへの法的な牽制になります</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>SSHの有効化(順番が大事)</h3>
+            <div class="code-block">R1(config)# hostname R1
+R1(config)# ip domain-name study.local
+R1(config)# crypto key generate rsa
+The name for the keys will be: R1.study.local
+How many bits in the modulus [512]: 1024
+R1(config)# username admin secret cisco123
+R1(config)# line vty 0 4
+R1(config-line)# login local
+R1(config-line)# transport input ssh</div>
+            <p>RSA 鍵は「ホスト名 + ドメイン名」から作られるため、<strong>hostname と ip domain-name を先に設定</strong>しないと鍵を生成できません。<code>transport input ssh</code> で Telnet を締め出します。</p>
+          </article>
+        </div>
+
+        <section class="callout success">
+          <h3>Packet Tracerでの動作確認</h3>
+          <p>PC の Desktop → Telnet / SSH Client から <code>SSH</code> を選び、ユーザー名 <code>admin</code> で R1 の IP に接続します。続けて Telnet でも接続を試み、<strong>拒否されること</strong>まで確認すると設定の意味が体感できます。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Port Security</div>
+          <h2>ポートセキュリティ: 勝手な機器の接続を防ぐ</h2>
+          <p>オフィスの床下や会議室の LAN ポートには、誰でも物理的に機器をつなげてしまいます。ポートセキュリティは、Switch のポートごとに<strong>学習するMACアドレスの数や値を制限</strong>し、想定外の機器がつながったときに自動で対処する機能です。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>設定例: Fa0/1 をPC-A専用にする</h3>
+            <div class="code-block">SW1(config)# interface fastEthernet0/1
+SW1(config-if)# switchport mode access
+SW1(config-if)# switchport port-security
+SW1(config-if)# switchport port-security maximum 1
+SW1(config-if)# switchport port-security mac-address sticky
+SW1(config-if)# switchport port-security violation shutdown</div>
+            <p><code>sticky</code> は「最初につながった機器の MAC アドレスを自動で覚えて固定する」設定です。ポートセキュリティは <strong>access モードのポートにしか設定できない</strong>点に注意してください。</p>
+          </article>
+          <article class="card">
+            <h3>違反時の3つの動作</h3>
+            <ul class="packet-list">
+              <li><strong>shutdown</strong>(初期値): ポートを err-disabled 状態にして完全に停止する</li>
+              <li><strong>restrict</strong>: 違反フレームを破棄し、ログと違反カウントを記録する</li>
+              <li><strong>protect</strong>: 違反フレームを黙って破棄する(記録なし)</li>
+            </ul>
+            <p>状態確認と、err-disabled になったポートの復旧はこう行います。</p>
+            <div class="code-block">SW1# show port-security interface fastEthernet0/1
+
+SW1(config)# interface fastEthernet0/1
+SW1(config-if)# shutdown
+SW1(config-if)# no shutdown</div>
+          </article>
+        </div>
+
+        <section class="callout warning">
+          <h3>実験のすすめ: わざと違反させる</h3>
+          <p>PC-A で sticky 学習させたあと、ケーブルを別の PC につなぎ替えてトラフィックを流すと、ポートが err-disabled になりリンクランプが赤になります。<code>show port-security</code> の違反カウントとあわせて観察してください。「復旧には shutdown → no shutdown が必要」という点は実務でも頻出です。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Operations</div>
+          <h2>運用の土台: SyslogとNTP</h2>
+          <p>障害対応の第一歩は「いつ・何が起きたか」を知ることです。ログを1か所に集める Syslog と、全機器の時刻を揃える NTP はセットで設定します。時刻がずれていると、複数機器のログを突き合わせて原因を追うことができません。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>Syslog: ログをサーバーに集める</h3>
+            <div class="code-block">R1(config)# logging 192.168.10.100
+R1# show logging</div>
+            <p>Packet Tracer では Server を配置し、Services タブの SYSLOG をオンにすると受信ログを一覧できます。インターフェースの up/down などのイベントがサーバーに届く様子を確認しましょう。</p>
+          </article>
+          <article class="card">
+            <h3>NTP: 時刻を揃える</h3>
+            <div class="code-block">R1(config)# ntp server 192.168.10.100
+R1# show ntp status
+R1# show clock</div>
+            <p>Server の Services タブで NTP を有効にし、Router / Switch をそのサーバーに同期させます。<code>show ntp status</code> に <code>synchronized</code> と表示されれば成功です。</p>
+          </article>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>やること</th>
+                <th>コマンド / 操作</th>
+                <th>実務での意味</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>設定のバックアップ</td>
+                <td><code>copy running-config startup-config</code>、外部保存は <code>copy running-config tftp:</code></td>
+                <td>機器故障時に同じ設定を即座に復元できるよう、変更のたびに保存・退避します。</td>
+              </tr>
+              <tr>
+                <td>隣接機器の確認</td>
+                <td><code>show cdp neighbors</code></td>
+                <td>配線図が古くても、実際に「どのポートが何とつながっているか」を機器自身から取得できます。</td>
+              </tr>
+              <tr>
+                <td>ログの確認</td>
+                <td><code>show logging</code></td>
+                <td>障害の時刻と直前のイベントを特定する、切り分けの出発点です。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Mini Lab</div>
+          <h2>この単元のラボ構成</h2>
+          <p>基礎ラボの構成(PC・Switch・Router)に Server を1台追加するだけで、この単元の内容をすべて練習できます。</p>
+        </div>
+
+        <div class="topic-diagram">
+          <div class="diagram-node">PC-A<small><span class="device-name">管理端末</span>192.168.10.10 /24</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">SW1<small><span class="device-name">Catalyst 2960</span>Fa0/1: ポートセキュリティ</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1 + Server<small><span class="device-name">R1: SSH管理</span>Server: 192.168.10.100<br>SYSLOG / NTP</small></div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>このラボでやること</h3>
+            <ul class="check-list">
+              <li>R1 と SW1 を SSH 接続のみに制限し、PC-A から SSH でログインする</li>
+              <li>SW1 の Fa0/1 にポートセキュリティ(sticky・shutdown)を設定する</li>
+              <li>別の PC につなぎ替えて err-disabled を発生させ、復旧手順を実施する</li>
+              <li>R1・SW1 のログを Server(192.168.10.100)の SYSLOG に集約する</li>
+              <li>NTP 同期後、ログのタイムスタンプが揃っていることを確認する</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>さらに上を目指すなら</h3>
+            <p>この教材の全14単元を終えたら、CCNA の出題範囲はかなりの部分をカバーできています。次のステップとしては、VLAN 間の DHCP 中継(<code>ip helper-address</code>)、DHCP スヌーピング、AAA 認証、そして実機や CML・GNS3 などのより本格的な検証環境に進むのがおすすめです。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">守る設定と運用の要点を確認します。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="Telnet は通信内容が平文で流れるため盗聴に弱く、実務では暗号化される SSH に限定します。transport input ssh で vty への Telnet 接続を拒否できます。">
+              <fieldset>
+                <legend>Q1. リモート管理を Telnet ではなく SSH にすべき理由として正しいのはどれですか?</legend>
+                <label class="option-label"><input type="radio" name="so-q1" data-correct="true"> SSH は通信が暗号化され、パスワードの盗聴を防げるから</label>
+                <label class="option-label"><input type="radio" name="so-q1"> SSH のほうが通信速度が速いから</label>
+                <label class="option-label"><input type="radio" name="so-q1"> Telnet は特権モードに入れないから</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="violation shutdown(初期値)のポートは、違反を検知すると err-disabled 状態になります。復旧は該当インターフェースで shutdown → no shutdown を実行します。">
+              <fieldset>
+                <legend>Q2. ポートセキュリティ違反で err-disabled になったポートを復旧する手順はどれですか?</legend>
+                <label class="option-label"><input type="radio" name="so-q2"> Switch を再起動するしかない</label>
+                <label class="option-label"><input type="radio" name="so-q2" data-correct="true"> 該当ポートで shutdown → no shutdown を実行する</label>
+                <label class="option-label"><input type="radio" name="so-q2"> ケーブルを差し直せば自動で復旧する</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">2問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="ipv6.html">
+          <span>前のページ</span>
+          <strong>IPv6入門へ戻る</strong>
+          <p>アドレスの読み方と設定を復習したいときはこちらです。</p>
+        </a>
+        <a class="lesson-link" href="index.html">
+          <span>学習トップへ</span>
+          <strong>全体を振り返る</strong>
+          <p>ここが最終単元です。各ページの理解度チェックを解き直して、知識の抜けを埋めましょう。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

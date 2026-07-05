@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>冗長化 | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="redundancy">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>機器やケーブルが1つ壊れても通信が止まらない構成を作るための3つの技術、STP・EtherChannel・HSRP を学びます。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+          <a href="redundancy.html" data-page-link="redundancy"><div class="nav-number">12</div><div class="nav-copy"><strong>冗長化</strong><small>STP・EtherChannel・HSRP</small></div></a>
+          <a href="ipv6.html" data-page-link="ipv6"><div class="nav-number">13</div><div class="nav-copy"><strong>IPv6入門</strong><small>次世代アドレスを学ぶ</small></div></a>
+          <a href="security-ops.html" data-page-link="security-ops"><div class="nav-number">14</div><div class="nav-copy"><strong>セキュリティと運用</strong><small>守る設定と管理</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">「壊れても止まらない」設計は上級エンジニアの基本姿勢です。まず STP でループを防ぎ、次にリンクを束ね、最後にゲートウェイを二重化する順で読み進めてください。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">Redundancy / STP・EtherChannel・HSRP</div>
+        <h1>機器が1台壊れても、通信を止めない。</h1>
+        <p>実務のネットワークでは、Switch もケーブルも Router も「いつか壊れるもの」として設計します。この単元では、経路を二重化しつつループを防ぐ STP、リンクを束ねる EtherChannel、デフォルトゲートウェイを二重化する HSRP を学びます。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Why Redundancy</div>
+          <h2>二重化すると、今度は「ループ」が問題になる</h2>
+          <p>Switch 同士をケーブル2本でつなぐと、片方が切れても通信を継続できます。ところが L2 ネットワークでは、経路が輪(ループ)になると<strong>ブロードキャストフレームが永遠に回り続け</strong>、ネットワーク全体が麻痺します。これをブロードキャストストームと呼びます。</p>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>単一障害点(SPOF)をなくす</h3>
+            <p>ケーブル1本・機器1台だけに依存した構成では、その1点が壊れた瞬間に全体が止まります。実務では「どこが壊れたら通信が止まるか」を常に意識し、重要な経路と機器を二重化します。</p>
+          </article>
+          <article class="card">
+            <h3>L2ループが危険な理由</h3>
+            <p>IP パケットには TTL があり、ループしてもいずれ破棄されます。しかし L2 の Ethernet フレームには TTL に相当する仕組みがありません。ループ経路に入ったブロードキャストは減ることなく増殖し続けます。だから L2 の冗長化には STP が必須なのです。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Spanning Tree Protocol</div>
+          <h2>STP: ループを自動でブロックする</h2>
+          <p>STP(スパニングツリープロトコル)は、Switch 同士が BPDU というメッセージを交換し、ループになる経路の一部を<strong>自動的にブロック(通信停止状態)</strong>にする仕組みです。障害が起きると、ブロックしていたポートを開放して経路を切り替えます。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>ルートブリッジの選出</h3>
+            <p>STP はまず、ネットワーク内の Switch から1台の「ルートブリッジ」を選びます。<strong>ブリッジID(プライオリティ + MACアドレス)が最も小さい Switch</strong> が選ばれ、全経路はルートブリッジを起点に計算されます。</p>
+            <p>プライオリティの初期値はどの Switch も 32768 なので、何も設定しないと「MACアドレスが最も小さい(=たいてい最も古い)Switch」がルートになってしまいます。実務では中心の Switch を意図的にルートにします。</p>
+            <div class="code-block">SW1(config)# spanning-tree vlan 1 priority 4096</div>
+          </article>
+          <article class="card">
+            <h3>ポートの役割と状態</h3>
+            <ul class="packet-list">
+              <li><strong>ルートポート</strong>: ルートブリッジへ最短で向かうポート(各Switchに1つ)</li>
+              <li><strong>指定ポート</strong>: 各セグメントでフレームを転送する側のポート</li>
+              <li><strong>ブロッキングポート</strong>: ループを防ぐために転送を止めているポート</li>
+            </ul>
+            <p>状態の確認はこのコマンドが基本です。<code>Root</code> の表示と、各ポートの <code>FWD</code>(転送)/ <code>BLK</code>(ブロック)を読み取ります。</p>
+            <div class="code-block">SW1# show spanning-tree</div>
+          </article>
+          <article class="card">
+            <h3>PC接続ポートには PortFast</h3>
+            <p>STP のポートは、有効になってから転送を始めるまで最大50秒ほど待ち時間があります。PC しかつながないアクセスポートではループの心配がないため、PortFast を設定して即座に転送を開始させるのが実務の定石です。</p>
+            <div class="code-block">SW1(config)# interface fastEthernet0/1
+SW1(config-if)# spanning-tree portfast</div>
+          </article>
+          <article class="callout warning">
+            <h3>PortFast を Switch 間リンクに入れない</h3>
+            <p>PortFast は STP の安全確認を省略する設定です。Switch 同士をつなぐポートに設定すると、一時的にループが発生する危険があります。「PC・サーバーをつなぐポート専用」と覚えてください。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">EtherChannel</div>
+          <h2>EtherChannel: 複数リンクを1本の論理リンクに束ねる</h2>
+          <p>STP は冗長リンクをブロックするため、2本つないでも帯域は1本分しか使えません。EtherChannel で複数の物理リンクを1本の論理リンクに束ねると、STP からは1本に見えるため<strong>ブロックされずに全リンクの帯域を使え</strong>、1本切れても残りで通信が続きます。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>ネゴシエーションの方式</h3>
+            <ul class="packet-list">
+              <li><strong>LACP</strong>(標準規格): モードは <code>active</code>(自分から交渉)と <code>passive</code>(相手待ち)</li>
+              <li><strong>PAgP</strong>(Cisco独自): モードは <code>desirable</code> と <code>auto</code></li>
+              <li><strong>on</strong>: 交渉せず強制的に束ねる(両端とも on のときのみ)</li>
+            </ul>
+            <p>実務では標準規格の LACP を使い、少なくとも片側を <code>active</code> にするのが一般的です。</p>
+          </article>
+          <article class="card">
+            <h3>設定と確認</h3>
+            <p>束ねたいポートをまとめて選択し、同じチャネルグループ番号を割り当てます。<strong>速度・デュプレックス・VLAN 設定は束ねる全ポートで一致</strong>させる必要があります。</p>
+            <div class="code-block">SW1(config)# interface range fastEthernet0/23 - 24
+SW1(config-if-range)# channel-group 1 mode active
+
+SW1# show etherchannel summary</div>
+            <p><code>show etherchannel summary</code> で <code>Po1(SU)</code> のように <code>SU</code>(Layer2・使用中)と表示されれば成功です。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">HSRP</div>
+          <h2>HSRP: デフォルトゲートウェイを二重化する</h2>
+          <p>PC のデフォルトゲートウェイに設定した Router が壊れると、PC は外のネットワークへ一切出られなくなります。HSRP は Router 2台で1つの<strong>仮想IPアドレス</strong>を共有し、PC からは「壊れない1台のゲートウェイ」に見せる Cisco の技術です(標準規格版は VRRP)。</p>
+        </div>
+
+        <div class="topic-diagram">
+          <div class="diagram-node">PC-A<small><span class="device-name">End Device</span>192.168.10.10 /24<br>GW 192.168.10.254</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1<small><span class="device-name">Active</span>G0/0: 192.168.10.2<br>仮想IP 192.168.10.254</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R2<small><span class="device-name">Standby</span>G0/0: 192.168.10.3<br>仮想IP 192.168.10.254</small></div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>ActiveとStandby</h3>
+            <ul class="packet-list">
+              <li>2台のうち<strong>プライオリティが高い方</strong>(初期値100)が Active になり、仮想IP宛の通信を処理する</li>
+              <li>Standby は Hello パケットで Active を監視し、応答が途絶えると自動で Active に昇格する</li>
+              <li>PC のデフォルトゲートウェイには、実IPではなく<strong>仮想IP</strong>(この例では <code>192.168.10.254</code>)を設定する</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>R1(Active側)の設定</h3>
+            <div class="code-block">R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ip address 192.168.10.2 255.255.255.0
+R1(config-if)# standby 1 ip 192.168.10.254
+R1(config-if)# standby 1 priority 110
+R1(config-if)# standby 1 preempt
+R1(config-if)# no shutdown</div>
+            <p>R2 は同じ手順で実IPを <code>192.168.10.3</code> にし、priority は初期値のままにします。<code>preempt</code> は「復旧したら Active の座を取り戻す」設定です。</p>
+          </article>
+        </div>
+
+        <section class="callout success">
+          <h3>動作確認は show standby brief</h3>
+          <p><code>R1# show standby brief</code> で、自分の状態(Active / Standby)と仮想IPを一覧できます。R1 の電源を落として PC から Ping を打ち続けると、数秒の断のあと R2 が引き継いで通信が復活する様子を Packet Tracer で観察できます。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Mini Lab</div>
+          <h2>この単元のラボ構成</h2>
+          <p>Switch 2台をケーブル2本でつないで EtherChannel を組み、その上に HSRP の Router 2台を配置します。作ったら、ケーブルを1本抜く・Active の Router を落とすなど「わざと壊す実験」までがこのラボです。</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>構築の手順</h3>
+            <ul class="check-list">
+              <li>2960 を2台配置し、Fa0/23-24 同士を2本のケーブルで接続する</li>
+              <li>両方の Switch で <code>channel-group 1 mode active</code> を設定する</li>
+              <li>1941 を2台配置し、それぞれ SW1・SW2 に接続する</li>
+              <li>R1 に <code>192.168.10.2</code>、R2 に <code>192.168.10.3</code>、HSRP の仮想IPを <code>192.168.10.254</code> で設定する</li>
+              <li>PC-A(GW <code>192.168.10.254</code>)から Ping を流しながら障害を起こして切り替わりを観察する</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>確認コマンドまとめ</h3>
+            <ul class="packet-list">
+              <li><code>show spanning-tree</code>: ルートブリッジとポート状態</li>
+              <li><code>show etherchannel summary</code>: 束ねたリンクの状態</li>
+              <li><code>show standby brief</code>: HSRP の Active / Standby</li>
+              <li><code>show standby</code>: プライオリティや仮想MACの詳細</li>
+            </ul>
+            <p>障害試験の前後でこれらの出力を見比べると、「どの仕組みが、どこで切り替えたのか」を根拠を持って説明できるようになります。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">冗長化の3技術それぞれの役割を確認します。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="STP はループになる経路の一部をブロックし、L2 ネットワークのブロードキャストストームを防ぎます。帯域を増やすのは EtherChannel の役割です。">
+              <fieldset>
+                <legend>Q1. Switch 同士を2本のケーブルでつないだとき、STP が果たす役割はどれですか?</legend>
+                <label class="option-label"><input type="radio" name="rd-q1" data-correct="true"> ループになる経路の一部をブロックしてブロードキャストストームを防ぐ</label>
+                <label class="option-label"><input type="radio" name="rd-q1"> 2本のケーブルを束ねて帯域を2倍にする</label>
+                <label class="option-label"><input type="radio" name="rd-q1"> デフォルトゲートウェイを二重化する</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="HSRP では、PC のデフォルトゲートウェイに2台の Router が共有する仮想IP(この構成では 192.168.10.254)を設定します。実IPを設定すると、その Router が壊れたときに切り替わりの恩恵を受けられません。">
+              <fieldset>
+                <legend>Q2. R1(192.168.10.2)と R2(192.168.10.3)が仮想IP 192.168.10.254 で HSRP を組んでいるとき、PC のデフォルトゲートウェイに設定すべき値はどれですか?</legend>
+                <label class="option-label"><input type="radio" name="rd-q2"> 192.168.10.2</label>
+                <label class="option-label"><input type="radio" name="rd-q2"> 192.168.10.3</label>
+                <label class="option-label"><input type="radio" name="rd-q2" data-correct="true"> 192.168.10.254</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">2問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="advanced-labs.html">
+          <span>前のページ</span>
+          <strong>応用ラボへ戻る</strong>
+          <p>DHCP・NAT の構成を復習したいときはこちらです。</p>
+        </a>
+        <a class="lesson-link" href="ipv6.html">
+          <span>次のレッスン</span>
+          <strong>IPv6入門へ進む</strong>
+          <p>次は IPv4 の次の世代、IPv6 のアドレスと設定を学びます。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

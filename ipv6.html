@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPv6入門 | Packet Tracerで学ぶネットワーク入門</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="ipv6">
+  <div class="site-shell">
+    <aside class="sidebar fade-in">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">NET</div>
+        <div class="brand-copy">
+          <strong>Network Study Studio</strong>
+          <span>Packet Tracer Learning Track</span>
+        </div>
+      </a>
+      <div class="sidebar-note">
+        <strong>このページの役割</strong>
+        <p>IPv6 アドレスの読み方・書き方と、Router / PC への設定を学び、IPv6 だけで疎通が取れる状態を目指します。</p>
+      </div>
+      <div>
+        <p class="sidebar-title">Learning Path</p>
+        <nav class="sidebar-nav">
+          <a href="index.html" data-page-link="index"><div class="nav-number">01</div><div class="nav-copy"><strong>はじめに</strong><small>進め方と到達点</small></div></a>
+          <a href="concepts.html" data-page-link="concepts"><div class="nav-number">02</div><div class="nav-copy"><strong>概念理解</strong><small>通信の仕組みを掴む</small></div></a>
+          <a href="packet-tracer.html" data-page-link="packet-tracer"><div class="nav-number">03</div><div class="nav-copy"><strong>Packet Tracer</strong><small>画面と操作に慣れる</small></div></a>
+          <a href="cisco-cli.html" data-page-link="cisco-cli"><div class="nav-number">04</div><div class="nav-copy"><strong>Cisco CLI</strong><small>基本コマンドを学ぶ</small></div></a>
+          <a href="lab.html" data-page-link="lab"><div class="nav-number">05</div><div class="nav-copy"><strong>基礎ラボ</strong><small>最小構成を組む</small></div></a>
+          <a href="intermediate-labs.html" data-page-link="intermediate-labs"><div class="nav-number">06</div><div class="nav-copy"><strong>中級ラボ</strong><small>VLANと静的ルート</small></div></a>
+          <a href="l3-switch-svi.html" data-page-link="l3-switch-svi"><div class="nav-number">07</div><div class="nav-copy"><strong>L3 Switch / SVI</strong><small>SVIでVLAN間通信</small></div></a>
+          <a href="troubleshooting.html" data-page-link="troubleshooting"><div class="nav-number">08</div><div class="nav-copy"><strong>トラブルシュート</strong><small>切り分け力を伸ばす</small></div></a>
+          <a href="acl.html" data-page-link="acl"><div class="nav-number">09</div><div class="nav-copy"><strong>ACL入門</strong><small>通す通信を選ぶ</small></div></a>
+          <a href="ospf.html" data-page-link="ospf"><div class="nav-number">10</div><div class="nav-copy"><strong>OSPF入門</strong><small>経路を自動で学ぶ</small></div></a>
+          <a href="advanced-labs.html" data-page-link="advanced-labs"><div class="nav-number">11</div><div class="nav-copy"><strong>応用ラボ</strong><small>DHCP・NAT・ACL</small></div></a>
+          <a href="redundancy.html" data-page-link="redundancy"><div class="nav-number">12</div><div class="nav-copy"><strong>冗長化</strong><small>STP・EtherChannel・HSRP</small></div></a>
+          <a href="ipv6.html" data-page-link="ipv6"><div class="nav-number">13</div><div class="nav-copy"><strong>IPv6入門</strong><small>次世代アドレスを学ぶ</small></div></a>
+          <a href="security-ops.html" data-page-link="security-ops"><div class="nav-number">14</div><div class="nav-copy"><strong>セキュリティと運用</strong><small>守る設定と管理</small></div></a>
+        </nav>
+      </div>
+      <div class="theme-toggle" aria-label="表示テーマ切替">
+        <span class="theme-toggle-mode" data-theme-mode="dark">ダーク</span>
+        <label class="theme-switch" for="themeToggle">
+          <input id="themeToggle" class="theme-toggle-input" type="checkbox" role="switch" aria-label="ライトモードに切り替え">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+          </span>
+        </label>
+        <span class="theme-toggle-mode" data-theme-mode="light">ライト</span>
+      </div>
+      <p class="sidebar-help">IPv6 は「別物の難しい世界」ではなく、IPv4 で学んだ考え方の置き換えです。IPv4 のどの仕組みに対応するかを意識しながら読むと、一気に理解しやすくなります。</p>
+    </aside>
+
+    <main class="content">
+      <header class="page-header fade-in delay-1">
+        <div class="eyebrow">IPv6 Basics / Addressing &amp; Routing</div>
+        <h1>IPv4の「次」を、恐れずに読めるようになる。</h1>
+        <p>IPv4 アドレスは約43億個で、すでに新規割り当ては枯渇しています。その解決策が128ビットの IPv6 です。桁が長く見た目に圧倒されがちですが、読み方のルールは3つだけ。この単元で「読める・書ける・設定できる」を一度に身につけます。</p>
+      </header>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Address Format</div>
+          <h2>IPv6アドレスの読み方は3つのルールで決まる</h2>
+          <p>IPv6 アドレスは128ビットを16進数で表し、16ビットずつコロンで8ブロックに区切ります。例: <code>2001:0db8:0000:0000:0000:0000:0000:0001</code>。長く見えますが、省略ルールを使うと <code>2001:db8::1</code> まで短くなります。</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>ルール1: 先頭のゼロは省略</h3>
+            <p>各ブロックの先頭の連続するゼロは省略できます。<code>0db8</code> は <code>db8</code>、<code>0000</code> は <code>0</code> と書けます。</p>
+          </article>
+          <article class="card">
+            <h3>ルール2: 連続するゼロは «::»</h3>
+            <p>ゼロだけのブロックが連続する部分は、<strong>アドレス内で1回だけ</strong> <code>::</code> に置き換えられます。2回使うと元の長さが復元できなくなるため禁止です。</p>
+          </article>
+          <article class="card">
+            <h3>ルール3: プレフィックスは /64 が基本</h3>
+            <p>サブネットマスクの代わりに <code>/64</code> のようなプレフィックス長で書きます。LAN では前半64ビットがネットワーク部、後半64ビットがホスト部というのが標準です。</p>
+          </article>
+        </div>
+
+        <section class="callout success">
+          <h3>省略の練習</h3>
+          <p><code>2001:0db8:0000:0000:0000:0000:0000:0001</code> → 先頭ゼロを取ると <code>2001:db8:0:0:0:0:0:1</code> → 連続するゼロを <code>::</code> にまとめると <code>2001:db8::1</code>。この変換が暗算でできれば、IPv6 の見た目はもう怖くありません。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Address Types</div>
+          <h2>アドレスの種類と、IPv4との対応関係</h2>
+          <p>IPv6 には用途別のアドレスが複数あり、1つのインターフェースが同時に複数のアドレスを持つのが普通です。特に「リンクローカルアドレスは必ず自動で付く」ことを覚えてください。</p>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>種類</th>
+                <th>範囲</th>
+                <th>役割</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>グローバルユニキャスト</td>
+                <td><code>2000::/3</code></td>
+                <td>インターネットで一意に使えるアドレス。IPv4 のグローバルIPに相当します。ドキュメントや学習では <code>2001:db8::/32</code> を使う決まりです。</td>
+              </tr>
+              <tr>
+                <td>リンクローカル</td>
+                <td><code>fe80::/10</code></td>
+                <td>同一リンク内だけで有効なアドレスで、IPv6 が有効なインターフェースに<strong>自動で必ず付与</strong>されます。ルーティングプロトコルのネイバー通信などに使われます。</td>
+              </tr>
+              <tr>
+                <td>ユニークローカル</td>
+                <td><code>fc00::/7</code></td>
+                <td>組織内だけで使うアドレス。IPv4 のプライベートIP(192.168.x.x など)に相当します。</td>
+              </tr>
+              <tr>
+                <td>マルチキャスト</td>
+                <td><code>ff00::/8</code></td>
+                <td>特定グループへの一斉送信。IPv6 には<strong>ブロードキャストが存在せず</strong>、その役割はマルチキャストが担います。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>IPv4の仕組みはこう置き換わる</h3>
+            <ul class="packet-list">
+              <li>ARP → <strong>NDP</strong>(近隣探索プロトコル)がMACアドレスを解決</li>
+              <li>ブロードキャスト → マルチキャストに統合</li>
+              <li>DHCP → <strong>SLAAC</strong>(Router の広告から自動生成)または DHCPv6</li>
+              <li>NAT → 原則不要(アドレスが豊富なためエンドツーエンドで通信)</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>SLAACとは</h3>
+            <p>SLAAC(ステートレスアドレス自動設定)では、Router が広告するプレフィックス(例: <code>2001:db8:10::/64</code>)を受け取った PC が、ホスト部を自分で生成してアドレスを完成させます。DHCP サーバーがなくてもアドレスが決まるのが IPv6 らしい仕組みです。Packet Tracer では PC の IP Configuration で「Automatic」を選ぶと体験できます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-2">
+        <div class="section-head">
+          <div class="small-pill">Configuration</div>
+          <h2>RouterにIPv6を設定する</h2>
+          <p>IPv4 と大きく違う注意点が1つ: Cisco Router は初期状態で <strong>IPv6 のルーティングが無効</strong>です。インターフェースにアドレスを設定する前に、まず <code>ipv6 unicast-routing</code> を有効にします。</p>
+        </div>
+
+        <div class="topic-diagram">
+          <div class="diagram-node">PC-A<small><span class="device-name">2001:db8:10::10 /64</span>GW 2001:db8:10::1</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">R1<small><span class="device-name">ISR 1941</span>G0/0: 2001:db8:10::1<br>G0/1: 2001:db8:20::1</small></div>
+          <div class="diagram-link"></div>
+          <div class="diagram-node">PC-B<small><span class="device-name">2001:db8:20::10 /64</span>GW 2001:db8:20::1</small></div>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>R1 の設定</h3>
+            <div class="code-block">R1(config)# ipv6 unicast-routing
+R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ipv6 address 2001:db8:10::1/64
+R1(config-if)# no shutdown
+R1(config-if)# exit
+R1(config)# interface gigabitEthernet0/1
+R1(config-if)# ipv6 address 2001:db8:20::1/64
+R1(config-if)# no shutdown</div>
+          </article>
+          <article class="card">
+            <h3>PC の設定と疎通確認</h3>
+            <p>PC の Desktop → IP Configuration で IPv6 欄に入力します。</p>
+            <div class="code-block">PC-A
+IPv6 Address: 2001:db8:10::10 / 64
+IPv6 Gateway: 2001:db8:10::1
+
+PC-A> ping 2001:db8:20::10</div>
+            <p>確認コマンドは IPv4 の <code>show ip ...</code> を <code>show ipv6 ...</code> に読み替えるだけです。</p>
+            <div class="code-block">R1# show ipv6 interface brief
+R1# show ipv6 route</div>
+          </article>
+        </div>
+
+        <section class="callout warning">
+          <h3>つまずきポイント: ping が通らないとき</h3>
+          <p>まず <code>ipv6 unicast-routing</code> を入れ忘れていないかを疑ってください。インターフェースにアドレスが付いていても、これが無効だと R1 はパケットを転送しません。次に <code>show ipv6 interface brief</code> で、各インターフェースが <code>up/up</code> でグローバルアドレスとリンクローカルアドレス(<code>FE80::...</code>)の両方を持っているかを確認します。</p>
+        </section>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Routing</div>
+          <h2>IPv6でも、静的ルートとOSPFの考え方はそのまま</h2>
+        </div>
+        <div class="grid-2">
+          <article class="card">
+            <h3>静的ルートとデフォルトルート</h3>
+            <p>書式は IPv4 と同じ発想で、宛先プレフィックスとネクストホップを指定します。</p>
+            <div class="code-block">R1(config)# ipv6 route 2001:db8:30::/64 2001:db8:20::2
+R1(config)# ipv6 route ::/0 2001:db8:20::2</div>
+            <p><code>::/0</code> が IPv4 の <code>0.0.0.0 0.0.0.0</code>(デフォルトルート)に相当します。</p>
+          </article>
+          <article class="card">
+            <h3>OSPFv3</h3>
+            <p>IPv6 用の OSPF は OSPFv3 と呼ばれます。IPv4 の OSPF と違い <code>network</code> コマンドではなく、<strong>インターフェースに直接</strong>エリアを指定するのが特徴です。</p>
+            <div class="code-block">R1(config)# ipv6 router ospf 1
+R1(config-rtr)# router-id 1.1.1.1
+R1(config-rtr)# exit
+R1(config)# interface gigabitEthernet0/0
+R1(config-if)# ipv6 ospf 1 area 0</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-in delay-3">
+        <div class="section-head">
+          <div class="small-pill">Check</div>
+          <h2>この単元の理解度チェック</h2>
+          <p class="quiz-help">アドレスの省略ルールと、Router 側の必須設定を確認します。</p>
+        </div>
+
+        <form data-quiz-form>
+          <div class="quiz-grid">
+            <article class="quiz-card quiz-question" data-question="q1" data-explanation="先頭ゼロの省略と、連続するゼロブロックの :: への置き換え(1回だけ)により、2001:db8::1 が正しい省略形です。:: を2回使う表記は禁止されています。">
+              <fieldset>
+                <legend>Q1. <code>2001:0db8:0000:0000:0000:0000:0000:0001</code> の正しい省略形はどれですか?</legend>
+                <label class="option-label"><input type="radio" name="v6-q1" data-correct="true"> 2001:db8::1</label>
+                <label class="option-label"><input type="radio" name="v6-q1"> 2001:db8::0::1</label>
+                <label class="option-label"><input type="radio" name="v6-q1"> 21:db8::1</label>
+              </fieldset>
+            </article>
+            <article class="quiz-card quiz-question" data-question="q2" data-explanation="Cisco Router は初期状態で IPv6 ルーティングが無効なため、ipv6 unicast-routing をグローバル設定で有効にしないと、アドレスを設定してもパケットを転送しません。">
+              <fieldset>
+                <legend>Q2. Router で IPv6 のパケット転送を有効にするために必要なコマンドはどれですか?</legend>
+                <label class="option-label"><input type="radio" name="v6-q2"> ipv6 address autoconfig</label>
+                <label class="option-label"><input type="radio" name="v6-q2" data-correct="true"> ipv6 unicast-routing</label>
+                <label class="option-label"><input type="radio" name="v6-q2"> ip routing</label>
+              </fieldset>
+            </article>
+          </div>
+          <div class="button-row" style="margin-top: 20px;">
+            <button class="quiz-submit" type="submit">理解度を確認する</button>
+          </div>
+          <div class="quiz-result" data-quiz-result style="margin-top: 16px;">
+            <strong>準備OK</strong>
+            <div class="muted">2問すべて回答してから採点してください。</div>
+          </div>
+        </form>
+      </section>
+
+      <section class="lesson-footer fade-in delay-3">
+        <a class="lesson-link" href="redundancy.html">
+          <span>前のページ</span>
+          <strong>冗長化へ戻る</strong>
+          <p>STP・EtherChannel・HSRP を復習したいときはこちらです。</p>
+        </a>
+        <a class="lesson-link" href="security-ops.html">
+          <span>次のレッスン</span>
+          <strong>セキュリティと運用へ進む</strong>
+          <p>最後は、機器を守る設定と日々の運用管理を学びます。</p>
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
